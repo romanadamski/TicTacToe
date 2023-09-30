@@ -1,8 +1,8 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
-public 
-enum PlayerType
+
+public enum PlayerType
 {
 	PlayerOne,
 	PlayerTwo

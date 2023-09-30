@@ -48,7 +48,7 @@ public class GameplayManager : BaseManager<GameplayManager>
 
 	private void StartCurrentLevel()
 	{
-		TurnManager.Instance.StartGame();
+		_turnManager.StartGame();
 	}
 
 	public void SetGameplayState()

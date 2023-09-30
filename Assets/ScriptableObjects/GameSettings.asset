@@ -15,6 +15,7 @@ MonoBehaviour:
   verticalTilesCount: 3
   horizontalTilesCount: 3
   winningTilesCount: 3
-  playerOne: {fileID: 0}
-  playerTwo: {fileID: 0}
-  playerTurnTime: 5555
+  PlayerOne: {fileID: 0}
+  PlayerTwo: {fileID: 0}
+  background: {fileID: 0}
+  playerTurnTime: 5

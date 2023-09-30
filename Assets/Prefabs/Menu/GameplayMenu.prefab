@@ -949,6 +949,7 @@ MonoBehaviour:
   playerTwoActiveImage: {fileID: 4560172005342169636}
   menuButton: {fileID: 8754150223849449029}
   restartButon: {fileID: 1142592577397148054}
+  settings: {fileID: 11400000, guid: f00a4c8cf7523ec478a7d135a0506885, type: 2}
 --- !u!1 &8132215894702619236
 GameObject:
   m_ObjectHideFlags: 0

@@ -16,6 +16,8 @@ public class GameplayMenu : BaseMenu
     private Button menuButton;
     [SerializeField]
     private Button restartButon;
+    [SerializeField]
+    private GameSettingsSO settings;
 
     private Color _activePlayerColor = Color.white;
     private Color _inactivePlayerColor = new Color(0, 0, 0, 0.5f);
@@ -27,7 +29,15 @@ public class GameplayMenu : BaseMenu
         SubscribeToEvents();
     }
 
-    private void OnMenuButtonClick()
+	public override void Show()
+	{
+		base.Show();
+
+		playerOneActiveImage.sprite = settings.PlayerOne;
+		playerTwoActiveImage.sprite = settings.PlayerTwo;
+	}
+
+	private void OnMenuButtonClick()
     {
         GameplayManager.Instance.SetEndGameplayState();
     }
