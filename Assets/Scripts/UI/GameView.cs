@@ -8,18 +8,19 @@ public class GameView : BaseManager<GameView>
 	[SerializeField]
 	private RectTransform rectTransform;
 	[SerializeField]
-	private GameSettingsScriptableObject settings;
+	private GameSettingsSO settings;
 
-	private TileController[,] _tileControllers;
 	//todo inject
 	private TurnManager _turnManager => TurnManager.Instance;
+
+	public TileController[,] TileControllers { get; private set; }
 
 	public void SpawnTiles()
 	{
 		var horizontalTilesCount = settings.HorizontalTilesCount;
 		var verticalTilesCount = settings.VerticalTilesCount;
 
-		_tileControllers = new TileController[horizontalTilesCount, verticalTilesCount];
+		TileControllers = new TileController[horizontalTilesCount, verticalTilesCount];
 		tilesParent.constraintCount = (int)horizontalTilesCount;
 		var cellSize = horizontalTilesCount > verticalTilesCount
 			? rectTransform.rect.width / horizontalTilesCount
@@ -34,14 +35,29 @@ public class GameView : BaseManager<GameView>
 				tile.transform.SetParent(tilesParent.transform);
 				tile.Init(new Vector2Int(j, i), () => OnTilesButtonClick(tile));
 				tile.gameObject.SetActive(true);
-				_tileControllers[j, i] = tile;
+				TileControllers[j, i] = tile;
 			}
 		}
 	}
 
 	private void OnTilesButtonClick(TileController tile)
 	{
-		tile.SetTileState(_turnManager.CurrentPlayer.Type);
-		_turnManager.OnNodeMark(tile.Index);
+		_turnManager.CurrentPlayer.NodeMark(tile.Index);
+	}
+
+	public void OnNodeMark(Vector2Int index, NodeType nodeType)
+	{
+		var tile = TileControllers[index.x, index.y];
+		tile.SetTileState(nodeType);
+	}
+
+	public void ToggleInput(bool toggle)
+	{
+		foreach(var item in TileControllers)
+		{
+			if (item.PlayerType != NodeType.None) continue;
+
+			item.Button.interactable = toggle;
+		}
 	}
 }

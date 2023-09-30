@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "GameSettings", menuName = "ScriptableObjects/Game Settings")]
-public class GameSettingsScriptableObject : ScriptableObject
+public class GameSettingsSO : ScriptableObject
 {
     [SerializeField]
     private uint verticalTilesCount;
@@ -13,11 +13,11 @@ public class GameSettingsScriptableObject : ScriptableObject
     private uint winningTilesCount;
     public uint WinningTilesCount => winningTilesCount;
     [SerializeField]
-    private Sprite playerOne;
-    public Sprite PlayerOne => playerOne;
+	public Sprite PlayerOne;
     [SerializeField]
-    private Sprite playerTwo;
-    public Sprite PlayerTwo => playerTwo;
+	public Sprite PlayerTwo;
+    [SerializeField]
+	public Sprite background;
     [SerializeField]
     private float playerTurnTime = 5.0f;
     public float PlayerTurnTime => playerTurnTime;

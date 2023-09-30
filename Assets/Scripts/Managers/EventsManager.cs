@@ -14,9 +14,9 @@ public class EventsManager : BaseManager<EventsManager>
         PlayerChanged?.Invoke(player);
     }
 
-    public event Action<IPlayer> GameOver;
-    public void OnGameOver(IPlayer endGamePlayerType)
+    public event Action<NodeType> GameOver;
+    public void OnGameOver(NodeType nodeType)
     {
-        GameOver?.Invoke(endGamePlayerType);
+        GameOver?.Invoke(nodeType);
     }
 }

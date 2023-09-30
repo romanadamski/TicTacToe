@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class TileController : MonoBehaviour
 {
 	[SerializeField]
-	private GameSettingsScriptableObject settings;
+	private GameSettingsSO settings;
 
 	private Image _image;
     private Sprite _defaultSprite;

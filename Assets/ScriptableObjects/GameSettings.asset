@@ -15,5 +15,6 @@ MonoBehaviour:
   verticalTilesCount: 3
   horizontalTilesCount: 3
   winningTilesCount: 3
-  playerOne: {fileID: 21300000, guid: 5e8278e012ff04d9a8bbd92350645568, type: 3}
-  playerTwo: {fileID: 21300000, guid: bd30ced15dd1c4a81a8798331e1abe4a, type: 3}
+  playerOne: {fileID: 0}
+  playerTwo: {fileID: 0}
+  playerTurnTime: 5555

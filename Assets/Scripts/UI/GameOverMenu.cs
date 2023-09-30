@@ -5,14 +5,9 @@ using UnityEngine.UI;
 public class GameOverMenu : BaseMenu
 {
     [SerializeField]
-    private TextMeshProUGUI winnerLabel;
-    [SerializeField]
     private TextMeshProUGUI winnerText;
     [SerializeField]
     private Button menuButton;
-
-    private const string WINNER_LABEL = "WINNER:";
-    private const string DRAW_LABEL = "DRAW";
 
     private void Awake()
     {
@@ -30,18 +25,18 @@ public class GameOverMenu : BaseMenu
         EventsManager.Instance.GameOver += OnGameOver;
     }
 
-    private void OnGameOver(IPlayer player)
+    private void OnGameOver(NodeType type)
     {
-        switch (player.Type)
+        switch (type)
         {
             case NodeType.X:
-            case NodeType.O:
-                winnerLabel.text = WINNER_LABEL;
-                winnerText.text = player.Name;
-                break;
+                winnerText.text = "Player 1 wins";
+				break;
+			case NodeType.O:
+                winnerText.text = "Player 2 wins";
+				break;
             case NodeType.None:
-                winnerLabel.text = DRAW_LABEL;
-                winnerText.text = string.Empty;
+                winnerText.text = "Draw";
                 break;
             default:
                 break;

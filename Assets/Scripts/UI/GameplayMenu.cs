@@ -14,6 +14,8 @@ public class GameplayMenu : BaseMenu
     private Image playerTwoActiveImage;
     [SerializeField]
     private Button menuButton;
+    [SerializeField]
+    private Button restartButon;
 
     private Color _activePlayerColor = Color.white;
     private Color _inactivePlayerColor = new Color(0, 0, 0, 0.5f);
@@ -21,12 +23,18 @@ public class GameplayMenu : BaseMenu
     private void Awake()
     {
         menuButton.onClick.AddListener(OnMenuButtonClick);
+		restartButon.onClick.AddListener(OnRestartButtonClick);
         SubscribeToEvents();
     }
 
     private void OnMenuButtonClick()
     {
         GameplayManager.Instance.SetEndGameplayState();
+    }
+
+    private void OnRestartButtonClick()
+    {
+        GameplayManager.Instance.RestartGameplay();
     }
 
     private void SubscribeToEvents()

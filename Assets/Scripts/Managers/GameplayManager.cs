@@ -29,19 +29,25 @@ public class GameplayManager : BaseManager<GameplayManager>
         ObjectPoolingManager.Instance.ReturnAllToPools();
     }
 
-    private void StartCurrentLevel()
-    {
-        GameView.Instance.SpawnTiles();
-        TurnManager.Instance.StartGame();
-	}
-
     public void StartGameplay()
     {
         StartCurrentLevel();
         EventsManager.Instance.OnGameplayStarted();
     }
 
-    public void SetGameplayState()
+    public void RestartGameplay()
+    {
+		ClearGameplay();
+		StartCurrentLevel();
+        EventsManager.Instance.OnGameplayStarted();
+	}
+
+	private void StartCurrentLevel()
+	{
+		TurnManager.Instance.StartGame();
+	}
+
+	public void SetGameplayState()
     {
         _gameplayStateMachine.SetState(GameplayState);
     }

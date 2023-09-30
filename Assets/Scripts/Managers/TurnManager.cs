@@ -2,9 +2,12 @@ using UnityEngine;
 
 public class TurnManager : BaseManager<TurnManager>
 {
-	public GameSettingsScriptableObject Settings;
+	public GameSettingsSO Settings;
 
 	private TicTacToeController _ticTacToeController;
+	//todo inject
+	public GameView GameView => GameView.Instance;
+
 	private IPlayer PlayerOne { get; set; }
 	private IPlayer PlayerTwo { get; set; }
 
@@ -22,46 +25,48 @@ public class TurnManager : BaseManager<TurnManager>
 
 	public void StartGame()
     {
+		GameView.SpawnTiles();
+
         var horizontalTilesCount = Settings.HorizontalTilesCount;
 		var verticalTilesCount = Settings.VerticalTilesCount;
 
 		_ticTacToeController = new TicTacToeController(horizontalTilesCount, verticalTilesCount, Settings.WinningTilesCount);
 
 		//todo inject
-		PlayerOne = new PlayerInput("a", NodeType.X);
+		PlayerOne = new PlayerComputerRandom(NodeType.X);
 		//todo inject
-		PlayerTwo = new PlayerInput("b", NodeType.O);
+		PlayerTwo = new PlayerInput(NodeType.O);
 		CurrentPlayer = PlayerOne;
 	}
 
-	public void OnNodeMark(Vector2Int index)
+	public void OnNodeMark(Vector2Int index, NodeType nodeType)
     {
-		CurrentPlayer.OnNodeMark();
+		GameView.OnNodeMark(index, nodeType);
 		var winner = _ticTacToeController.CheckWin(index, CurrentPlayer.Type);
 		if (winner != NodeType.None || !_ticTacToeController.CheckEmptyNodes())
 		{
-			SetWinner(CurrentPlayer);
+			SetWinner(winner);
 			return;
 		}
 
 		SwitchPlayer();
 	}
 
-	public void SetWinner(IPlayer winner)
+	private void SetWinner(NodeType winner)
 	{
 		GameplayManager.Instance.SetGameOverState();
 		EventsManager.Instance.OnGameOver(winner);
 	}
 
-	public void SetLoser(IPlayer loser)
+	public void SetLoser(NodeType loser)
 	{
-		if(loser == PlayerOne)
+		if(loser == PlayerOne.Type)
 		{
-			SetWinner(PlayerTwo);
+			SetWinner(PlayerTwo.Type);
 		}
-		else if(loser == PlayerTwo)
+		else if(loser == PlayerTwo.Type)
 		{
-			SetWinner(PlayerOne);
+			SetWinner(PlayerOne.Type);
 		}
 	}
 
