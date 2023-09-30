@@ -18,4 +18,7 @@ public class GameSettingsScriptableObject : ScriptableObject
     [SerializeField]
     private Sprite playerTwo;
     public Sprite PlayerTwo => playerTwo;
+    [SerializeField]
+    private float playerTurnTime = 5.0f;
+    public float PlayerTurnTime => playerTurnTime;
 }

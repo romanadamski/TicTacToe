@@ -7,9 +7,10 @@ public class GameManager : BaseManager<GameManager>
     public MainMenuState MainMenuState;
     public LevelState LevelState;
 
-    #endregion
+	#endregion
 
-    private void Start()
+
+	private void Start()
     {
         InitStates();
         GoToMainMenu();
@@ -29,7 +30,7 @@ public class GameManager : BaseManager<GameManager>
     }
 
     public void SetLevelState()
-    {
-        _gameStateMachine.SetState(LevelState);
-    }
+	{
+		_gameStateMachine.SetState(LevelState);
+	}
 }

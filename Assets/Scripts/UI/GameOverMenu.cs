@@ -30,16 +30,16 @@ public class GameOverMenu : BaseMenu
         EventsManager.Instance.GameOver += OnGameOver;
     }
 
-    private void OnGameOver(PlayerType endGamePlayerType)
+    private void OnGameOver(IPlayer player)
     {
-        switch (endGamePlayerType)
+        switch (player.Type)
         {
-            case PlayerType.X:
-            case PlayerType.O:
+            case NodeType.X:
+            case NodeType.O:
                 winnerLabel.text = WINNER_LABEL;
-                winnerText.text = TicTacToeManager.Instance.CurrentPlayer.ToString();
+                winnerText.text = player.Name;
                 break;
-            case PlayerType.None:
+            case NodeType.None:
                 winnerLabel.text = DRAW_LABEL;
                 winnerText.text = string.Empty;
                 break;

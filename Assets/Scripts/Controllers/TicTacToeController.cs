@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public enum PlayerType
+public enum NodeType
 {
 	None = 0,
 	X = 1,
@@ -9,57 +9,65 @@ public enum PlayerType
 
 public class TicTacToeController
 {
-	private PlayerType _currentPlayer = PlayerType.X;
-	public PlayerType CurrentPlayer
+	private NodeType[,] _board;
+	private uint _horizontalCount;
+	private uint _verticalCount;
+	private uint _winningCount;
+
+	public TicTacToeController(uint horizontalCount, uint verticalCount, uint winningCount)
 	{
-		get => _currentPlayer;
-		set
-		{
-			_currentPlayer = value;
-			EventsManager.Instance.OnPlayerChanged(value);
-		}
+		_board = new NodeType[horizontalCount, verticalCount];
+
+		_horizontalCount = horizontalCount;
+		_verticalCount = verticalCount;
+		_winningCount = winningCount;
 	}
 
-	public TileController[,] _tileControllers;
-
-	public void SwitchPlayer()
+	public NodeType CheckWin(Vector2Int index, NodeType nodeType)
 	{
-		if (CurrentPlayer == PlayerType.O)
-		{
-			CurrentPlayer = PlayerType.X;
-		}
-		else
-		{
-			CurrentPlayer = PlayerType.O;
-		}
+		_board[index.x, index.y] = nodeType;
+
+		return CheckWinVertical(index.x, nodeType)
+		| CheckWinHorizontal(index.y, nodeType)
+		| CheckWinDiagonalTopLeftToBottomRight(index, nodeType)
+		| CheckWinDiagonalTopRightToLeftBottom(index, nodeType);
 	}
 
-	public PlayerType CheckWin(TileController tile) =>
-		CheckWinVertical((int)tile.Index.x)
-		| CheckWinHorizontal((int)tile.Index.y)
-		| CheckWinDiagonalTopLeftToBottomRight(tile.Index)
-		| CheckWinDiagonalTopRightToLeftBottom(tile.Index);
+	public bool CheckEmptyNodes()
+	{
+		bool emptyNodes = false;
+		foreach(var item in _board)
+		{
+			if(item == NodeType.None)
+			{
+				emptyNodes = true;
+				break;
+			}
+		}
 
-	private PlayerType CheckWinDiagonalTopLeftToBottomRight(Vector2 index)
+		return emptyNodes;
+	}
+
+	private NodeType CheckWinDiagonalTopLeftToBottomRight(Vector2 index, NodeType nodeType)
 	{
 		var winCount = 0u;
 		var startX = index.x >= index.y ? index.x - index.y : 0;
 		var startY = index.y >= index.x ? index.y - index.x : 0;
 
-		var verCount = GameSettingsManager.Instance.Settings.VerticalTilesCount;
-		var horCount = GameSettingsManager.Instance.Settings.HorizontalTilesCount;
+		var verCount = _verticalCount;
+		var horCount = _horizontalCount;
 
 		var endX = horCount - index.x <= verCount - index.y ? horCount - 1 : (verCount - index.y - 1) + index.x;
 		var endY = verCount - index.y <= horCount - index.x ? verCount - 1 : (horCount - index.x - 1) + index.y;
 
 		for (int i = (int)startX, j = (int)startY; i <= endX && j <= endY; i++, j++)
 		{
-			if (_tileControllers[i, j].PlayerType == _currentPlayer)
+			if (_board[i, j] == nodeType)
 			{
 				winCount++;
-				if (winCount.Equals(GameSettingsManager.Instance.Settings.WinningTilesCount))
+				if (winCount.Equals(_winningCount))
 				{
-					return _currentPlayer;
+					return nodeType;
 				}
 			}
 			else if (winCount > 0)
@@ -68,15 +76,15 @@ public class TicTacToeController
 			}
 		}
 
-		return PlayerType.None;
+		return NodeType.None;
 	}
 
-	private PlayerType CheckWinDiagonalTopRightToLeftBottom(Vector2 index)
+	private NodeType CheckWinDiagonalTopRightToLeftBottom(Vector2 index, NodeType nodeType)
 	{
 		var winCount = 0u;
 
-		var horCount = GameSettingsManager.Instance.Settings.HorizontalTilesCount;
-		var verCount = GameSettingsManager.Instance.Settings.VerticalTilesCount;
+		var horCount = _horizontalCount;
+		var verCount = _verticalCount;
 
 		var xToEdgeDist = horCount - index.x - 1;
 		var startX = horCount - index.x <= index.y ? horCount - 1 : index.x + index.y;
@@ -88,12 +96,12 @@ public class TicTacToeController
 
 		for (int i = (int)startX, j = (int)startY; i >= endX && j <= endY; i--, j++)
 		{
-			if (_tileControllers[i, j].PlayerType == _currentPlayer)
+			if (_board[i, j] == nodeType)
 			{
 				winCount++;
-				if (winCount.Equals(GameSettingsManager.Instance.Settings.WinningTilesCount))
+				if (winCount.Equals(_winningCount))
 				{
-					return _currentPlayer;
+					return nodeType;
 				}
 			}
 			else if (winCount > 0)
@@ -102,20 +110,20 @@ public class TicTacToeController
 			}
 		}
 
-		return PlayerType.None;
+		return NodeType.None;
 	}
 
-	private PlayerType CheckWinHorizontal(int horizontal)
+	private NodeType CheckWinHorizontal(int horizontal, NodeType nodeType)
 	{
 		var winCount = 0u;
-		for (int i = 0; i < GameSettingsManager.Instance.Settings.HorizontalTilesCount; i++)
+		for (int i = 0; i < _horizontalCount; i++)
 		{
-			if (_tileControllers[i, horizontal].PlayerType == _currentPlayer)
+			if (_board[i, horizontal] == nodeType)
 			{
 				winCount++;
-				if (winCount.Equals(GameSettingsManager.Instance.Settings.WinningTilesCount))
+				if (winCount.Equals(_winningCount))
 				{
-					return _currentPlayer;
+					return nodeType;
 				}
 			}
 			else if (winCount > 0)
@@ -124,20 +132,20 @@ public class TicTacToeController
 			}
 		}
 
-		return PlayerType.None;
+		return NodeType.None;
 	}
 
-	private PlayerType CheckWinVertical(int vertical)
+	private NodeType CheckWinVertical(int vertical, NodeType nodeType)
 	{
 		var winCount = 0u;
-		for (int i = 0; i < GameSettingsManager.Instance.Settings.VerticalTilesCount; i++)
+		for (int i = 0; i < _verticalCount; i++)
 		{
-			if (_tileControllers[vertical, i].PlayerType == _currentPlayer)
+			if (_board[vertical, i] == nodeType)
 			{
 				winCount++;
-				if (winCount.Equals(GameSettingsManager.Instance.Settings.WinningTilesCount))
+				if (winCount.Equals(_winningCount))
 				{
-					return _currentPlayer;
+					return nodeType;
 				}
 			}
 			else if (winCount > 0)
@@ -146,6 +154,6 @@ public class TicTacToeController
 			}
 		}
 
-		return PlayerType.None;
+		return NodeType.None;
 	}
 }

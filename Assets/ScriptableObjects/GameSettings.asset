@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6891a7462e5b6d4b9f575cebdf25555, type: 3}
   m_Name: GameSettings
   m_EditorClassIdentifier: 
-  verticalTilesCount: 8
-  horizontalTilesCount: 7
-  winningTilesCount: 4
-  playerOne: {fileID: 21300000, guid: b979c8314bd6d5e4a92b74d6c3c045b3, type: 3}
-  playerTwo: {fileID: 21300000, guid: b4ca9cf867c66aa479f857985561ad5e, type: 3}
+  verticalTilesCount: 3
+  horizontalTilesCount: 3
+  winningTilesCount: 3
+  playerOne: {fileID: 21300000, guid: 5e8278e012ff04d9a8bbd92350645568, type: 3}
+  playerTwo: {fileID: 21300000, guid: bd30ced15dd1c4a81a8798331e1abe4a, type: 3}

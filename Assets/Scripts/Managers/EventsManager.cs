@@ -8,14 +8,14 @@ public class EventsManager : BaseManager<EventsManager>
         GameplayStarted?.Invoke();
     }
 
-    public event Action<PlayerType> PlayerChanged;
-    public void OnPlayerChanged(PlayerType playerType)
+    public event Action<IPlayer> PlayerChanged;
+    public void OnPlayerChanged(IPlayer player)
     {
-        PlayerChanged?.Invoke(playerType);
+        PlayerChanged?.Invoke(player);
     }
 
-    public event Action<PlayerType> GameOver;
-    public void OnGameOver(PlayerType endGamePlayerType)
+    public event Action<IPlayer> GameOver;
+    public void OnGameOver(IPlayer endGamePlayerType)
     {
         GameOver?.Invoke(endGamePlayerType);
     }

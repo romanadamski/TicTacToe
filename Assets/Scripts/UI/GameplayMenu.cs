@@ -34,14 +34,14 @@ public class GameplayMenu : BaseMenu
         EventsManager.Instance.PlayerChanged += PlayerChanged;
     }
 
-    private void PlayerChanged(PlayerType playerType)
+    private void PlayerChanged(IPlayer player)
     {
-        if (playerType == PlayerType.X)
+        if (player.Type == NodeType.X)
         {
             playerOneActiveImage.color = _activePlayerColor;
             playerTwoActiveImage.color = _inactivePlayerColor;
         }
-        else if (playerType == PlayerType.O)
+        else if (player.Type == NodeType.O)
         {
             playerOneActiveImage.color = _inactivePlayerColor;
             playerTwoActiveImage.color = _activePlayerColor;

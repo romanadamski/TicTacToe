@@ -31,8 +31,9 @@ public class GameplayManager : BaseManager<GameplayManager>
 
     private void StartCurrentLevel()
     {
-        TicTacToeManager.Instance.SpawnTiles();
-    }
+        GameView.Instance.SpawnTiles();
+        TurnManager.Instance.StartGame();
+	}
 
     public void StartGameplay()
     {
