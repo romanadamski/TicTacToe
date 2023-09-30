@@ -1,7 +1,10 @@
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class MainMenu : BaseMenu
@@ -13,19 +16,56 @@ public class MainMenu : BaseMenu
     [SerializeField]
     private TMP_InputField reskinInputField;
     [SerializeField]
+    private List<GameModeButton> playerOneButtons;
+    [SerializeField]
+    private List<GameModeButton> playerTwoButtons;
+    [SerializeField]
 	private AssetBundlePathSO assetBundlePathSO;
     [SerializeField]
 	private GameSettingsSO settings;
 
-    private void Awake()
-    {
+	private void Start()
+	{
         startGameButton.onClick.AddListener(OnStartGameButtonClick);
 		reskinButton.onClick.AddListener(() => Reskin(reskinInputField.text));
+		playerOneButtons.ForEach(button => button.Button.onClick.AddListener(() => OnPlayerOneGameModeButtonClick(button, playerOneButtons)));
+		playerTwoButtons.ForEach(button => button.Button.onClick.AddListener(() => OnPlayerTwoGameModeButtonClick(button, playerTwoButtons)));
+		SetStartButtonInteractable();
 
 		Reskin("main");
 	}
 
-    private void OnStartGameButtonClick()
+	public override void Show()
+	{
+		base.Show();
+
+		playerOneButtons.ForEach(button => button.DeselectButton());
+		playerTwoButtons.ForEach(button => button.DeselectButton());
+		reskinInputField.text = string.Empty;
+		SetStartButtonInteractable();
+	}
+
+	private void OnPlayerOneGameModeButtonClick(GameModeButton sender, List<GameModeButton> playerOneButtons)
+	{
+		playerOneButtons.ForEach(button => button.DeselectButton());
+		sender.SelectButton();
+		SetStartButtonInteractable();
+	}
+
+	private void OnPlayerTwoGameModeButtonClick(GameModeButton sender, List<GameModeButton> playerTwoButtons)
+	{
+		playerTwoButtons.ForEach(button => button.DeselectButton());
+		sender.SelectButton();
+		SetStartButtonInteractable();
+	}
+
+	private void SetStartButtonInteractable()
+	{
+		startGameButton.interactable = playerOneButtons.Any(button => button.Active)
+			&& playerTwoButtons.Any(button => button.Active);
+	}
+
+	private void OnStartGameButtonClick()
     {
         GameManager.Instance.SetLevelState();
     }

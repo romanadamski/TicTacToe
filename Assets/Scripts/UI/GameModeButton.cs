@@ -5,24 +5,27 @@ using UnityEngine.UI;
 public class GameModeButton : MonoBehaviour
 {
 	[SerializeField]
-	private Sprite selectedButtonSprite;
+	private Color selectedButtonColor;
+	private Color _normalButtonColor;
 
-	private Button _button;
-	private Sprite _normalButtonSprite;
+	public Button Button { get; private set; }
+	public bool Active { get; private set; }
 
 	private void Awake()
 	{
-		_button = GetComponent<Button>();
-		_normalButtonSprite = _button.image.sprite;
+		Button = GetComponent<Button>();
+		_normalButtonColor = Button.image.color;
 	}
 
 	public void SelectButton()
 	{
-		_button.image.sprite = selectedButtonSprite;
+		Button.image.color = selectedButtonColor;
+		Active = true;
 	}
 
 	public void DeselectButton()
 	{
-		_button.image.sprite = _normalButtonSprite;
+		Button.image.color = _normalButtonColor;
+		Active = false;
 	}
 }

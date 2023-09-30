@@ -5,8 +5,9 @@ using System.Linq;
 public class PlayerComputerRandom : IPlayer
 {
 	private WaitForSeconds _waitForTurn;
+	private Coroutine _turnCoroutine;
 
-	public PlayerComputerRandom(NodeType type) : base(type)
+	public PlayerComputerRandom(NodeType type, TurnManager turnManager) : base(type, turnManager)
 	{
 		_waitForTurn = new WaitForSeconds(1);
 	}
@@ -16,7 +17,9 @@ public class PlayerComputerRandom : IPlayer
 		base.StartTurn();
 
 		_turnManager.GameView.ToggleInput(false);
-		_turnManager.StartCoroutine(WaitAndTakeTurn());
+
+		StopTurnCoroutine();
+		_turnCoroutine = _turnManager.StartCoroutine(WaitAndTakeTurn());
 	}
 
 	private IEnumerator WaitAndTakeTurn()
@@ -30,5 +33,19 @@ public class PlayerComputerRandom : IPlayer
 		var randomNode = emptyNodes.ElementAt(randomIndex);
 
 		NodeMark(randomNode.Index);
+	}
+
+	private void StopTurnCoroutine()
+	{
+		if(_turnCoroutine != null)
+		{
+			_turnManager.StopCoroutine(_turnCoroutine);
+		}
+		_turnCoroutine = null;
+	}
+
+	public override void OnGameFinish()
+	{
+		StopTurnCoroutine();
 	}
 }

@@ -8,8 +8,8 @@ public class TurnManager : BaseManager<TurnManager>
 	//todo inject
 	public GameView GameView => GameView.Instance;
 
-	private IPlayer PlayerOne { get; set; }
-	private IPlayer PlayerTwo { get; set; }
+	public IPlayer PlayerOne { get; set; }
+	public IPlayer PlayerTwo { get; set; }
 
 	private IPlayer _currentPlayer;
 	public IPlayer CurrentPlayer
@@ -32,10 +32,6 @@ public class TurnManager : BaseManager<TurnManager>
 
 		_ticTacToeController = new TicTacToeController(horizontalTilesCount, verticalTilesCount, Settings.WinningTilesCount);
 
-		//todo inject
-		PlayerOne = new PlayerComputerRandom(NodeType.X);
-		//todo inject
-		PlayerTwo = new PlayerInput(NodeType.O);
 		CurrentPlayer = PlayerOne;
 	}
 
@@ -68,6 +64,12 @@ public class TurnManager : BaseManager<TurnManager>
 		{
 			SetWinner(PlayerOne.Type);
 		}
+	}
+
+	public void OnGameplayFinish()
+	{
+		PlayerOne.OnGameFinish();
+		PlayerTwo.OnGameFinish();
 	}
 
 	private void SwitchPlayer()

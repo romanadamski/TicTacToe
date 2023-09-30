@@ -8,7 +8,9 @@ public class GameplayManager : BaseManager<GameplayManager>
     public GameOverState GameOverState { get; private set; }
     public EndGameplayState EndGameplayState { get; private set; }
 
-    #endregion
+	#endregion
+
+	private TurnManager _turnManager => TurnManager.Instance;
 
     private void Awake()
     {
@@ -27,7 +29,9 @@ public class GameplayManager : BaseManager<GameplayManager>
     public void ClearGameplay()
     {
         ObjectPoolingManager.Instance.ReturnAllToPools();
-    }
+		_turnManager.OnGameplayFinish();
+
+	}
 
     public void StartGameplay()
     {

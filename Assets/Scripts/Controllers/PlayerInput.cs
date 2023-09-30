@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerInput : IPlayer
 {
-	public PlayerInput(NodeType type) : base(type)
+	public PlayerInput(NodeType type, TurnManager turnManager) : base(type, turnManager)
 	{
 	}
 
