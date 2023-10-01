@@ -1,11 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Zenject;
 
 public class ObjectPoolingManager : BaseManager<ObjectPoolingManager>
 {
     [SerializeField]
     private List<Pool> pools = new List<Pool>();
+
+	[Inject]
+	private DiContainer _diContainer;
 
     private void Start()
     {
@@ -13,7 +17,7 @@ public class ObjectPoolingManager : BaseManager<ObjectPoolingManager>
         {
             for (int i = 0; i < pool.StartPoolCount; i++)
             {
-                var newObject = Instantiate(pool.PoolObjectPrefab, pool.Parent);
+                var newObject = _diContainer.InstantiatePrefab(pool.PoolObjectPrefab, pool.Parent).GetComponent<BasePoolableController>();
                 newObject.gameObject.SetActive(false);
                 SetObjectName(newObject.gameObject);
                 pool.PooledObjects.Enqueue(newObject);

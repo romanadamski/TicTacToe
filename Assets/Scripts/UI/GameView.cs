@@ -16,6 +16,7 @@ public class GameView : MonoBehaviour
 
 	[Inject]
 	private TurnManager _turnManager;
+	private TileController _currentHighlightTile;
 
 	public TileController[,] TileControllers { get; private set; }
 
@@ -29,8 +30,13 @@ public class GameView : MonoBehaviour
 
 	private void OnHint(Vector2Int index)
 	{
-		var tileToHint = TileControllers[index.x, index.y];
-		tileToHint.Highlight();
+		if(_currentHighlightTile != null)
+		{
+			_currentHighlightTile.EndHighlightCoroutine();
+		}
+
+		_currentHighlightTile = TileControllers[index.x, index.y];
+		_currentHighlightTile.Highlight(_turnManager.CurrentPlayer.Type);
 	}
 
 	public void SpawnBoard()
@@ -66,7 +72,6 @@ public class GameView : MonoBehaviour
 
 	private void SpawnLines()
 	{
-		var lineSize = new Vector2(43, _turnManager.VerticalTilesCount * tilesParent.cellSize.y);
 		for (int i = 0; i < _turnManager.HorizontalTilesCount - 1; i++)
 		{
 			var line = ObjectPoolingManager.Instance.GetFromPool("LineVertical");
@@ -74,6 +79,9 @@ public class GameView : MonoBehaviour
 			line.GetComponent<RectTransform>().sizeDelta = new Vector2(43, _turnManager.VerticalTilesCount * tilesParent.cellSize.y);
 			line.gameObject.SetActive(true);
 		}
+
+		var lineSize = new Vector2(43, _turnManager.VerticalTilesCount * tilesParent.cellSize.y);
+
 		verticalLines.cellSize = lineSize;
 		verticalLines.spacing = new Vector2(tilesParent.cellSize.y - 43, 0);
 

@@ -16,7 +16,6 @@ public class UIManager : BaseManager<UIManager>
 
 	public Sprite PlayerOne;
 	public Sprite PlayerTwo;
-	public Sprite Line;
 
 	private List<BaseMenu> _menus = new List<BaseMenu>();
 	private Image backgroundImage;

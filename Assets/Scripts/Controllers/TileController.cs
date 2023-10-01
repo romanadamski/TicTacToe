@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 [RequireComponent(typeof(Button))]
 public class TileController : MonoBehaviour
@@ -12,13 +13,17 @@ public class TileController : MonoBehaviour
 	private Image _image;
     private Sprite _defaultSprite;
 	private Coroutine _hintCoroutine;
-	private Color transparentColor = new Color(0,0,0,0);
+	private Color transparentColor = new Color(0, 0, 0, 0);
+	private Color targetHintColor = new Color(0.5f, 0.5f, 0.5f, 1.0f);
 
     public Button Button { get; private set; }
     public Vector2Int Index { get; private set; }
     public NodeType NodeType { get; private set; }
 
-    private void Awake()
+	[Inject]
+	private TurnManager _turnManager;
+
+	private void Awake()
     {
         Button = GetComponent<Button>();
         _image = GetComponent<Image>();
@@ -27,7 +32,6 @@ public class TileController : MonoBehaviour
 
     public void Init(Vector2Int index, Action onButtonClick)
     {
-		EndHintCoroutine();
         Index = index;
 		Button.onClick.RemoveAllListeners();
         Button.onClick.AddListener(() => onButtonClick?.Invoke());
@@ -38,7 +42,7 @@ public class TileController : MonoBehaviour
 
     public void SetState(NodeType nodeType)
     {
-		EndHintCoroutine();
+		EndHighlightCoroutine();
 		switch (nodeType)
 		{
 			case NodeType.X:
@@ -56,10 +60,23 @@ public class TileController : MonoBehaviour
         Button.interactable = false;
     }
 
-	public void Highlight()
+	public void Highlight(NodeType nodeType)
 	{
-		EndHintCoroutine();
-		StartCoroutine(DoHighlight());
+		EndHighlightCoroutine();
+		hintImage.sprite = GetCurrentPlayerSprite(nodeType);
+		_hintCoroutine = StartCoroutine(DoHighlight());
+	}
+
+	private Sprite GetCurrentPlayerSprite(NodeType nodeType)
+	{
+		switch (nodeType)
+		{
+			case NodeType.X:
+				return UIManager.Instance.PlayerOne;
+			case NodeType.O:
+				return UIManager.Instance.PlayerTwo;
+		}
+		return null;
 	}
 	
 	private IEnumerator DoHighlight()
@@ -69,7 +86,7 @@ public class TileController : MonoBehaviour
 		while (elapsed < duration)
 		{
 			elapsed += Time.deltaTime;
-			hintImage.color = Color.Lerp(hintImage.color, Color.white, elapsed / duration);
+			hintImage.color = Color.Lerp(hintImage.color, targetHintColor, Time.deltaTime);
 
 			yield return null;
 		}
@@ -83,15 +100,16 @@ public class TileController : MonoBehaviour
 		}
 	}
 
-	private void EndHintCoroutine()
+	public void EndHighlightCoroutine()
 	{
+		hintImage.color = transparentColor;
+
 		if(_hintCoroutine != null)
 		{
 			StopCoroutine(_hintCoroutine);
 		}
 		_hintCoroutine = null;
 
-		hintImage.color = transparentColor;
 	}
 
 	public override string ToString()
