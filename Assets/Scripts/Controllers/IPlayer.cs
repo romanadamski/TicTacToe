@@ -3,8 +3,10 @@ using UnityEngine;
 
 public abstract class IPlayer
 {
-	public abstract bool AllowInput { get; }
 	protected TurnManager _turnManager;
+
+	public abstract bool AllowInput { get; }
+
 	private WaitForSeconds _waitForTurnEnd;
 	private Coroutine _turnEndCoroutine;
 	public NodeType Type { get; set; }
@@ -13,7 +15,7 @@ public abstract class IPlayer
 	{
 		Type = type;
 		_turnManager = turnManager;
-		_waitForTurnEnd = new WaitForSeconds(_turnManager.Settings.PlayerTurnTime);
+		_waitForTurnEnd = new WaitForSeconds(GameManager.Instance.Settings.PlayerTurnTime);
 	}
 
 	public virtual void OnTurnEnd()
@@ -24,16 +26,14 @@ public abstract class IPlayer
 	public virtual void StartTurn()
 	{
 		StopTurnEndCoroutine();
-		_turnEndCoroutine = _turnManager.StartCoroutine(OnTimerEnd());
-
-		_turnManager.GameView.ToggleInput(AllowInput);
+		_turnEndCoroutine = GameManager.Instance.StartCoroutine(OnTimerEnd());
 	}
 
 	private void StopTurnEndCoroutine()
 	{
 		if (_turnEndCoroutine != null)
 		{
-			_turnManager.StopCoroutine(_turnEndCoroutine);
+			GameManager.Instance.StopCoroutine(_turnEndCoroutine);
 		}
 	}
 

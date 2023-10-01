@@ -1,6 +1,6 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 public enum PlayerType
 {
@@ -9,15 +9,18 @@ public enum PlayerType
 }
 
 [RequireComponent(typeof(Button))]
-public abstract class PlayerChooseController<T> : MonoBehaviour where T : IPlayer
+public abstract class PlayerChooseController : MonoBehaviour
 {
 	[SerializeField]
-	protected PlayerType playerType;
+	private PlayerType playerType;
 	[SerializeField]
 	protected NodeType nodeType;
 
-	private TurnManager _turnManager => TurnManager.Instance;
+	[Inject]
+	protected TurnManager _turnManager;
 	private Button _button;
+
+	protected abstract IPlayer Player { get; }
 
 	private void Awake()
 	{
@@ -30,10 +33,10 @@ public abstract class PlayerChooseController<T> : MonoBehaviour where T : IPlaye
 		switch (playerType)
 		{
 			case PlayerType.PlayerOne:
-				_turnManager.PlayerOne = (T)Activator.CreateInstance(typeof(T), nodeType, _turnManager);
+				_turnManager.PlayerOne = Player;
 				break;
 			case PlayerType.PlayerTwo:
-				_turnManager.PlayerTwo = (T)Activator.CreateInstance(typeof(T), nodeType, _turnManager);
+				_turnManager.PlayerTwo = Player;
 				break;
 			default:
 				break;

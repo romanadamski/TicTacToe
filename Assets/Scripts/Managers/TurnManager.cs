@@ -2,17 +2,14 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TurnManager : BaseManager<TurnManager>
+public class TurnManager
 {
-	private TicTacToeController _ticTacToeController;
+	public BoardController TicTacToeController { get; private set; }
 	private Stack<Tuple<IPlayer, Vector2Int>> _movesHistory = new Stack<Tuple<IPlayer, Vector2Int>>();
 
-	public GameView GameView => GameView.Instance;
-	public uint HorizontalTilesCount => 3;
-	public uint VerticalTilesCount => 3;
-	public uint WinningTilesCount => 3;
-
-	public GameSettingsSO Settings;
+	public uint HorizontalTilesCount => GameManager.Instance.Settings.HorizontalNodes;
+	public uint VerticalTilesCount => GameManager.Instance.Settings.VerticalNodes;
+	public uint WinningTilesCount => GameManager.Instance.Settings.WinNodes;
 
 	public IPlayer PlayerOne { get; set; }
 	public IPlayer PlayerTwo { get; set; }
@@ -34,9 +31,8 @@ public class TurnManager : BaseManager<TurnManager>
 	public void StartGame()
     {
 		_movesHistory.Clear();
-		GameView.SpawnTiles();
 
-		_ticTacToeController = new TicTacToeController(HorizontalTilesCount, VerticalTilesCount, WinningTilesCount);
+		TicTacToeController = new BoardController(HorizontalTilesCount, VerticalTilesCount, WinningTilesCount);
 
 		CurrentPlayer = PlayerOne;
 	}
@@ -45,11 +41,10 @@ public class TurnManager : BaseManager<TurnManager>
     {
 		_movesHistory.Push(new Tuple<IPlayer, Vector2Int>(CurrentPlayer, index));
 
-		GameView.OnNodeMark(index, nodeType);
-		_ticTacToeController.SetNode(index, CurrentPlayer.Type);
+		TicTacToeController.SetNode(index, CurrentPlayer.Type);
 
-		var winner = _ticTacToeController.CheckWin(index, CurrentPlayer.Type);
-		if (winner != NodeType.None || !_ticTacToeController.CheckEmptyNodes())
+		var winner = TicTacToeController.CheckWin(index, CurrentPlayer.Type);
+		if (winner != NodeType.None || !TicTacToeController.CheckEmptyNodes())
 		{
 			SetWinner(winner);
 			return;
@@ -58,9 +53,10 @@ public class TurnManager : BaseManager<TurnManager>
 		SwitchPlayer();
 	}
 
-	public void HintMove()
+	public Node GetNodeToHint()
 	{
-		
+		var emptyNode = TicTacToeController.GetRandomEmptyNode();
+		return emptyNode;
 	}
 
 	public void UndoMove()
@@ -69,8 +65,7 @@ public class TurnManager : BaseManager<TurnManager>
 
 		var lastMove = _movesHistory.Pop();
 
-		_ticTacToeController.SetNode(lastMove.Item2, NodeType.None);
-		GameView.OnNodeMark(lastMove.Item2, NodeType.None);
+		TicTacToeController.SetNode(lastMove.Item2, NodeType.None);
 
 		CurrentPlayer.OnTurnEnd();
 		CurrentPlayer = lastMove.Item1;

@@ -1,3 +1,5 @@
+using Zenject;
+
 public class GameplayManager : BaseManager<GameplayManager>
 {
     #region States
@@ -10,7 +12,8 @@ public class GameplayManager : BaseManager<GameplayManager>
 
 	#endregion
 
-	private TurnManager _turnManager => TurnManager.Instance;
+	[Inject]
+	private TurnManager _turnManager;
 
     private void Awake()
     {
@@ -35,15 +38,14 @@ public class GameplayManager : BaseManager<GameplayManager>
 
     public void StartGameplay()
     {
-        StartCurrentLevel();
         EventsManager.Instance.OnGameplayStarted();
-    }
+        StartCurrentLevel();
+	}
 
     public void RestartGameplay()
     {
 		ClearGameplay();
-		StartCurrentLevel();
-        EventsManager.Instance.OnGameplayStarted();
+		StartGameplay();
 	}
 
 	private void StartCurrentLevel()

@@ -1,3 +1,4 @@
+
 public class GameManager : BaseManager<GameManager>
 {
     #region States
@@ -9,6 +10,7 @@ public class GameManager : BaseManager<GameManager>
 
 	#endregion
 
+	public GameSettingsSO Settings;
 
 	private void Start()
     {

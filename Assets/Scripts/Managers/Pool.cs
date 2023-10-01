@@ -10,11 +10,9 @@ public class Pool
     public BasePoolableController PoolObjectPrefab;
     public bool CanGrow;
     public Queue<BasePoolableController> PooledObjects = new Queue<BasePoolableController>();
-    public bool CustomParent => PoolObjectPrefab.CustomParent;
 
     [HideInInspector]
     public int ObjectCount;
-    [HideInInspector]
     public Transform Parent;
 
     /// <summary>

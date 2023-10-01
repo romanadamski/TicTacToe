@@ -1,3 +1,4 @@
-﻿public class PlayerComputerRandomChooseController : PlayerChooseController<PlayerComputerRandom>
+﻿public class PlayerComputerRandomChooseController : PlayerChooseController
 {
+	protected override IPlayer Player => new PlayerComputerRandom(nodeType, _turnManager);
 }

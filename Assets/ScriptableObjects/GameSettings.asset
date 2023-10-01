@@ -12,10 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6891a7462e5b6d4b9f575cebdf25555, type: 3}
   m_Name: GameSettings
   m_EditorClassIdentifier: 
-  verticalTilesCount: 3
-  horizontalTilesCount: 3
-  winningTilesCount: 3
-  PlayerOne: {fileID: 0}
-  PlayerTwo: {fileID: 0}
-  background: {fileID: 0}
   playerTurnTime: 5
+  horizontalNodes: 5
+  verticalNodes: 3
+  winNodes: 3

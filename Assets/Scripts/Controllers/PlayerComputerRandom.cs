@@ -19,27 +19,21 @@ public class PlayerComputerRandom : IPlayer
 		base.StartTurn();
 
 		StopTurnCoroutine();
-		_turnCoroutine = _turnManager.StartCoroutine(WaitAndTakeTurn());
+		_turnCoroutine = GameManager.Instance.StartCoroutine(WaitAndTakeTurn());
 	}
 
 	private IEnumerator WaitAndTakeTurn()
 	{
 		yield return _waitForTurn;
 
-		var emptyNodes = _turnManager.GameView.TileControllers.Cast<TileController>().
-			Where(x => x.NodeType == NodeType.None);
-		var nodesCount = emptyNodes.Count();
-		var randomIndex = Random.Range(0, nodesCount);
-		var randomNode = emptyNodes.ElementAt(randomIndex);
-
-		NodeMark(randomNode.Index);
+		NodeMark(_turnManager.TicTacToeController.GetRandomEmptyNode().index);
 	}
 
 	private void StopTurnCoroutine()
 	{
 		if(_turnCoroutine != null)
 		{
-			_turnManager.StopCoroutine(_turnCoroutine);
+			GameManager.Instance.StopCoroutine(_turnCoroutine);
 		}
 		_turnCoroutine = null;
 	}

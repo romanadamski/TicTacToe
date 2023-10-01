@@ -5,6 +5,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 public class MainMenu : BaseMenu
 {
@@ -20,8 +21,6 @@ public class MainMenu : BaseMenu
     private List<GameModeButton> playerTwoButtons;
     [SerializeField]
 	private AssetBundlePathSO assetBundlePathSO;
-
-	private UIManager _uiManager => UIManager.Instance;
 
 	private void Start()
 	{
@@ -79,17 +78,17 @@ public class MainMenu : BaseMenu
 		if (!string.IsNullOrWhiteSpace(paths.XSpritePath))
 		{
 			var xSprite = assetBundle.LoadAsset<Sprite>(paths.XSpritePath);
-			_uiManager.PlayerOne = xSprite;
+			UIManager.Instance.PlayerOne = xSprite;
 		}
 		if (!string.IsNullOrWhiteSpace(paths.OSpritePath))
 		{
 			var oSprite = assetBundle.LoadAsset<Sprite>(paths.OSpritePath);
-			_uiManager.PlayerTwo = oSprite;
+			UIManager.Instance.PlayerTwo = oSprite;
 		}
 		if (!string.IsNullOrWhiteSpace(paths.BGSpritePath))
 		{
 			var bgSprite = assetBundle.LoadAsset<Sprite>(paths.BGSpritePath);
-			_uiManager.SetBackgroundSprite(bgSprite);
+			UIManager.Instance.SetBackgroundSprite(bgSprite);
 		}
 
 		assetBundle.Unload(false);

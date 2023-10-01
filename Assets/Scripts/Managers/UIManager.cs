@@ -2,16 +2,21 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 public class UIManager : BaseManager<UIManager>
 {
-    [SerializeField]
+	[Inject]
+	DiContainer _diContainer;
+
+	[SerializeField]
     private List<BaseMenu> menuPrefabs;
     [SerializeField]
     private Image backgroundPrefab;
 
 	public Sprite PlayerOne;
 	public Sprite PlayerTwo;
+	public Sprite Line;
 
 	private List<BaseMenu> _menus = new List<BaseMenu>();
 	private Image backgroundImage;
@@ -27,14 +32,14 @@ public class UIManager : BaseManager<UIManager>
 
 	private void CreateBackground()
 	{
-		backgroundImage = Instantiate(backgroundPrefab, GameLauncher.Instance.Canvas.transform);
+		backgroundImage = _diContainer.InstantiatePrefab(backgroundPrefab, GameLauncher.Instance.Canvas.transform).GetComponent<Image>();
 	}
 
     private void CreateMenus()
     {
         foreach (var menu in menuPrefabs)
         {
-            _menus.Add(Instantiate(menu, GameLauncher.Instance.MenusParent));
+            _menus.Add(_diContainer.InstantiatePrefab(menu, GameLauncher.Instance.MenusParent).GetComponent<BaseMenu>());
         }
     }
 

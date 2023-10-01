@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 public class GameplayMenu : BaseMenu
 {
@@ -23,8 +24,9 @@ public class GameplayMenu : BaseMenu
 
     private Color _activePlayerColor = Color.white;
     private Color _inactivePlayerColor = new Color(0, 0, 0, 0.5f);
-	private UIManager _uiManager => UIManager.Instance;
-	private TurnManager _turnManager => TurnManager.Instance;
+
+	[Inject]
+	private TurnManager _turnManager;
 
 	private void Awake()
     {
@@ -39,8 +41,8 @@ public class GameplayMenu : BaseMenu
 	{
 		base.Show();
 
-		playerOneActiveImage.sprite = _uiManager.PlayerOne;
-		playerTwoActiveImage.sprite = _uiManager.PlayerTwo;
+		playerOneActiveImage.sprite = UIManager.Instance.PlayerOne;
+		playerTwoActiveImage.sprite = UIManager.Instance.PlayerTwo;
 
 		undoButon.gameObject.SetActive(_turnManager.AnyComputerPlay);
 		hintButton.gameObject.SetActive(_turnManager.AnyComputerPlay);
@@ -63,10 +65,12 @@ public class GameplayMenu : BaseMenu
 
     private void OnHintButtonClick()
     {
+		var node = _turnManager.GetNodeToHint();
+		EventsManager.Instance.OnHint(node.index);
+		
+	}
 
-    }
-
-    private void SubscribeToEvents()
+	private void SubscribeToEvents()
     {
         EventsManager.Instance.PlayerChanged += PlayerChanged;
     }

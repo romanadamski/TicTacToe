@@ -11,8 +11,6 @@ public class ObjectPoolingManager : BaseManager<ObjectPoolingManager>
     {
         foreach (var pool in pools)
         {
-            pool.Parent = GameLauncher.Instance.GamePlane;
-
             for (int i = 0; i < pool.StartPoolCount; i++)
             {
                 var newObject = Instantiate(pool.PoolObjectPrefab, pool.Parent);

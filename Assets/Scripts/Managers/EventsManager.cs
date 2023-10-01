@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 public class EventsManager : BaseManager<EventsManager>
 {
@@ -18,5 +19,17 @@ public class EventsManager : BaseManager<EventsManager>
     public void OnGameOver(NodeType nodeType)
     {
         GameOver?.Invoke(nodeType);
+    }
+
+    public event Action<Vector2Int, NodeType> NodeMark;
+    public void OnNodeMark(Vector2Int index, NodeType nodeType)
+    {
+		NodeMark?.Invoke(index, nodeType);
+    }
+
+    public event Action<Vector2Int> Hint;
+    public void OnHint(Vector2Int index)
+    {
+		Hint?.Invoke(index);
     }
 }
