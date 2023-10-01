@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class MainMenu : BaseMenu
@@ -21,8 +20,8 @@ public class MainMenu : BaseMenu
     private List<GameModeButton> playerTwoButtons;
     [SerializeField]
 	private AssetBundlePathSO assetBundlePathSO;
-    [SerializeField]
-	private GameSettingsSO settings;
+
+	private UIManager _uiManager => UIManager.Instance;
 
 	private void Start()
 	{
@@ -31,8 +30,6 @@ public class MainMenu : BaseMenu
 		playerOneButtons.ForEach(button => button.Button.onClick.AddListener(() => OnPlayerOneGameModeButtonClick(button, playerOneButtons)));
 		playerTwoButtons.ForEach(button => button.Button.onClick.AddListener(() => OnPlayerTwoGameModeButtonClick(button, playerTwoButtons)));
 		SetStartButtonInteractable();
-
-		Reskin("main");
 	}
 
 	public override void Show()
@@ -82,17 +79,17 @@ public class MainMenu : BaseMenu
 		if (!string.IsNullOrWhiteSpace(paths.XSpritePath))
 		{
 			var xSprite = assetBundle.LoadAsset<Sprite>(paths.XSpritePath);
-			settings.PlayerOne = xSprite;
+			_uiManager.PlayerOne = xSprite;
 		}
 		if (!string.IsNullOrWhiteSpace(paths.OSpritePath))
 		{
 			var oSprite = assetBundle.LoadAsset<Sprite>(paths.OSpritePath);
-			settings.PlayerTwo = oSprite;
+			_uiManager.PlayerTwo = oSprite;
 		}
 		if (!string.IsNullOrWhiteSpace(paths.BGSpritePath))
 		{
 			var bgSprite = assetBundle.LoadAsset<Sprite>(paths.BGSpritePath);
-			settings.background = bgSprite;
+			_uiManager.SetBackgroundSprite(bgSprite);
 		}
 
 		assetBundle.Unload(false);

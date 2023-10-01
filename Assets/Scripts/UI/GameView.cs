@@ -7,8 +7,6 @@ public class GameView : BaseManager<GameView>
 	private GridLayoutGroup tilesParent;
 	[SerializeField]
 	private RectTransform rectTransform;
-	[SerializeField]
-	private GameSettingsSO settings;
 
 	//todo inject
 	private TurnManager _turnManager => TurnManager.Instance;
@@ -17,8 +15,8 @@ public class GameView : BaseManager<GameView>
 
 	public void SpawnTiles()
 	{
-		var horizontalTilesCount = settings.HorizontalTilesCount;
-		var verticalTilesCount = settings.VerticalTilesCount;
+		var horizontalTilesCount = _turnManager.HorizontalTilesCount;
+		var verticalTilesCount = _turnManager.VerticalTilesCount;
 
 		TileControllers = new TileController[horizontalTilesCount, verticalTilesCount];
 		tilesParent.constraintCount = (int)horizontalTilesCount;
@@ -55,7 +53,7 @@ public class GameView : BaseManager<GameView>
 	{
 		foreach(var item in TileControllers)
 		{
-			if (item.PlayerType != NodeType.None) continue;
+			if (item.NodeType != NodeType.None) continue;
 
 			item.Button.interactable = toggle;
 		}

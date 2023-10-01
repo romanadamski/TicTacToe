@@ -10,7 +10,9 @@ public class AssetBundleCreator : EditorWindow
     private static Sprite _backgroundSprite;
     private static string _assetBundleName;
     private static AssetBundlePathSO _assetBundlePathSO;
-    private const string _assetBundlePath = "Assets/assetBundlePath.asset";
+    private static Vector2 _scrollPos;
+    private const string ASSET_BUNDLE_PATH = "Assets/assetBundlePath.asset";
+	private const float IMAGE_SIZE = 150.0f;
 
 	[MenuItem("Assets/Asset bundle creator _F3", false, 50)]
 	private static void ShowWindow()
@@ -21,21 +23,21 @@ public class AssetBundleCreator : EditorWindow
 		var window = HasOpenInstances<AssetBundleCreator>()
 			? GetWindow<AssetBundleCreator>("Asset bundle creator")
 			: CreateWindow<AssetBundleCreator>("Asset bundle creator");
-		window.Show();
+		window.minSize = new Vector2(210, 200);
 	}
 
 	private static void LoadAssetBundlePathSO()
 	{
-		if (!File.Exists(_assetBundlePath))
+		if (!File.Exists(ASSET_BUNDLE_PATH))
 		{
 			_assetBundlePathSO = CreateInstance<AssetBundlePathSO>();
-			var uniquePath = AssetDatabase.GenerateUniqueAssetPath(_assetBundlePath);
+			var uniquePath = AssetDatabase.GenerateUniqueAssetPath(ASSET_BUNDLE_PATH);
 			AssetDatabase.CreateAsset(_assetBundlePathSO, uniquePath);
 			AssetDatabase.SaveAssets();
 		}
 		else
 		{
-			_assetBundlePathSO = AssetDatabase.LoadAssetAtPath<AssetBundlePathSO>(_assetBundlePath);
+			_assetBundlePathSO = AssetDatabase.LoadAssetAtPath<AssetBundlePathSO>(ASSET_BUNDLE_PATH);
 		}
 	}
 
@@ -47,22 +49,36 @@ public class AssetBundleCreator : EditorWindow
 		_assetBundleName = string.Empty;
 	}
 
-	private static void BuildAssetBundles()
+	private static bool ValidBuild(out string message)
 	{
-		if(string.IsNullOrWhiteSpace(_assetBundleName))
+		message = string.Empty;
+		var result = true;
+
+		if (string.IsNullOrWhiteSpace(_assetBundleName))
 		{
-			Debug.LogError("Asset bundle file name is empty!");
-			return;
+			message = "Asset bundle file name is empty!";
+			result = false;
 		}
-		if(_assetBundleName.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)
+		if (_assetBundleName.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)
 		{
-			Debug.LogError("Asset bundle file name contains invalid characters!");
-			return;
+			message = "Asset bundle file name contains invalid characters!";
+			result = false;
 		}
 		var filePath = Path.Combine(Application.streamingAssetsPath, _assetBundleName);
 		if (File.Exists(filePath))
 		{
-			Debug.LogError($"File in path {filePath} already exist!");
+			message = $"File in path {filePath} already exist!";
+			result = false;
+		}
+
+		return result;
+	}
+
+	private static void BuildAssetBundles()
+	{
+		if(!ValidBuild(out var message))
+		{
+			Debug.LogError(message);
 			return;
 		}
 
@@ -99,7 +115,7 @@ public class AssetBundleCreator : EditorWindow
 				_assetBundlePathSO.AssetBundlePaths.Add(assetBundlePath);
 				EditorUtility.SetDirty(_assetBundlePathSO);
 				AssetDatabase.SaveAssets();
-				Debug.Log($"Created asset bundle in: {filePath} succesfully!");
+				Debug.Log($"Created asset bundle: {_assetBundleName.Bold()} succesfully!");
 
 				Refresh();
 			}
@@ -118,43 +134,22 @@ public class AssetBundleCreator : EditorWindow
 			BuildAssetBundles();
 		}
 
-		var cellRect = new Rect(10, EditorGUIUtility.singleLineHeight * 3, 200, EditorGUIUtility.singleLineHeight);
-		GUI.Label(cellRect, "X Sprite:");
-		cellRect.x += 60;
+		EditorGUILayout.BeginVertical();
+		_scrollPos = EditorGUILayout.BeginScrollView(_scrollPos);
 
-		GUI.Label(cellRect, _exSprite?.name);
-		cellRect.x = 10;
-		cellRect.y += EditorGUIUtility.singleLineHeight;
-		cellRect.height = 200;
+		EditorGUILayout.LabelField("X Sprite:");
+		EditorGUILayout.LabelField(_exSprite?.name);
+		_exSprite = (Sprite)EditorGUILayout.ObjectField(_exSprite, typeof(Sprite), false, GUILayout.Width(IMAGE_SIZE), GUILayout.Height(IMAGE_SIZE));
 
-		_exSprite = (Sprite)EditorGUI.ObjectField(cellRect, _exSprite, typeof(Sprite), false);
-		cellRect.y += EditorGUIUtility.singleLineHeight;
+		EditorGUILayout.LabelField("O Sprite:");
+		EditorGUILayout.LabelField(_oSprite?.name);
+		_oSprite = (Sprite)EditorGUILayout.ObjectField(_oSprite, typeof(Sprite), false, GUILayout.Width(IMAGE_SIZE), GUILayout.Height(IMAGE_SIZE));
 
-		cellRect.y += cellRect.height;
-		cellRect.height = EditorGUIUtility.singleLineHeight;
+		EditorGUILayout.LabelField("BG Sprite:");
+		EditorGUILayout.LabelField(_backgroundSprite?.name);
+		_backgroundSprite = (Sprite)EditorGUILayout.ObjectField(_backgroundSprite, typeof(Sprite), false, GUILayout.Width(IMAGE_SIZE), GUILayout.Height(IMAGE_SIZE));
 
-		GUI.Label(cellRect, "O Sprite:");
-		cellRect.x += 60;
-
-		GUI.Label(cellRect, _oSprite?.name);
-		cellRect.x = 10;
-		cellRect.y += EditorGUIUtility.singleLineHeight;
-		cellRect.height = 200;
-
-		_oSprite = (Sprite)EditorGUI.ObjectField(cellRect, _oSprite, typeof(Sprite), false);
-		cellRect.y += EditorGUIUtility.singleLineHeight;
-
-		cellRect.y += cellRect.height;
-		cellRect.height = EditorGUIUtility.singleLineHeight;
-
-		GUI.Label(cellRect, "BG Sprite:");
-		cellRect.x += 60;
-
-		GUI.Label(cellRect, _backgroundSprite?.name);
-		cellRect.x = 10;
-		cellRect.y += EditorGUIUtility.singleLineHeight;
-		cellRect.height = 200;
-
-		_backgroundSprite = (Sprite)EditorGUI.ObjectField(cellRect, _backgroundSprite, typeof(Sprite), false);
+		EditorGUILayout.EndScrollView();
+		EditorGUILayout.EndVertical();
 	}
 }

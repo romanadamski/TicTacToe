@@ -58,7 +58,6 @@ public class GameplayManager : BaseManager<GameplayManager>
 
     public void SetGameOverState()
     {
-        ClearGameplay();
         _gameplayStateMachine.SetState(GameOverState);
     }
 

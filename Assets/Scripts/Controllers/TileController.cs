@@ -5,15 +5,13 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Button))]
 public class TileController : MonoBehaviour
 {
-	[SerializeField]
-	private GameSettingsSO settings;
-
 	private Image _image;
     private Sprite _defaultSprite;
+    private UIManager _uiManager => UIManager.Instance;
 
     public Button Button { get; private set; }
     public Vector2Int Index { get; private set; }
-    public NodeType PlayerType { get; private set; }
+    public NodeType NodeType { get; private set; }
 
     private void Awake()
     {
@@ -29,27 +27,30 @@ public class TileController : MonoBehaviour
         Button.onClick.AddListener(() => onButtonClick?.Invoke());
         Button.interactable = true;
         _image.sprite = _defaultSprite;
-        PlayerType = NodeType.None;
+        NodeType = NodeType.None;
     }
 
-    public void SetTileState(NodeType playerType)
+    public void SetTileState(NodeType nodeType)
     {
-		switch (playerType)
+		switch (nodeType)
 		{
 			case NodeType.X:
-				_image.sprite = settings.PlayerOne;
+				_image.sprite = _uiManager.PlayerOne;
 				break;
 			case NodeType.O:
-				_image.sprite = settings.PlayerTwo;
+				_image.sprite = _uiManager.PlayerTwo;
+				break;
+			case NodeType.None:
+				_image.sprite = _defaultSprite;
 				break;
 		}
 
-		PlayerType = playerType;
+		NodeType = nodeType;
         Button.interactable = false;
     }
 
 	public override string ToString()
 	{
-		return PlayerType + ", " + Index;
+		return NodeType + ", " + Index;
 	}
 }

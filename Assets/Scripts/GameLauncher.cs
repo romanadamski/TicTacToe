@@ -7,6 +7,10 @@ public class GameLauncher : BaseManager<GameLauncher>
     public Transform GamePlane => gamePlane;
 
     [SerializeField]
+    private Transform menusParent;
+    public Transform MenusParent => menusParent;
+
+    [SerializeField]
     private Canvas canvas;
     public Canvas Canvas => canvas;
 }

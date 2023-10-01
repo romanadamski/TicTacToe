@@ -23,10 +23,13 @@ public class TicTacToeController
 		_winningCount = winningCount;
 	}
 
-	public NodeType CheckWin(Vector2Int index, NodeType nodeType)
+	public void SetNode(Vector2Int index, NodeType nodeType)
 	{
 		_board[index.x, index.y] = nodeType;
+	}
 
+	public NodeType CheckWin(Vector2Int index, NodeType nodeType)
+	{
 		return CheckWinVertical(index.x, nodeType)
 		| CheckWinHorizontal(index.y, nodeType)
 		| CheckWinDiagonalTopLeftToBottomRight(index, nodeType)

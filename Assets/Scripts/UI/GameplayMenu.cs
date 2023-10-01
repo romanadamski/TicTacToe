@@ -17,15 +17,21 @@ public class GameplayMenu : BaseMenu
     [SerializeField]
     private Button restartButon;
     [SerializeField]
-    private GameSettingsSO settings;
+    private Button undoButon;
+    [SerializeField]
+    private Button hintButton;
 
     private Color _activePlayerColor = Color.white;
     private Color _inactivePlayerColor = new Color(0, 0, 0, 0.5f);
+	private UIManager _uiManager => UIManager.Instance;
+	private TurnManager _turnManager => TurnManager.Instance;
 
-    private void Awake()
+	private void Awake()
     {
         menuButton.onClick.AddListener(OnMenuButtonClick);
 		restartButon.onClick.AddListener(OnRestartButtonClick);
+		undoButon.onClick.AddListener(OnUndoButtonClick);
+		hintButton.onClick.AddListener(OnHintButtonClick);
         SubscribeToEvents();
     }
 
@@ -33,8 +39,11 @@ public class GameplayMenu : BaseMenu
 	{
 		base.Show();
 
-		playerOneActiveImage.sprite = settings.PlayerOne;
-		playerTwoActiveImage.sprite = settings.PlayerTwo;
+		playerOneActiveImage.sprite = _uiManager.PlayerOne;
+		playerTwoActiveImage.sprite = _uiManager.PlayerTwo;
+
+		undoButon.gameObject.SetActive(_turnManager.AnyComputerPlay);
+		hintButton.gameObject.SetActive(_turnManager.AnyComputerPlay);
 	}
 
 	private void OnMenuButtonClick()
@@ -45,6 +54,16 @@ public class GameplayMenu : BaseMenu
     private void OnRestartButtonClick()
     {
         GameplayManager.Instance.RestartGameplay();
+    }
+
+    private void OnUndoButtonClick()
+    {
+        _turnManager.UndoMove();
+	}
+
+    private void OnHintButtonClick()
+    {
+
     }
 
     private void SubscribeToEvents()

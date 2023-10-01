@@ -1,12 +1,18 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class TurnManager : BaseManager<TurnManager>
 {
-	public GameSettingsSO Settings;
-
 	private TicTacToeController _ticTacToeController;
-	//todo inject
+	private Stack<Tuple<IPlayer, Vector2Int>> _movesHistory = new Stack<Tuple<IPlayer, Vector2Int>>();
+
 	public GameView GameView => GameView.Instance;
+	public uint HorizontalTilesCount => 3;
+	public uint VerticalTilesCount => 3;
+	public uint WinningTilesCount => 3;
+
+	public GameSettingsSO Settings;
 
 	public IPlayer PlayerOne { get; set; }
 	public IPlayer PlayerTwo { get; set; }
@@ -23,21 +29,25 @@ public class TurnManager : BaseManager<TurnManager>
 		}
 	}
 
+	public bool AnyComputerPlay => !PlayerOne.AllowInput || !PlayerTwo.AllowInput;
+
 	public void StartGame()
     {
+		_movesHistory.Clear();
 		GameView.SpawnTiles();
 
-        var horizontalTilesCount = Settings.HorizontalTilesCount;
-		var verticalTilesCount = Settings.VerticalTilesCount;
-
-		_ticTacToeController = new TicTacToeController(horizontalTilesCount, verticalTilesCount, Settings.WinningTilesCount);
+		_ticTacToeController = new TicTacToeController(HorizontalTilesCount, VerticalTilesCount, WinningTilesCount);
 
 		CurrentPlayer = PlayerOne;
 	}
 
 	public void OnNodeMark(Vector2Int index, NodeType nodeType)
     {
+		_movesHistory.Push(new Tuple<IPlayer, Vector2Int>(CurrentPlayer, index));
+
 		GameView.OnNodeMark(index, nodeType);
+		_ticTacToeController.SetNode(index, CurrentPlayer.Type);
+
 		var winner = _ticTacToeController.CheckWin(index, CurrentPlayer.Type);
 		if (winner != NodeType.None || !_ticTacToeController.CheckEmptyNodes())
 		{
@@ -46,6 +56,24 @@ public class TurnManager : BaseManager<TurnManager>
 		}
 
 		SwitchPlayer();
+	}
+
+	public void HintMove()
+	{
+		
+	}
+
+	public void UndoMove()
+	{
+		if (_movesHistory.Count == 0) return;
+
+		var lastMove = _movesHistory.Pop();
+
+		_ticTacToeController.SetNode(lastMove.Item2, NodeType.None);
+		GameView.OnNodeMark(lastMove.Item2, NodeType.None);
+
+		CurrentPlayer.OnTurnEnd();
+		CurrentPlayer = lastMove.Item1;
 	}
 
 	private void SetWinner(NodeType winner)
@@ -68,8 +96,8 @@ public class TurnManager : BaseManager<TurnManager>
 
 	public void OnGameplayFinish()
 	{
-		PlayerOne.OnGameFinish();
-		PlayerTwo.OnGameFinish();
+		PlayerOne.OnTurnEnd();
+		PlayerTwo.OnTurnEnd();
 	}
 
 	private void SwitchPlayer()

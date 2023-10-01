@@ -1,25 +1,40 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIManager : BaseManager<UIManager>
 {
     [SerializeField]
     private List<BaseMenu> menuPrefabs;
+    [SerializeField]
+    private Image backgroundPrefab;
 
-    private List<BaseMenu> _menus = new List<BaseMenu>();
+	public Sprite PlayerOne;
+	public Sprite PlayerTwo;
 
-    private void Awake()
+	private List<BaseMenu> _menus = new List<BaseMenu>();
+	private Image backgroundImage;
+
+	private void Awake()
     {
         CreateMenus();
         HideAllMenus();
-    }
+        CreateBackground();
+
+		backgroundImage.transform.SetAsFirstSibling();
+	}
+
+	private void CreateBackground()
+	{
+		backgroundImage = Instantiate(backgroundPrefab, GameLauncher.Instance.Canvas.transform);
+	}
 
     private void CreateMenus()
     {
         foreach (var menu in menuPrefabs)
         {
-            _menus.Add(Instantiate(menu, GameLauncher.Instance.Canvas.transform));
+            _menus.Add(Instantiate(menu, GameLauncher.Instance.MenusParent));
         }
     }
 
@@ -40,4 +55,9 @@ public class UIManager : BaseManager<UIManager>
         }
         return false;
     }
+
+	public void SetBackgroundSprite(Sprite backgroundSprite)
+	{
+		backgroundImage.sprite = backgroundSprite;
+	}
 }
