@@ -168,13 +168,15 @@ namespace Tests
 			TurnManager turnManager = new TurnManager();
 
 			// Act
-			turnManager.PlayerOne = new PlayerInput(NodeType.X, turnManager);
-			turnManager.PlayerTwo = new PlayerInput(NodeType.O, turnManager);
+			var playerOne = new PlayerInput(NodeType.X, turnManager);
+			var playerTwo = new PlayerInput(NodeType.O, turnManager);
+			turnManager.PlayerOne = playerOne;
+			turnManager.PlayerTwo = playerTwo;
 			turnManager.StartGame();
-			turnManager.OnNodeMark(new Vector2Int(2, 2), NodeType.X);
-			turnManager.OnNodeMark(new Vector2Int(2, 1), NodeType.X);
-			turnManager.OnNodeMark(new Vector2Int(0, 2), NodeType.X);
-			turnManager.OnNodeMark(new Vector2Int(0, 1), NodeType.X);
+			turnManager.NodeMark(new Vector2Int(2, 2), playerOne);
+			turnManager.NodeMark(new Vector2Int(2, 1), playerTwo);
+			turnManager.NodeMark(new Vector2Int(0, 2), playerOne);
+			turnManager.NodeMark(new Vector2Int(0, 1), playerTwo);
 			turnManager.UndoMove();
 
 			// Assert

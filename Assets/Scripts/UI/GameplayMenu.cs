@@ -6,11 +6,7 @@ using Zenject;
 public class GameplayMenu : BaseMenu
 {
     [SerializeField]
-    private TextMeshProUGUI playerOneNameText;
-    [SerializeField]
     private Image playerOneActiveImage;
-    [SerializeField]
-    private TextMeshProUGUI playerTwoNameText;
     [SerializeField]
     private Image playerTwoActiveImage;
     [SerializeField]
@@ -21,13 +17,15 @@ public class GameplayMenu : BaseMenu
     private Button undoButon;
     [SerializeField]
     private Button hintButton;
+    [SerializeField]
+    private TextMeshProUGUI timer;
 
     private Color _activePlayerColor = Color.white;
     private Color _inactivePlayerColor = new Color(0, 0, 0, 0.5f);
 
 	[Inject]
 	private TurnManager _turnManager;
-
+    
 	private void Awake()
     {
         menuButton.onClick.AddListener(OnMenuButtonClick);
@@ -67,12 +65,18 @@ public class GameplayMenu : BaseMenu
     {
 		var node = _turnManager.GetNodeToHint();
 		EventsManager.Instance.OnHint(node.index);
-		
-	}
 
-	private void SubscribeToEvents()
+    }
+    private void OnTimerChanged(float time)
+    {
+        timer.text = Mathf.Ceil(time).ToString("##");
+    }
+
+
+    private void SubscribeToEvents()
     {
         EventsManager.Instance.PlayerChanged += PlayerChanged;
+        EventsManager.Instance.TimerChanged += OnTimerChanged;
     }
 
     private void PlayerChanged(IPlayer player)
@@ -87,5 +91,6 @@ public class GameplayMenu : BaseMenu
             playerOneActiveImage.color = _inactivePlayerColor;
             playerTwoActiveImage.color = _activePlayerColor;
         }
+        hintButton.interactable = player.AllowInput;
     }
 }

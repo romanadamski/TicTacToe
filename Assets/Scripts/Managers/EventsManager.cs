@@ -32,4 +32,10 @@ public class EventsManager : BaseManager<EventsManager>
     {
 		Hint?.Invoke(index);
     }
+
+    public event Action<float> TimerChanged;
+    public void OnTimerChanged(float time)
+    {
+        TimerChanged?.Invoke(time);
+    }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -21,12 +22,50 @@ public class TurnManager
 		set
 		{
 			_currentPlayer = value;
-			_currentPlayer.StartTurn();
+			StartTurn(_currentPlayer);
 			EventsManager.Instance.OnPlayerChanged(value);
 		}
 	}
 
 	public bool AnyComputerPlay => !PlayerOne.AllowInput || !PlayerTwo.AllowInput;
+	private Coroutine _turnEndCoroutine;
+	private float _turnElapsed;
+	public float TurnElapsed
+    {
+		get => _turnElapsed;
+        set
+        {
+			_turnElapsed = value;
+			EventsManager.Instance.OnTimerChanged(value);
+		}
+	}
+
+    private void StartTurn(IPlayer player)
+	{
+		StopTurnEndCoroutine();
+		_turnEndCoroutine = GameManager.Instance.StartCoroutine(TimerCoroutine(player));
+		player.OnStartTurn();
+	}
+
+	private void StopTurnEndCoroutine()
+	{
+		if (_turnEndCoroutine != null)
+		{
+			GameManager.Instance.StopCoroutine(_turnEndCoroutine);
+		}
+		TurnElapsed = GameManager.Instance.Settings.PlayerTurnTime;
+	}
+
+	private IEnumerator TimerCoroutine(IPlayer player)
+	{
+		TurnElapsed = GameManager.Instance.Settings.PlayerTurnTime;
+		while (TurnElapsed > 0)
+        {
+			TurnElapsed -= Time.deltaTime;
+			yield return null;
+        }
+		SetLoser(player.Type);
+	}
 
 	public void StartGame()
     {
@@ -37,9 +76,11 @@ public class TurnManager
 		CurrentPlayer = PlayerOne;
 	}
 
-	public void OnNodeMark(Vector2Int index, NodeType nodeType)
+	public void NodeMark(Vector2Int index, IPlayer player)
     {
-		_movesHistory.Push(new Tuple<IPlayer, Vector2Int>(CurrentPlayer, index));
+		StopTurnEndCoroutine();
+
+		_movesHistory.Push(new Tuple<IPlayer, Vector2Int>(player, index));
 
 		TicTacToeController.SetNode(index, CurrentPlayer.Type);
 
@@ -67,6 +108,7 @@ public class TurnManager
 
 		TicTacToeController.SetNode(lastMove.Item2, NodeType.None);
 
+		StopTurnEndCoroutine();
 		CurrentPlayer.OnTurnEnd();
 		CurrentPlayer = lastMove.Item1;
 	}
@@ -91,6 +133,7 @@ public class TurnManager
 
 	public void OnGameplayFinish()
 	{
+		StopTurnEndCoroutine();
 		PlayerOne.OnTurnEnd();
 		PlayerTwo.OnTurnEnd();
 	}

@@ -6,7 +6,7 @@ public class PlayerComputerRandom : IPlayer
 {
 	public PlayerComputerRandom(NodeType type, TurnManager turnManager) : base(type, turnManager)
 	{
-		_waitForTurn = new WaitForSeconds(1);
+		_waitForTurn = new WaitForSeconds(3);
 	}
 
 	private WaitForSeconds _waitForTurn;
@@ -14,9 +14,9 @@ public class PlayerComputerRandom : IPlayer
 
 	public override bool AllowInput => false;
 
-	public override void StartTurn()
+	public override void OnStartTurn()
 	{
-		base.StartTurn();
+		base.OnStartTurn();
 
 		StopTurnCoroutine();
 		_turnCoroutine = GameManager.Instance.StartCoroutine(WaitAndTakeTurn());
@@ -26,7 +26,7 @@ public class PlayerComputerRandom : IPlayer
 	{
 		yield return _waitForTurn;
 
-		NodeMark(_turnManager.TicTacToeController.GetRandomEmptyNode().index);
+		_turnManager.NodeMark(_turnManager.TicTacToeController.GetRandomEmptyNode().index, this);
 	}
 
 	private void StopTurnCoroutine()

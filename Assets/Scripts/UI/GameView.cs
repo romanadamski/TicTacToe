@@ -98,7 +98,7 @@ public class GameView : MonoBehaviour
 
 	private void OnTilesButtonClick(TileController tile)
 	{
-		_turnManager.CurrentPlayer.NodeMark(tile.Index);
+		_turnManager.NodeMark(tile.Index, _turnManager.CurrentPlayer);
 	}
 
 	private void OnNodeMark(Vector2Int index, NodeType nodeType)
