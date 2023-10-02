@@ -63,5 +63,17 @@ public class UIManager : BaseManager<UIManager>
 	public void SetBackgroundSprite(Sprite backgroundSprite)
 	{
 		backgroundImage.sprite = backgroundSprite;
-	}
+    }
+
+    public Sprite GetPlayerSpriteByNodeType(NodeType nodeType)
+    {
+        switch (nodeType)
+        {
+            case NodeType.X:
+                return PlayerOne;
+            case NodeType.O:
+                return PlayerTwo;
+        }
+        return null;
+    }
 }

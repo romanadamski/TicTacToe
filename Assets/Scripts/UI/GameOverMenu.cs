@@ -25,21 +25,23 @@ public class GameOverMenu : BaseMenu
         EventsManager.Instance.GameOver += OnGameOver;
     }
 
-    private void OnGameOver(NodeType type)
+    private void OnGameOver(IPlayer player)
     {
-        switch (type)
+        if(player == null)
         {
-            case NodeType.X:
-                winnerText.text = "Player 1 wins";
-				break;
-			case NodeType.O:
-                winnerText.text = "Player 2 wins";
-				break;
-            case NodeType.None:
-                winnerText.text = "Draw";
-                break;
-            default:
-                break;
+            winnerText.text = "Draw";
+        }
+        else
+        {
+            switch (player.PlayerNumber)
+            {
+                case PlayerNumber.PlayerOne:
+                    winnerText.text = "Player 1 wins";
+                    break;
+                case PlayerNumber.PlayerTwo:
+                    winnerText.text = "Player 2 wins";
+                    break;
+            }
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿
 public class PlayerInput : IPlayer
 {
-	public PlayerInput(NodeType type, TurnManager turnManager) : base(type, turnManager)
+	public PlayerInput(TurnManager turnManager) : base(turnManager)
 	{
 	}
 

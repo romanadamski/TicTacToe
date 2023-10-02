@@ -15,10 +15,10 @@ public class EventsManager : BaseManager<EventsManager>
         PlayerChanged?.Invoke(player);
     }
 
-    public event Action<NodeType> GameOver;
-    public void OnGameOver(NodeType nodeType)
+    public event Action<IPlayer> GameOver;
+    public void OnGameOver(IPlayer player)
     {
-        GameOver?.Invoke(nodeType);
+        GameOver?.Invoke(player);
     }
 
     public event Action<Vector2Int, NodeType> NodeMark;

@@ -36,7 +36,7 @@ public class GameView : MonoBehaviour
 		}
 
 		_currentHighlightTile = TileControllers[index.x, index.y];
-		_currentHighlightTile.Highlight(_turnManager.CurrentPlayer.Type);
+		_currentHighlightTile.Highlight(_turnManager.CurrentPlayer.NodeType);
 	}
 
 	public void SpawnBoard()
@@ -98,7 +98,7 @@ public class GameView : MonoBehaviour
 
 	private void OnTilesButtonClick(TileController tile)
 	{
-		_turnManager.NodeMark(tile.Index, _turnManager.CurrentPlayer);
+		_turnManager.NodeMark(tile.Index);
 	}
 
 	private void OnNodeMark(Vector2Int index, NodeType nodeType)

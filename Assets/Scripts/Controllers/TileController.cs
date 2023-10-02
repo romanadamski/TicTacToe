@@ -63,20 +63,8 @@ public class TileController : MonoBehaviour
 	public void Highlight(NodeType nodeType)
 	{
 		EndHighlightCoroutine();
-		hintImage.sprite = GetCurrentPlayerSprite(nodeType);
+		hintImage.sprite = UIManager.Instance.GetPlayerSpriteByNodeType(nodeType);
 		_hintCoroutine = StartCoroutine(DoHighlight());
-	}
-
-	private Sprite GetCurrentPlayerSprite(NodeType nodeType)
-	{
-		switch (nodeType)
-		{
-			case NodeType.X:
-				return UIManager.Instance.PlayerOne;
-			case NodeType.O:
-				return UIManager.Instance.PlayerTwo;
-		}
-		return null;
 	}
 	
 	private IEnumerator DoHighlight()

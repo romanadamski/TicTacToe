@@ -168,15 +168,17 @@ namespace Tests
 			TurnManager turnManager = new TurnManager();
 
 			// Act
-			var playerOne = new PlayerInput(NodeType.X, turnManager);
-			var playerTwo = new PlayerInput(NodeType.O, turnManager);
+			var playerOne = new PlayerInput(turnManager);
+			var playerTwo = new PlayerInput(turnManager);
+			playerOne.SetNodeType(NodeType.X);
+			playerTwo.SetNodeType(NodeType.O);
 			turnManager.PlayerOne = playerOne;
 			turnManager.PlayerTwo = playerTwo;
 			turnManager.StartGame();
-			turnManager.NodeMark(new Vector2Int(2, 2), playerOne);
-			turnManager.NodeMark(new Vector2Int(2, 1), playerTwo);
-			turnManager.NodeMark(new Vector2Int(0, 2), playerOne);
-			turnManager.NodeMark(new Vector2Int(0, 1), playerTwo);
+			turnManager.NodeMark(new Vector2Int(2, 2));
+			turnManager.NodeMark(new Vector2Int(2, 1));
+			turnManager.NodeMark(new Vector2Int(0, 2));
+			turnManager.NodeMark(new Vector2Int(0, 1));
 			turnManager.UndoMove();
 
 			// Assert
@@ -191,8 +193,12 @@ namespace Tests
 			TurnManager turnManager = new TurnManager();
 
 			// Act
-			turnManager.PlayerOne = new PlayerInput(NodeType.X, turnManager);
-			turnManager.PlayerTwo = new PlayerInput(NodeType.O, turnManager);
+			var playerOne = new PlayerInput(turnManager);
+			var playerTwo = new PlayerInput(turnManager);
+			playerOne.SetNodeType(NodeType.X);
+			playerTwo.SetNodeType(NodeType.O);
+			turnManager.PlayerOne = playerOne;
+			turnManager.PlayerTwo = playerTwo;
 			turnManager.StartGame();
 			var hintNode = turnManager.GetNodeToHint();
 

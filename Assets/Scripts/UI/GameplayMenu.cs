@@ -6,7 +6,11 @@ using Zenject;
 public class GameplayMenu : BaseMenu
 {
     [SerializeField]
+    private TextMeshProUGUI playerOneText;
+    [SerializeField]
     private Image playerOneActiveImage;
+    [SerializeField]
+    private TextMeshProUGUI playerTwoText;
     [SerializeField]
     private Image playerTwoActiveImage;
     [SerializeField]
@@ -36,17 +40,25 @@ public class GameplayMenu : BaseMenu
     }
 
 	public override void Show()
-	{
-		base.Show();
+    {
+        base.Show();
+        
+        RefreshPlayerSprites();
 
-		playerOneActiveImage.sprite = UIManager.Instance.PlayerOne;
-		playerTwoActiveImage.sprite = UIManager.Instance.PlayerTwo;
+        playerOneText.text = _turnManager.PlayerOne.Name;
+        playerTwoText.text = _turnManager.PlayerTwo.Name;
 
-		undoButon.gameObject.SetActive(_turnManager.AnyComputerPlay);
-		hintButton.gameObject.SetActive(_turnManager.AnyComputerPlay);
-	}
+        undoButon.gameObject.SetActive(_turnManager.AnyComputerPlay);
+        hintButton.gameObject.SetActive(_turnManager.AnyComputerPlay);
+    }
 
-	private void OnMenuButtonClick()
+    private void RefreshPlayerSprites()
+    {
+        playerOneActiveImage.sprite = UIManager.Instance.GetPlayerSpriteByNodeType(_turnManager.PlayerOne.NodeType);
+        playerTwoActiveImage.sprite = UIManager.Instance.GetPlayerSpriteByNodeType(_turnManager.PlayerTwo.NodeType);
+    }
+
+    private void OnMenuButtonClick()
     {
         GameplayManager.Instance.SetEndGameplayState();
     }
@@ -54,6 +66,7 @@ public class GameplayMenu : BaseMenu
     private void OnRestartButtonClick()
     {
         GameplayManager.Instance.RestartGameplay();
+        RefreshPlayerSprites();
     }
 
     private void OnUndoButtonClick()
@@ -72,7 +85,6 @@ public class GameplayMenu : BaseMenu
         timer.text = Mathf.Ceil(time).ToString("##");
     }
 
-
     private void SubscribeToEvents()
     {
         EventsManager.Instance.PlayerChanged += PlayerChanged;
@@ -81,16 +93,18 @@ public class GameplayMenu : BaseMenu
 
     private void PlayerChanged(IPlayer player)
     {
-        if (player.Type == NodeType.X)
+        switch (player.PlayerNumber)
         {
-            playerOneActiveImage.color = _activePlayerColor;
-            playerTwoActiveImage.color = _inactivePlayerColor;
+            case PlayerNumber.PlayerOne:
+                playerOneActiveImage.color = _activePlayerColor;
+                playerTwoActiveImage.color = _inactivePlayerColor;
+                break;
+            case PlayerNumber.PlayerTwo:
+                playerOneActiveImage.color = _inactivePlayerColor;
+                playerTwoActiveImage.color = _activePlayerColor;
+                break;
         }
-        else if (player.Type == NodeType.O)
-        {
-            playerOneActiveImage.color = _inactivePlayerColor;
-            playerTwoActiveImage.color = _activePlayerColor;
-        }
+
         hintButton.interactable = player.AllowInput;
     }
 }

@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: GameSettings
   m_EditorClassIdentifier: 
   playerTurnTime: 10
-  horizontalNodes: 5
-  verticalNodes: 6
+  horizontalNodes: 3
+  verticalNodes: 3
   winNodes: 3
