@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Zenject;
 
 public class TurnController
 {
@@ -21,10 +20,12 @@ public class TurnController
 	public BoardController TicTacToeController { get; private set; }
 	public Node RandomEmptyNode => TicTacToeController.GetRandomEmptyNode();
 	public bool AnyComputerPlay => !PlayerOne.AllowInput || !PlayerTwo.AllowInput;
-	public uint HorizontalTilesCount => GameManager.Instance.SettingsSO.HorizontalNodes;
-	public uint VerticalTilesCount => GameManager.Instance.SettingsSO.VerticalNodes;
-	public uint WinningTilesCount => GameManager.Instance.SettingsSO.WinningNodes;
-	public float PlayerTurnTimeLimit => GameManager.Instance.SettingsSO.PlayerTurnTimeLimit;
+
+	private uint HorizontalTilesCount => GameManager.Instance.SettingsSO.HorizontalNodes;
+	private uint VerticalTilesCount => GameManager.Instance.SettingsSO.VerticalNodes;
+	private uint WinningTilesCount => GameManager.Instance.SettingsSO.WinningNodes;
+	private float PlayerTurnTimeLimit => GameManager.Instance.SettingsSO.PlayerTurnTimeLimit;
+
 	private float _turnElapsed;
 	public float TurnElapsed
 	{
@@ -50,9 +51,9 @@ public class TurnController
 			OnPlayerChanged?.Invoke(value);
 		}
 	}
+	private IPlayer XPlayer => PlayerOne.NodeType == NodeType.X ? PlayerOne : PlayerTwo;
 
 	private Stack<Tuple<IPlayer, Vector2Int>> _movesHistory = new Stack<Tuple<IPlayer, Vector2Int>>();
-	private IPlayer XPlayer => PlayerOne.NodeType == NodeType.X ? PlayerOne : PlayerTwo;
 	private Coroutine _turnEndCoroutine;
 
 	private void StartTurn(IPlayer player)

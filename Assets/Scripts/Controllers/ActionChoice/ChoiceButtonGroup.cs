@@ -17,10 +17,6 @@ public class ChoiceButtonGroup : MonoBehaviour
         SetBaseOnClickAction();
     }
 
-    private void Start()
-    {
-    }
-
     private void SetBaseOnClickAction()
     {
         AddListener(DeselectAll);
@@ -29,7 +25,7 @@ public class ChoiceButtonGroup : MonoBehaviour
 
     public void ExecuteSelected()
     {
-        _selectedButton?.ActionChoice.Excecute();
+        _selectedButton.ActionChoice.Excecute();
     }
 
     public void DeselectAll() =>
