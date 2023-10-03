@@ -26,7 +26,7 @@ public class PlayerComputerRandom : IPlayer
 	{
 		yield return _waitForTurn;
 
-		var index = _turnController.TicTacToeController.GetRandomEmptyNode().index;
+		var index = _turnController.RandomEmptyNode.index;
 		_turnController.NodeMark(index);
 	}
 

@@ -25,17 +25,22 @@ public class GameView : MonoBehaviour
 	public TileController[,] TileControllers { get; private set; }
 
 	private void Awake()
-	{
-		_objectPoolingController = GetComponent<ObjectPoolingController>();
+    {
+        _objectPoolingController = GetComponent<ObjectPoolingController>();
 
-		_turnController.OnSetNode += OnNodeMark;
-		_turnController.OnPlayerChanged += ToggleInput;
-		_turnController.OnGameplayStarted += SpawnBoard;
-		_turnController.OnGameplayFinished += ClearBoard;
-		_turnController.OnHint += OnHint;
-	}
+        SubscribeToEvents();
+    }
 
-	private void OnHint(Vector2Int index, NodeType nodeType)
+    private void SubscribeToEvents()
+    {
+        _turnController.OnSetNode += OnNodeMark;
+        _turnController.OnPlayerChanged += ToggleInput;
+        _turnController.OnGameplayStarted += SpawnBoard;
+        _turnController.OnGameplayFinished += ClearBoard;
+        _turnController.OnHint += OnHint;
+    }
+
+    private void OnHint(Vector2Int index, NodeType nodeType)
 	{
 		if(_currentHighlightTile != null)
 		{

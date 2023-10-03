@@ -3,30 +3,34 @@ using UnityEngine.UI;
 
 
 [RequireComponent(typeof(Button))]
-public class GameModeButton : MonoBehaviour
+public class GameModeChoiceButton : MonoBehaviour
 {
 	[SerializeField]
+	private ActionChoice actionChoice;
+	public ActionChoice ActionChoice => actionChoice;
+
+	[SerializeField]
 	private Color selectedButtonColor;
+
 	private Color _normalButtonColor;
 
-	public Button Button { get; private set; }
-	public bool Active { get; private set; }
+	public Button Button;
+	public bool Selected { get; private set; }
 
 	private void Awake()
 	{
-		Button = GetComponent<Button>();
 		_normalButtonColor = Button.image.color;
 	}
 
-	public void SelectButton()
+	public void Select()
 	{
 		Button.image.color = selectedButtonColor;
-		Active = true;
+		Selected = true;
 	}
 
-	public void DeselectButton()
+	public void Deselect()
 	{
 		Button.image.color = _normalButtonColor;
-		Active = false;
+		Selected = false;
 	}
 }

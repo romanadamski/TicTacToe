@@ -1,11 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Zenject;
 
 public class MainMenu : BaseMenu
 {
@@ -17,40 +15,29 @@ public class MainMenu : BaseMenu
     private Button reskinButton;
     [SerializeField]
     private TMP_InputField reskinInputField;
-    [SerializeField]
-    private GameModeButton PvP;
-    [SerializeField]
-    private GameModeButton PvC;
-    [SerializeField]
-	private GameModeButton CvC;
 	[SerializeField]
 	private AssetBundlePathSO assetBundlePathSO;
-
-	private GameModeButton[] _gameModeButtons;
-
-	private void Awake()
-    {
-		_gameModeButtons = GetComponentsInChildren<GameModeButton>();
-	}
+	[SerializeField]
+	private ChoiceButtonGroup playerOneGameModeButtons;
+	[SerializeField]
+	private ChoiceButtonGroup playerTwoGameModeButtons;
 
 	private void Start()
 	{
-		foreach(var button in _gameModeButtons)
-        {
-			button.Button.onClick.AddListener(() => OnGameModeButtonClick(button));
-		}
+		playerOneGameModeButtons.AddListener(SetStartButtonInteractable);
+		playerTwoGameModeButtons.AddListener(SetStartButtonInteractable);
+
 		SetStartButtonInteractable();
 
 		startGameButton.onClick.AddListener(OnStartGameButtonClick);
 		settingsButton.onClick.AddListener(OnSettingsButtonClick);
 		reskinButton.onClick.AddListener(() => Reskin(reskinInputField.text));
-		PvP.Button.onClick.AddListener(() => OnGameModeButtonClick());
-		PvC.Button.onClick.AddListener(() => OnGameModeButtonClick());
-		CvC.Button.onClick.AddListener(() => OnGameModeButtonClick());
 	}
 
 	private void OnStartGameButtonClick()
 	{
+		playerOneGameModeButtons.ExecuteSelected();
+		playerTwoGameModeButtons.ExecuteSelected();
 		GameManager.Instance.SetLevelState();
 	}
 
@@ -59,37 +46,20 @@ public class MainMenu : BaseMenu
 		GameManager.Instance.SetSettingsState();
 	}
 
-	private void OnGameModeButtonClick()
-    {
-	}
-
 	public override void Show()
 	{
 		base.Show();
 
-		DeselectButtons();
+		playerOneGameModeButtons.DeselectAll();
+		playerTwoGameModeButtons.DeselectAll();
 		reskinInputField.text = string.Empty;
-		SetStartButtonInteractable();
-	}
-
-	private void DeselectButtons()
-    {
-		foreach (var button in _gameModeButtons)
-		{
-			button.DeselectButton();
-		}
-	}
-
-	private void OnGameModeButtonClick(GameModeButton button)
-	{
-		DeselectButtons();
-		button.SelectButton();
 		SetStartButtonInteractable();
 	}
 
 	private void SetStartButtonInteractable()
 	{
-		startGameButton.interactable = _gameModeButtons.Any(button => button.Active);
+		startGameButton.interactable = playerOneGameModeButtons.AnyButtonSelected
+			&& playerTwoGameModeButtons.AnyButtonSelected;
 	}
 
     private void Reskin(string bundleName)

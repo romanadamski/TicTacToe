@@ -23,6 +23,10 @@ public class GameplayMenu : BaseMenu
     private Button hintButton;
     [SerializeField]
     private TextMeshProUGUI timer;
+    [SerializeField]
+    private TextMeshProUGUI tilesToWin;
+    [SerializeField]
+    private SettingsSO settingsSO;
 
     private Color _activePlayerColor = Color.white;
     private Color _inactivePlayerColor = new Color(0, 0, 0, 0.5f);
@@ -50,6 +54,8 @@ public class GameplayMenu : BaseMenu
 
         undoButon.gameObject.SetActive(_turnController.AnyComputerPlay);
         hintButton.gameObject.SetActive(_turnController.AnyComputerPlay);
+
+        tilesToWin.text = settingsSO.WinningNodes.ToString();
     }
 
     private void RefreshPlayerSprites()

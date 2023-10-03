@@ -19,6 +19,7 @@ public class TurnController
 	#endregion
 
 	public BoardController TicTacToeController { get; private set; }
+	public Node RandomEmptyNode => TicTacToeController.GetRandomEmptyNode();
 	public bool AnyComputerPlay => !PlayerOne.AllowInput || !PlayerTwo.AllowInput;
 	public uint HorizontalTilesCount => GameManager.Instance.SettingsSO.HorizontalNodes;
 	public uint VerticalTilesCount => GameManager.Instance.SettingsSO.VerticalNodes;
@@ -42,7 +43,7 @@ public class TurnController
 	public IPlayer CurrentPlayer
 	{
 		get => _currentPlayer;
-		set
+		private set
 		{
 			_currentPlayer = value;
 			StartTurn(_currentPlayer);
@@ -90,8 +91,6 @@ public class TurnController
     {
 		OnGameplayStarted?.Invoke();
 
-		//todo
-		AssignPlayersTypes(new PlayerInput(this), new PlayerInput(this));
 		AssignRandomNodesToPlayers();
 		AssignNumbersToPlayers();
 		SetPlayersNames();
@@ -100,12 +99,6 @@ public class TurnController
 		TicTacToeController = new BoardController(HorizontalTilesCount, VerticalTilesCount, WinningTilesCount);
 
 		CurrentPlayer = XPlayer;
-	}
-
-    public void AssignPlayersTypes(IPlayer playerOne, IPlayer playerTwo)
-    {
-		PlayerOne = playerOne;
-		PlayerTwo = playerTwo;
 	}
 
     private void AssignNumbersToPlayers()

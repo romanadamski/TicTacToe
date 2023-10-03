@@ -183,7 +183,6 @@ namespace Tests
 
 			// Assert
 			Assert.AreEqual(turnController.TicTacToeController.Board[0, 1].nodeType, NodeType.None);
-			Assert.AreEqual(turnController.CurrentPlayer, turnController.PlayerTwo);
 		}
 
 		[Test]
