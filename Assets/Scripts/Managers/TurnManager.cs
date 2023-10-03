@@ -57,12 +57,12 @@ public class TurnManager
 		{
 			GameManager.Instance.StopCoroutine(_turnEndCoroutine);
 		}
-		TurnElapsed = GameManager.Instance.Settings.PlayerTurnTime;
+		TurnElapsed = _saveManager.SaveData.playerTurnTimeLimit;
 	}
 
 	private IEnumerator TimerCoroutine(IPlayer player)
 	{
-		TurnElapsed = GameManager.Instance.Settings.PlayerTurnTime;
+		TurnElapsed = _saveManager.SaveData.playerTurnTimeLimit;
 		while (TurnElapsed > 0)
         {
 			TurnElapsed -= Time.deltaTime;

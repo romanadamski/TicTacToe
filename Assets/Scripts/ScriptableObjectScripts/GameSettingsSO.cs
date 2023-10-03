@@ -4,8 +4,12 @@ using UnityEngine;
 public class GameSettingsSO : ScriptableObject
 {
     [SerializeField]
-    private float playerTurnTime = 5.0f;
-    public float PlayerTurnTime => playerTurnTime;
+    private float minPlayerTurnTimeLimit = 1.0f;
+    public float MinPlayerTurnTimeLimit => minPlayerTurnTimeLimit;
+
+    [SerializeField]
+    private float maxPlayerTurnTimeLimit = 99.0f;
+    public float MaxPlayerTurnTimeLimit => maxPlayerTurnTimeLimit;
 
 	[SerializeField]
 	private uint minHorizontalNodes = 3;

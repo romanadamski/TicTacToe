@@ -19,6 +19,10 @@ public class SettingsMenu : BaseMenu
     private TextMeshProUGUI horizontalNodesValue;
     [SerializeField]
     private TextMeshProUGUI winningNodesValue;
+    [SerializeField]
+    private TMP_InputField playerTurnTimeLimitInput;
+    [SerializeField]
+    private Button saveButton;
 
     [Inject]
     private SaveManager _saveManager;
@@ -26,13 +30,29 @@ public class SettingsMenu : BaseMenu
     private void Start()
     {
         menuButton.onClick.AddListener(OnMenuButtonClick);
+        saveButton.onClick.AddListener(OnSaveButtonClick);
 
         SetSizeSlidersLimits();
         verticalNodesSlider.onValueChanged.AddListener(OnVerticalNodesSliderValueChanged);
         horizontalNodesSlider.onValueChanged.AddListener(OnHorizontalNodesSliderValueChanged);
         winningNodesSlider.onValueChanged.AddListener(OnWinningNodesSliderValueChanged);
+        playerTurnTimeLimitInput.onDeselect.AddListener(OnPlayerTimeLimitInputDeselect);
+        playerTurnTimeLimitInput.onValueChanged.AddListener(OnPlayerTimeLimitInputValueChanged);
+    }
+
+    public override void Show()
+    {
+        base.Show();
 
         LoadSave();
+    }
+
+    private void OnSaveButtonClick()
+    {
+        _saveManager.SaveData.verticalNodes = verticalNodesSlider.value;
+        _saveManager.SaveData.horizontalNodes = winningNodesSlider.value;
+        _saveManager.SaveData.winningNodes = winningNodesSlider.value;
+        _saveManager.SaveData.playerTurnTimeLimit = float.Parse(playerTurnTimeLimitInput.text);
     }
 
     private void LoadSave()
@@ -40,6 +60,7 @@ public class SettingsMenu : BaseMenu
         verticalNodesSlider.value = _saveManager.SaveData.verticalNodes;
         horizontalNodesSlider.value = _saveManager.SaveData.horizontalNodes;
         winningNodesSlider.value = _saveManager.SaveData.winningNodes;
+        playerTurnTimeLimitInput.text = _saveManager.SaveData.playerTurnTimeLimit.ToString();
 
         RefreshValues();
     }
@@ -53,14 +74,12 @@ public class SettingsMenu : BaseMenu
 
     private void OnVerticalNodesSliderValueChanged(float value)
     {
-        _saveManager.SaveData.verticalNodes = value;
         verticalNodesValue.text = value.ToString();
         SetWinningNodesSliderLimit();
     }
 
     private void OnHorizontalNodesSliderValueChanged(float value)
     {
-        _saveManager.SaveData.horizontalNodes = value;
         horizontalNodesValue.text = value.ToString();
         SetWinningNodesSliderLimit();
     }
@@ -68,7 +87,23 @@ public class SettingsMenu : BaseMenu
     private void OnWinningNodesSliderValueChanged(float value)
     {
         winningNodesValue.text = value.ToString();
-        _saveManager.SaveData.winningNodes = value;
+    }
+
+    private void OnPlayerTimeLimitInputDeselect(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+        {
+            playerTurnTimeLimitInput.text = GameManager.Instance.Settings.MinPlayerTurnTimeLimit.ToString();
+        }
+    }
+    
+    private void OnPlayerTimeLimitInputValueChanged(string text)
+    {
+        if (!float.TryParse(text, out var limit)) return;
+
+        playerTurnTimeLimitInput.text = Mathf.Clamp(limit,
+            GameManager.Instance.Settings.MinPlayerTurnTimeLimit,
+            GameManager.Instance.Settings.MaxPlayerTurnTimeLimit).ToString();
     }
 
     private void SetWinningNodesSliderLimit()

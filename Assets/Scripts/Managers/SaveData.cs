@@ -4,14 +4,8 @@ using System.Collections.Generic;
 [Serializable]
 public class SaveData
 {
-    public float verticalNodes;
-    public float horizontalNodes;
-    public float winningNodes;
-
-    public SaveData()
-    {
-        verticalNodes = 3;
-        horizontalNodes = 3;
-        winningNodes = 3;
-    }
+    public float verticalNodes = 3;
+    public float horizontalNodes = 3;
+    public float winningNodes = 3;
+    public float playerTurnTimeLimit = 5;
 }

@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
+[RequireComponent(typeof(ObjectPoolingController))]
 public class GameView : MonoBehaviour
 {
 	[SerializeField]
@@ -47,7 +48,6 @@ public class GameView : MonoBehaviour
 	public void ClearBoard()
     {
 		_objectPoolingController.ReturnAllToPools();
-
 	}
 
 	public void SpawnBoard()
