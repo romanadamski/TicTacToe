@@ -19,6 +19,8 @@ public abstract class IPlayer
 	protected IPlayer(TurnController turnController)
 	{
 		_turnController = turnController;
+
+		_turnController.OnGameplayFinished += OnTurnEnd;
 	}
 
 	public void SetName(string name)

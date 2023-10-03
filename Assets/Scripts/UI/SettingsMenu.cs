@@ -1,7 +1,6 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Zenject;
 
 public class SettingsMenu : BaseMenu
 {
@@ -43,12 +42,16 @@ public class SettingsMenu : BaseMenu
 
     public void OnLoadGame(SaveData saveData)
     {
-        verticalNodesSlider.value = saveData.verticalNodes;
-        horizontalNodesSlider.value = saveData.horizontalNodes;
-        winningNodesSlider.value = saveData.winningNodes;
-        playerTurnTimeLimitInput.text = saveData.playerTurnTimeLimit.ToString();
+        LoadData(saveData);
+        RefreshUI();
+    }
 
-        RefreshValues();
+    private void LoadData(SaveData saveData)
+    {
+        settingsSO.VerticalNodes = (uint)saveData.verticalNodes;
+        settingsSO.HorizontalNodes = (uint)saveData.horizontalNodes;
+        settingsSO.WinningNodes = (uint)saveData.winningNodes;
+        settingsSO.PlayerTurnTimeLimit = saveData.playerTurnTimeLimit;
     }
 
     public void OnSaveGame(SaveData saveData)
@@ -59,11 +62,16 @@ public class SettingsMenu : BaseMenu
         saveData.playerTurnTimeLimit = float.Parse(playerTurnTimeLimitInput.text);
     }
 
-    private void RefreshValues()
+    private void RefreshUI()
     {
+        verticalNodesSlider.value = settingsSO.VerticalNodes;
+        horizontalNodesSlider.value = settingsSO.HorizontalNodes;
+        winningNodesSlider.value = settingsSO.WinningNodes;
+
         verticalNodesValue.text = verticalNodesSlider.value.ToString();
         horizontalNodesValue.text = horizontalNodesSlider.value.ToString();
         winningNodesValue.text = winningNodesSlider.value.ToString();
+        playerTurnTimeLimitInput.text = settingsSO.PlayerTurnTimeLimit.ToString();
     }
 
     private void OnVerticalNodesSliderValueChanged(float value)

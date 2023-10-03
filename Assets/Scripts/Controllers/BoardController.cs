@@ -27,16 +27,16 @@ public class BoardController
 	private uint _verticalCount;
 	private uint _winningCount;
 
-	public Node[,] Board { get; private set; }
+	private Node[,] _board;
 
 	public BoardController(uint horizontalCount, uint verticalCount, uint winningCount)
 	{
-		Board = new Node[horizontalCount, verticalCount];
+		_board = new Node[horizontalCount, verticalCount];
 		for (int i = 0; i < verticalCount; i++)
 		{
 			for (int j = 0; j < horizontalCount; j++)
 			{
-				Board[j, i].index = new Vector2Int(j, i);
+				_board[j, i].index = new Vector2Int(j, i);
 			}
 		}
 		_horizontalCount = horizontalCount;
@@ -46,7 +46,7 @@ public class BoardController
 
 	public Node GetRandomEmptyNode()
 	{
-		var emptyNodes = Board.Cast<Node>().
+		var emptyNodes = _board.Cast<Node>().
 			Where(x => x.nodeType == NodeType.None);
 		var nodesCount = emptyNodes.Count();
 		var randomIndex = Random.Range(0, nodesCount);
@@ -55,7 +55,21 @@ public class BoardController
 
 	public void SetNode(Vector2Int index, NodeType nodeType)
 	{
-		Board[index.x, index.y] = new Node(index, nodeType);
+		_board[index.x, index.y] = new Node(index, nodeType);
+	}
+
+	public bool CheckDraw() => CheckWin() == NodeType.None && !CheckEmptyNodes();
+
+	public NodeType CheckWin()
+    {
+		var nodeType = NodeType.None;
+		foreach (var node in _board)
+        {
+			nodeType = CheckWin(node.index, node.nodeType);
+		}
+
+		return nodeType;
+
 	}
 
 	public NodeType CheckWin(Vector2Int index, NodeType nodeType)
@@ -69,7 +83,7 @@ public class BoardController
 	public bool CheckEmptyNodes()
 	{
 		bool emptyNodes = false;
-		foreach(var item in Board)
+		foreach(var item in _board)
 		{
 			if(item.nodeType == NodeType.None)
 			{
@@ -95,7 +109,7 @@ public class BoardController
 
 		for (int i = (int)startX, j = (int)startY; i <= endX && j <= endY; i++, j++)
 		{
-			if (Board[i, j].nodeType == nodeType)
+			if (_board[i, j].nodeType == nodeType)
 			{
 				winCount++;
 				if (winCount.Equals(_winningCount))
@@ -129,7 +143,7 @@ public class BoardController
 
 		for (int i = (int)startX, j = (int)startY; i >= endX && j <= endY; i--, j++)
 		{
-			if (Board[i, j].nodeType == nodeType)
+			if (_board[i, j].nodeType == nodeType)
 			{
 				winCount++;
 				if (winCount.Equals(_winningCount))
@@ -151,7 +165,7 @@ public class BoardController
 		var winCount = 0u;
 		for (int i = 0; i < _horizontalCount; i++)
 		{
-			if (Board[i, horizontal].nodeType == nodeType)
+			if (_board[i, horizontal].nodeType == nodeType)
 			{
 				winCount++;
 				if (winCount.Equals(_winningCount))
@@ -173,7 +187,7 @@ public class BoardController
 		var winCount = 0u;
 		for (int i = 0; i < _verticalCount; i++)
 		{
-			if (Board[vertical, i].nodeType == nodeType)
+			if (_board[vertical, i].nodeType == nodeType)
 			{
 				winCount++;
 				if (winCount.Equals(_winningCount))

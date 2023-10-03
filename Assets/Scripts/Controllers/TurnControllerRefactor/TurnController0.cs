@@ -1,9 +1,9 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class TurnController
+/*
+internal class TurnController0
 {
 	#region Events
 
@@ -19,77 +19,10 @@ public class TurnController
 
 	public BoardController TicTacToeController { get; private set; }
 	public Node RandomEmptyNode => TicTacToeController.GetRandomEmptyNode();
-	public bool AnyComputerPlay => !PlayerOne.AllowInput || !PlayerTwo.AllowInput;
 
-	private uint HorizontalTilesCount => GameManager.Instance.SettingsSO.HorizontalNodes;
-	private uint VerticalTilesCount => GameManager.Instance.SettingsSO.VerticalNodes;
-	private uint WinningTilesCount => GameManager.Instance.SettingsSO.WinningNodes;
-	private float PlayerTurnTimeLimit => GameManager.Instance.SettingsSO.PlayerTurnTimeLimit;
-
-	private float _turnElapsed;
-	public float TurnElapsed
-	{
-		get => _turnElapsed;
-		set
-		{
-			_turnElapsed = value;
-			OnTimerChanged?.Invoke(value);
-		}
-	}
-
-	public IPlayer PlayerOne { get; set; }
-	public IPlayer PlayerTwo { get; set; }
-
-	private IPlayer _currentPlayer;
-	public IPlayer CurrentPlayer
-	{
-		get => _currentPlayer;
-		private set
-		{
-			_currentPlayer = value;
-			StartTurn(_currentPlayer);
-			OnPlayerChanged?.Invoke(value);
-		}
-	}
-	private IPlayer XPlayer => PlayerOne.NodeType == NodeType.X ? PlayerOne : PlayerTwo;
-
-	private Stack<Tuple<IPlayer, Vector2Int>> _movesHistory = new Stack<Tuple<IPlayer, Vector2Int>>();
-	private Coroutine _turnEndCoroutine;
-
-	private void StartTurn(IPlayer player)
-	{
-		StopTurnEndCoroutine();
-		_turnEndCoroutine = GameManager.Instance.StartCoroutine(TimerCoroutine(player));
-		player.OnStartTurn();
-	}
-
-	private void ResetTurnTime()
-    {
-		TurnElapsed = PlayerTurnTimeLimit;
-	}
-
-	private void StopTurnEndCoroutine()
-	{
-		if (_turnEndCoroutine != null)
-		{
-			GameManager.Instance.StopCoroutine(_turnEndCoroutine);
-		}
-		ResetTurnTime();
-	}
-
-	private IEnumerator TimerCoroutine(IPlayer player)
-	{
-		ResetTurnTime();
-		while (TurnElapsed > 0)
-        {
-			TurnElapsed -= Time.deltaTime;
-			yield return null;
-        }
-		SetLoser(player);
-	}
 
 	public void StartGame()
-    {
+	{
 		OnGameplayStarted?.Invoke();
 
 		AssignRandomNodesToPlayers();
@@ -102,21 +35,21 @@ public class TurnController
 		CurrentPlayer = XPlayer;
 	}
 
-    private void AssignNumbersToPlayers()
-    {
+	private void AssignNumbersToPlayers()
+	{
 		PlayerOne.SetPlayerNumber(PlayerNumber.PlayerOne);
 		PlayerTwo.SetPlayerNumber(PlayerNumber.PlayerTwo);
 	}
 
-    private void SetPlayersNames()
-    {
+	private void SetPlayersNames()
+	{
 		var playerName = PlayerOne.AllowInput ? "Human" : "Computer";
 		if (PlayerOne.GetType().Equals(PlayerTwo.GetType()))
 		{
 			playerName += " 1";
 		}
 		PlayerOne.SetName(playerName);
-		
+
 		playerName = PlayerTwo.AllowInput ? "Human" : "Computer";
 		if (PlayerTwo.GetType().Equals(PlayerOne.GetType()))
 		{
@@ -125,8 +58,8 @@ public class TurnController
 		PlayerTwo.SetName(playerName);
 	}
 
-    private void AssignRandomNodesToPlayers()
-    {
+	private void AssignRandomNodesToPlayers()
+	{
 		var random = UnityEngine.Random.Range(0, 2);
 		var playerOneNodeType = random == 0 ? NodeType.X : NodeType.O;
 		var playerTwoNodeType = playerOneNodeType == NodeType.O ? NodeType.X : NodeType.O;
@@ -135,9 +68,9 @@ public class TurnController
 	}
 
 	public void NodeMark(Vector2Int index)
-    {
+	{
 		SetNode(index, CurrentPlayer.NodeType);
-		
+
 		if (TryEndGame(index)) return;
 
 		StopTurnEndCoroutine();
@@ -160,13 +93,13 @@ public class TurnController
 	}
 
 	private void SetNode(Vector2Int index, NodeType nodeType)
-    {
+	{
 		TicTacToeController.SetNode(index, nodeType);
 		OnSetNode?.Invoke(index, nodeType);
 	}
 
 	private bool TryEndGame(Vector2Int index)
-    {
+	{
 		var result = false;
 		var winner = TicTacToeController.CheckWin(index, CurrentPlayer.NodeType);
 		if (winner != NodeType.None)
@@ -179,7 +112,7 @@ public class TurnController
 			SetWinner(null);
 			result = true;
 		}
-		
+
 		return result;
 	}
 
@@ -190,7 +123,7 @@ public class TurnController
 	}
 
 	public void HintNode()
-    {
+	{
 		var node = GetNodeToHint();
 		OnHint?.Invoke(node.index, CurrentPlayer.NodeType);
 	}
@@ -203,11 +136,11 @@ public class TurnController
 
 	public void SetLoser(IPlayer loser)
 	{
-		if(loser == PlayerOne)
+		if (loser == PlayerOne)
 		{
 			SetWinner(PlayerTwo);
 		}
-		else if(loser == PlayerTwo)
+		else if (loser == PlayerTwo)
 		{
 			SetWinner(PlayerOne);
 		}
@@ -219,16 +152,5 @@ public class TurnController
 
 		StopTurnEndCoroutine();
 	}
-
-	private void SwitchPlayer()
-	{
-		if (CurrentPlayer == PlayerOne)
-		{
-			CurrentPlayer = PlayerTwo;
-		}
-		else
-		{
-			CurrentPlayer = PlayerOne;
-		}
-	}
 }
+*/
