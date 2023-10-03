@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "SettingsSO", menuName = "ScriptableObjects/Settings")]
+[CreateAssetMenu(fileName = "Settings", menuName = "ScriptableObjects/Settings")]
 public class SettingsSO : ScriptableObject
 {
     [SerializeField]

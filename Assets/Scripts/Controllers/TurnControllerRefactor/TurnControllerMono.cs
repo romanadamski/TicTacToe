@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,7 +26,6 @@ public class TurnControllerMono : MonoBehaviour
 			OnTimerChanged?.Invoke(value);
 		}
 	}
-
 
 	private void StartTurn(IPlayer player)
 	{
@@ -58,6 +58,5 @@ public class TurnControllerMono : MonoBehaviour
 		}
 		SetLoser(player);
 	}
-
 }
 */

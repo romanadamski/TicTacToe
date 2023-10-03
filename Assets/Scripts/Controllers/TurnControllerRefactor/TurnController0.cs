@@ -7,11 +7,14 @@ internal class TurnController0
 {
 	#region Events
 
+	//TODO #split: game state
 	public event Action OnGameplayStarted;
 	public event Action OnGameplayFinished;
 	public event Action<IPlayer> OnGameOver;
+	//TODO #split: player plays
 	public event Action<IPlayer> OnPlayerChanged;
 	public event Action<float> OnTimerChanged;
+	//TODO #split: board
 	public event Action<Vector2Int, NodeType> OnHint;
 	public event Action<Vector2Int, NodeType> OnSetNode;
 
@@ -20,21 +23,23 @@ internal class TurnController0
 	public BoardController TicTacToeController { get; private set; }
 	public Node RandomEmptyNode => TicTacToeController.GetRandomEmptyNode();
 
-
 	public void StartGame()
 	{
+		//TODO #split: game state
 		OnGameplayStarted?.Invoke();
 
+		//TODO #split: player initialization
 		AssignRandomNodesToPlayers();
 		AssignNumbersToPlayers();
 		SetPlayersNames();
+		CurrentPlayer = XPlayer;
+		//TODO #split: board
 		_movesHistory.Clear();
-
 		TicTacToeController = new BoardController(HorizontalTilesCount, VerticalTilesCount, WinningTilesCount);
 
-		CurrentPlayer = XPlayer;
 	}
 
+	//TODO #split: player initialization
 	private void AssignNumbersToPlayers()
 	{
 		PlayerOne.SetPlayerNumber(PlayerNumber.PlayerOne);
@@ -67,6 +72,7 @@ internal class TurnController0
 		PlayerTwo.SetNodeType(playerTwoNodeType);
 	}
 
+	//TODO #split: board
 	public void NodeMark(Vector2Int index)
 	{
 		SetNode(index, CurrentPlayer.NodeType);
@@ -98,6 +104,18 @@ internal class TurnController0
 		OnSetNode?.Invoke(index, nodeType);
 	}
 
+	public Node GetNodeToHint()
+	{
+		var emptyNode = TicTacToeController.GetRandomEmptyNode();
+		return emptyNode;
+	}
+
+	public void HintNode()
+	{
+		var node = GetNodeToHint();
+		OnHint?.Invoke(node.index, CurrentPlayer.NodeType);
+	}
+	//TODO #split: game state
 	private bool TryEndGame(Vector2Int index)
 	{
 		var result = false;
@@ -114,18 +132,6 @@ internal class TurnController0
 		}
 
 		return result;
-	}
-
-	public Node GetNodeToHint()
-	{
-		var emptyNode = TicTacToeController.GetRandomEmptyNode();
-		return emptyNode;
-	}
-
-	public void HintNode()
-	{
-		var node = GetNodeToHint();
-		OnHint?.Invoke(node.index, CurrentPlayer.NodeType);
 	}
 
 	private void SetWinner(IPlayer winner)
