@@ -9,6 +9,6 @@ public class EndGameplayState : State
 
     protected override void OnExit()
     {
-        GameManager.Instance.GoToMainMenu();
+        GameManager.Instance.SetMainMenuState();
     }
 }

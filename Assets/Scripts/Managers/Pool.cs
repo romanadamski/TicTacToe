@@ -11,17 +11,14 @@ public class Pool
     public bool CanGrow;
     public Queue<BasePoolableController> PooledObjects = new Queue<BasePoolableController>();
 
-    [HideInInspector]
-    public int ObjectCount;
     public Transform Parent;
 
-    /// <summary>
-    /// Type choosen in prefab from Poolable type dropdown
-    /// </summary>
-    public string PoolableNameType => PoolObjectPrefab.PoolableType;
-
+    [HideInInspector]
+    public int ObjectCount;
     [HideInInspector]
     public List<BasePoolableController> ObjectsOutsidePool = new List<BasePoolableController>();
+
+    public string PoolableNameType => PoolObjectPrefab.PoolableType;
 
     public void ReturnAllToPool()
     {

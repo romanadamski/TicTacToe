@@ -9,6 +9,12 @@ public class EventsManager : BaseManager<EventsManager>
         GameplayStarted?.Invoke();
     }
 
+    public event Action GameplayFinished;
+    public void OnGameplayFinished()
+    {
+        GameplayFinished?.Invoke();
+    }
+
     public event Action<IPlayer> PlayerChanged;
     public void OnPlayerChanged(IPlayer player)
     {

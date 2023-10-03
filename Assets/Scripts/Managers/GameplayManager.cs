@@ -29,10 +29,10 @@ public class GameplayManager : BaseManager<GameplayManager>
         EndGameplayState = new EndGameplayState(_gameplayStateMachine);
     }
 
-    public void ClearGameplay()
+    private void ClearGameplay()
     {
-        ObjectPoolingManager.Instance.ReturnAllToPools();
-		_turnManager.OnGameplayFinish();
+        EventsManager.Instance.OnGameplayFinished();
+		_turnManager.OnGameplayFinished();
 
 	}
 

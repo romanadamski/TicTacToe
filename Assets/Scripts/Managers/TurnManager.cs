@@ -2,14 +2,18 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class TurnManager
 {
+	[Inject]
+	private SaveManager _saveManager;
+
 	public BoardController TicTacToeController { get; private set; }
 	public bool AnyComputerPlay => !PlayerOne.AllowInput || !PlayerTwo.AllowInput;
-	public uint HorizontalTilesCount => GameManager.Instance.Settings.HorizontalNodes;
-	public uint VerticalTilesCount => GameManager.Instance.Settings.VerticalNodes;
-	public uint WinningTilesCount => GameManager.Instance.Settings.WinNodes;
+	public uint HorizontalTilesCount => (uint)_saveManager.SaveData.horizontalNodes;
+	public uint VerticalTilesCount => (uint)_saveManager.SaveData.verticalNodes;
+	public uint WinningTilesCount => (uint)_saveManager.SaveData.winningNodes;
 	public float TurnElapsed
 	{
 		get => _turnElapsed;
@@ -186,7 +190,7 @@ public class TurnManager
 		}
 	}
 
-	public void OnGameplayFinish()
+	public void OnGameplayFinished()
 	{
 		StopTurnEndCoroutine();
 		PlayerOne.OnTurnEnd();

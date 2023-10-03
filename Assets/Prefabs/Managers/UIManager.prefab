@@ -47,8 +47,8 @@ MonoBehaviour:
   - {fileID: 5274822589448520945, guid: 811685c86211f934c8f7e5d0b7434fa0, type: 3}
   - {fileID: 1354538017318142970, guid: 977e4b71ebf0902478143425503c1bcb, type: 3}
   - {fileID: 3231905155701357666, guid: 61c6ef2c87731434499264b31c884aca, type: 3}
+  - {fileID: 390968986073342578, guid: 0a809b59a130c5f408710369f37f92f8, type: 3}
   backgroundPrefab: {fileID: 825534839416715561, guid: 813d3c877d494be4bac79362423e721f,
     type: 3}
   PlayerOne: {fileID: 21300000, guid: 5e8278e012ff04d9a8bbd92350645568, type: 3}
   PlayerTwo: {fileID: 21300000, guid: bd30ced15dd1c4a81a8798331e1abe4a, type: 3}
-  Line: {fileID: 21300000, guid: 2c0ff12133b094a6a9a294d3efc2eb76, type: 3}

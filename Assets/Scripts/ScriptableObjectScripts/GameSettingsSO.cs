@@ -8,14 +8,18 @@ public class GameSettingsSO : ScriptableObject
     public float PlayerTurnTime => playerTurnTime;
 
 	[SerializeField]
-	private uint horizontalNodes = 3;
-    public uint HorizontalNodes => horizontalNodes;
+	private uint minHorizontalNodes = 3;
+    public uint MinHorizontalNodes => minHorizontalNodes;
 
 	[SerializeField]
-	private uint verticalNodes = 3;
-    public uint VerticalNodes => verticalNodes;
+	private uint maxHorizontalNodes = 10;
+	public uint MaxHorizontalNodes => maxHorizontalNodes;
 
 	[SerializeField]
-	private uint winNodes = 3;
-    public uint WinNodes => winNodes;
+	private uint minVerticalNodes = 3;
+	public uint MinVerticalNodes => minVerticalNodes;
+
+	[SerializeField]
+	private uint maxVerticalNodes = 10;
+    public uint MaxVerticalNodes => maxVerticalNodes;
 }

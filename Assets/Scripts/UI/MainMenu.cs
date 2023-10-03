@@ -12,6 +12,8 @@ public class MainMenu : BaseMenu
     [SerializeField]
     private Button startGameButton;
     [SerializeField]
+    private Button settingsButton;
+    [SerializeField]
     private Button reskinButton;
     [SerializeField]
     private TMP_InputField reskinInputField;
@@ -40,6 +42,7 @@ public class MainMenu : BaseMenu
 		SetStartButtonInteractable();
 
 		startGameButton.onClick.AddListener(OnStartGameButtonClick);
+		settingsButton.onClick.AddListener(OnSettingsButtonClick);
 		reskinButton.onClick.AddListener(() => Reskin(reskinInputField.text));
 		PvP.Button.onClick.AddListener(() => OnGameModeButtonClick());
 		PvC.Button.onClick.AddListener(() => OnGameModeButtonClick());
@@ -49,6 +52,11 @@ public class MainMenu : BaseMenu
 	private void OnStartGameButtonClick()
 	{
 		GameManager.Instance.SetLevelState();
+	}
+
+	private void OnSettingsButtonClick()
+	{
+		GameManager.Instance.SetSettingsState();
 	}
 
 	private void OnGameModeButtonClick()

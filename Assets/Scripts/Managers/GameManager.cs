@@ -1,4 +1,6 @@
 
+using Zenject;
+
 public class GameManager : BaseManager<GameManager>
 {
     #region States
@@ -7,18 +9,22 @@ public class GameManager : BaseManager<GameManager>
 
     public MainMenuState MainMenuState;
     public LevelState LevelState;
+    public SettingsState SettingsState;
 
 	#endregion
 
 	public GameSettingsSO Settings;
 
-	private void Start()
+    [Inject]
+    private SaveManager _saveManager;
+
+    private void Start()
     {
         InitStates();
-        GoToMainMenu();
+        SetMainMenuState();
     }
 
-    public void GoToMainMenu()
+    public void SetMainMenuState()
     {
         _gameStateMachine.SetState(MainMenuState);
     }
@@ -29,10 +35,21 @@ public class GameManager : BaseManager<GameManager>
 
         MainMenuState = new MainMenuState(_gameStateMachine);
         LevelState = new LevelState(_gameStateMachine);
+        SettingsState = new SettingsState(_gameStateMachine);
     }
 
     public void SetLevelState()
 	{
 		_gameStateMachine.SetState(LevelState);
 	}
+
+    public void SetSettingsState()
+	{
+		_gameStateMachine.SetState(SettingsState);
+	}
+
+    private void OnApplicationQuit()
+    {
+        _saveManager.Save();
+    }
 }

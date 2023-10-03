@@ -1,15 +1,13 @@
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
-public class SaveManager : BaseManager<SaveManager>
+public class SaveManager
 {
     private const string SAVE_KEY = "SAVE";
-    private SaveData saveData;
+    public SaveData SaveData { get; private set; }
 
     public void Save()
     {
-        var saveString = JsonUtility.ToJson(saveData);
+        var saveString = JsonUtility.ToJson(SaveData);
         PlayerPrefs.SetString(SAVE_KEY, saveString);
     }
 
@@ -18,11 +16,11 @@ public class SaveManager : BaseManager<SaveManager>
         var saveString = PlayerPrefs.GetString(SAVE_KEY);
         if (string.IsNullOrWhiteSpace(saveString))
         {
-            saveData = new SaveData();
+            SaveData = new SaveData();
         }
         else
         {
-            saveData = JsonUtility.FromJson<SaveData>(saveString);
+            SaveData = JsonUtility.FromJson<SaveData>(saveString);
         }
     }
 }

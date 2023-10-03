@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 using Zenject;
 
-public class ObjectPoolingManager : BaseManager<ObjectPoolingManager>
+public class ObjectPoolingController : MonoBehaviour
 {
     [SerializeField]
     private List<Pool> pools = new List<Pool>();

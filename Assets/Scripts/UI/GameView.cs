@@ -14,6 +14,8 @@ public class GameView : MonoBehaviour
 	[SerializeField]
 	private GridLayoutGroup horizontalLines;
 
+	private ObjectPoolingController _objectPoolingController;
+
 	[Inject]
 	private TurnManager _turnManager;
 	private TileController _currentHighlightTile;
@@ -22,9 +24,12 @@ public class GameView : MonoBehaviour
 
 	private void Awake()
 	{
+		_objectPoolingController = GetComponent<ObjectPoolingController>();
+
 		EventsManager.Instance.NodeMark += OnNodeMark;
 		EventsManager.Instance.PlayerChanged += ToggleInput;
 		EventsManager.Instance.GameplayStarted += SpawnBoard;
+		EventsManager.Instance.GameplayFinished += ClearBoard;
 		EventsManager.Instance.Hint += OnHint;
 	}
 
@@ -37,6 +42,12 @@ public class GameView : MonoBehaviour
 
 		_currentHighlightTile = TileControllers[index.x, index.y];
 		_currentHighlightTile.Highlight(_turnManager.CurrentPlayer.NodeType);
+	}
+
+	public void ClearBoard()
+    {
+		_objectPoolingController.ReturnAllToPools();
+
 	}
 
 	public void SpawnBoard()
@@ -61,7 +72,7 @@ public class GameView : MonoBehaviour
 		{
 			for (int j = 0; j < horizontalTilesCount; j++)
 			{
-				var tile = ObjectPoolingManager.Instance.GetFromPool("Tile").GetComponent<TileController>();
+				var tile = _objectPoolingController.GetFromPool("Tile").GetComponent<TileController>();
 				tile.transform.SetParent(tilesParent.transform);
 				tile.Init(new Vector2Int(j, i), () => OnTilesButtonClick(tile));
 				tile.gameObject.SetActive(true);
@@ -74,7 +85,7 @@ public class GameView : MonoBehaviour
 	{
 		for (int i = 0; i < _turnManager.HorizontalTilesCount - 1; i++)
 		{
-			var line = ObjectPoolingManager.Instance.GetFromPool("LineVertical");
+			var line = _objectPoolingController.GetFromPool("LineVertical");
 
 			line.GetComponent<RectTransform>().sizeDelta = new Vector2(43, _turnManager.VerticalTilesCount * tilesParent.cellSize.y);
 			line.gameObject.SetActive(true);
@@ -88,7 +99,7 @@ public class GameView : MonoBehaviour
 		lineSize = new Vector2(_turnManager.HorizontalTilesCount * tilesParent.cellSize.x, 43);
 		for (int i = 0; i < _turnManager.VerticalTilesCount - 1; i++)
 		{
-			var line = ObjectPoolingManager.Instance.GetFromPool("LineHorizontal");
+			var line = _objectPoolingController.GetFromPool("LineHorizontal");
 			line.GetComponent<RectTransform>().sizeDelta = lineSize;
 			line.gameObject.SetActive(true);
 		}
