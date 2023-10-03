@@ -76,8 +76,7 @@ public class GameplayMenu : BaseMenu
 
     private void OnHintButtonClick()
     {
-		var node = _turnController.GetNodeToHint();
-		EventsManager.Instance.OnHint(node.index);
+        _turnController.HintNode();
 
     }
     private void OnTimerChanged(float time)
@@ -87,8 +86,8 @@ public class GameplayMenu : BaseMenu
 
     private void SubscribeToEvents()
     {
-        EventsManager.Instance.PlayerChanged += PlayerChanged;
-        EventsManager.Instance.TimerChanged += OnTimerChanged;
+        _turnController.OnPlayerChanged += PlayerChanged;
+        _turnController.OnTimerChanged += OnTimerChanged;
     }
 
     private void PlayerChanged(IPlayer player)

@@ -28,14 +28,14 @@ public class GameView : MonoBehaviour
 	{
 		_objectPoolingController = GetComponent<ObjectPoolingController>();
 
-		EventsManager.Instance.NodeMark += OnNodeMark;
-		EventsManager.Instance.PlayerChanged += ToggleInput;
-		EventsManager.Instance.GameplayStarted += SpawnBoard;
-		EventsManager.Instance.GameplayFinished += ClearBoard;
-		EventsManager.Instance.Hint += OnHint;
+		_turnController.OnSetNode += OnNodeMark;
+		_turnController.OnPlayerChanged += ToggleInput;
+		_turnController.OnGameplayStarted += SpawnBoard;
+		_turnController.OnGameplayFinished += ClearBoard;
+		_turnController.OnHint += OnHint;
 	}
 
-	private void OnHint(Vector2Int index)
+	private void OnHint(Vector2Int index, NodeType nodeType)
 	{
 		if(_currentHighlightTile != null)
 		{
@@ -43,7 +43,7 @@ public class GameView : MonoBehaviour
 		}
 
 		_currentHighlightTile = TileControllers[index.x, index.y];
-		_currentHighlightTile.Highlight(_turnController.CurrentPlayer.NodeType);
+		_currentHighlightTile.Highlight(nodeType);
 	}
 
 	public void ClearBoard()

@@ -31,26 +31,18 @@ public class GameplayManager : BaseManager<GameplayManager>
 
     private void ClearGameplay()
     {
-        EventsManager.Instance.OnGameplayFinished();
-		_turnController.OnGameplayFinished();
-
+		_turnController.GameplayFinished();
 	}
 
     public void StartGameplay()
     {
-        EventsManager.Instance.OnGameplayStarted();
-        StartCurrentLevel();
-	}
+		_turnController.StartGame();
+    }
 
     public void RestartGameplay()
     {
 		ClearGameplay();
 		StartGameplay();
-	}
-
-	private void StartCurrentLevel()
-	{
-		_turnController.StartGame();
 	}
 
 	public void SetGameplayState()

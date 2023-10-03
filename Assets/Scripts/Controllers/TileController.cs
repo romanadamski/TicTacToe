@@ -20,9 +20,6 @@ public class TileController : MonoBehaviour
     public Vector2Int Index { get; private set; }
     public NodeType NodeType { get; private set; }
 
-	[Inject]
-	private TurnController _turnController;
-
 	private void Awake()
     {
         Button = GetComponent<Button>();

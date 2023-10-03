@@ -6,6 +6,18 @@ using Zenject;
 
 public class TurnController
 {
+	#region Events
+
+	public event Action OnGameplayStarted;
+	public event Action OnGameplayFinished;
+	public event Action<IPlayer> OnGameOver;
+	public event Action<IPlayer> OnPlayerChanged;
+	public event Action<float> OnTimerChanged;
+	public event Action<Vector2Int, NodeType> OnHint;
+	public event Action<Vector2Int, NodeType> OnSetNode;
+
+	#endregion
+
 	public BoardController TicTacToeController { get; private set; }
 	public bool AnyComputerPlay => !PlayerOne.AllowInput || !PlayerTwo.AllowInput;
 	public uint HorizontalTilesCount => GameManager.Instance.SettingsSO.HorizontalNodes;
@@ -19,7 +31,7 @@ public class TurnController
 		set
 		{
 			_turnElapsed = value;
-			EventsManager.Instance.OnTimerChanged(value);
+			OnTimerChanged?.Invoke(value);
 		}
 	}
 
@@ -34,7 +46,7 @@ public class TurnController
 		{
 			_currentPlayer = value;
 			StartTurn(_currentPlayer);
-			EventsManager.Instance.OnPlayerChanged(value);
+			OnPlayerChanged?.Invoke(value);
 		}
 	}
 
@@ -76,6 +88,8 @@ public class TurnController
 
 	public void StartGame()
     {
+		OnGameplayStarted?.Invoke();
+
 		//todo
 		AssignPlayersTypes(new PlayerInput(this), new PlayerInput(this));
 		AssignRandomNodesToPlayers();
@@ -128,7 +142,7 @@ public class TurnController
 
 	public void NodeMark(Vector2Int index)
     {
-		TicTacToeController.SetNode(index, CurrentPlayer.NodeType);
+		SetNode(index, CurrentPlayer.NodeType);
 		
 		if (TryEndGame(index)) return;
 
@@ -136,6 +150,25 @@ public class TurnController
 		_movesHistory.Push(new Tuple<IPlayer, Vector2Int>(CurrentPlayer, index));
 
 		SwitchPlayer();
+	}
+
+	public void UndoMove()
+	{
+		if (_movesHistory.Count == 0) return;
+
+		var lastMove = _movesHistory.Pop();
+
+		SetNode(lastMove.Item2, NodeType.None);
+
+		StopTurnEndCoroutine();
+		CurrentPlayer.OnTurnEnd();
+		CurrentPlayer = lastMove.Item1;
+	}
+
+	private void SetNode(Vector2Int index, NodeType nodeType)
+    {
+		TicTacToeController.SetNode(index, nodeType);
+		OnSetNode?.Invoke(index, nodeType);
 	}
 
 	private bool TryEndGame(Vector2Int index)
@@ -162,23 +195,16 @@ public class TurnController
 		return emptyNode;
 	}
 
-	public void UndoMove()
-	{
-		if (_movesHistory.Count == 0) return;
-
-		var lastMove = _movesHistory.Pop();
-
-		TicTacToeController.SetNode(lastMove.Item2, NodeType.None);
-
-		StopTurnEndCoroutine();
-		CurrentPlayer.OnTurnEnd();
-		CurrentPlayer = lastMove.Item1;
+	public void HintNode()
+    {
+		var node = GetNodeToHint();
+		OnHint?.Invoke(node.index, CurrentPlayer.NodeType);
 	}
 
 	private void SetWinner(IPlayer winner)
 	{
 		GameplayManager.Instance.SetGameOverState();
-		EventsManager.Instance.OnGameOver(winner);
+		OnGameOver?.Invoke(winner);
 	}
 
 	public void SetLoser(NodeType loser)
@@ -193,8 +219,10 @@ public class TurnController
 		}
 	}
 
-	public void OnGameplayFinished()
+	public void GameplayFinished()
 	{
+		OnGameplayFinished?.Invoke();
+
 		StopTurnEndCoroutine();
 		PlayerOne.OnTurnEnd();
 		PlayerTwo.OnTurnEnd();

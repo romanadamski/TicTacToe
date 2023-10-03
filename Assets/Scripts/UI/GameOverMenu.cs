@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 public class GameOverMenu : BaseMenu
 {
@@ -8,6 +9,9 @@ public class GameOverMenu : BaseMenu
     private TextMeshProUGUI winnerText;
     [SerializeField]
     private Button menuButton;
+
+    [Inject]
+    private TurnController _turnController;
 
     private void Awake()
     {
@@ -22,7 +26,7 @@ public class GameOverMenu : BaseMenu
 
     private void SubscribeToEvents()
     {
-        EventsManager.Instance.GameOver += OnGameOver;
+        _turnController.OnGameOver += OnGameOver;
     }
 
     private void OnGameOver(IPlayer player)

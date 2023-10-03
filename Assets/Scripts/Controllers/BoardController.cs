@@ -56,7 +56,6 @@ public class BoardController
 	public void SetNode(Vector2Int index, NodeType nodeType)
 	{
 		Board[index.x, index.y] = new Node(index, nodeType);
-		EventsManager.Instance.OnNodeMark(index, nodeType);
 	}
 
 	public NodeType CheckWin(Vector2Int index, NodeType nodeType)
