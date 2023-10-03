@@ -1,5 +1,5 @@
-
-using Zenject;
+using UnityEngine;
+using System;
 
 public class GameManager : BaseManager<GameManager>
 {
@@ -11,12 +11,15 @@ public class GameManager : BaseManager<GameManager>
     public LevelState LevelState;
     public SettingsState SettingsState;
 
-	#endregion
+    #endregion
 
-	public GameSettingsSO Settings;
+    [SerializeField]
+    private GameLimitValuesSO gameLimitValuesSO;
+    public GameLimitValuesSO GameLimitValuesSO => gameLimitValuesSO;
 
-    [Inject]
-    private SaveManager _saveManager;
+    [SerializeField]
+    private SettingsSO settingsSO;
+    public SettingsSO SettingsSO => settingsSO;
 
     private void Start()
     {
@@ -47,9 +50,4 @@ public class GameManager : BaseManager<GameManager>
 	{
 		_gameStateMachine.SetState(SettingsState);
 	}
-
-    private void OnApplicationQuit()
-    {
-        _saveManager.Save();
-    }
 }

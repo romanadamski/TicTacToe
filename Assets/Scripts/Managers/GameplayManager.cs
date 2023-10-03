@@ -13,7 +13,7 @@ public class GameplayManager : BaseManager<GameplayManager>
 	#endregion
 
 	[Inject]
-	private TurnManager _turnManager;
+	private TurnController _turnController;
 
     private void Awake()
     {
@@ -32,7 +32,7 @@ public class GameplayManager : BaseManager<GameplayManager>
     private void ClearGameplay()
     {
         EventsManager.Instance.OnGameplayFinished();
-		_turnManager.OnGameplayFinished();
+		_turnController.OnGameplayFinished();
 
 	}
 
@@ -50,7 +50,7 @@ public class GameplayManager : BaseManager<GameplayManager>
 
 	private void StartCurrentLevel()
 	{
-		_turnManager.StartGame();
+		_turnController.StartGame();
 	}
 
 	public void SetGameplayState()

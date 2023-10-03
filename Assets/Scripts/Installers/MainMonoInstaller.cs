@@ -7,7 +7,6 @@ public class MainMonoInstaller : MonoInstaller
 {
 	public override void InstallBindings()
 	{
-		Container.Bind<TurnManager>().AsSingle();
-		Container.Bind<SaveManager>().AsSingle();
+		Container.Bind<TurnController>().AsSingle();
 	}
 }

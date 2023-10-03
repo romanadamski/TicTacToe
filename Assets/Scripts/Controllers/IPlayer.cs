@@ -9,16 +9,16 @@ public enum PlayerNumber
 
 public abstract class IPlayer
 {
-	protected TurnManager _turnManager;
+	protected TurnController _turnController;
 	public PlayerNumber PlayerNumber { get; private set; }
 	public string Name { get; private set; }
 
 	public abstract bool AllowInput { get; }
 	public NodeType NodeType { get; private set; }
 
-	protected IPlayer(TurnManager turnManager)
+	protected IPlayer(TurnController turnController)
 	{
-		_turnManager = turnManager;
+		_turnController = turnController;
 	}
 
 	public void SetName(string name)

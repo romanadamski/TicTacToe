@@ -14,12 +14,4 @@ public class GameLauncher : BaseManager<GameLauncher>
     [SerializeField]
     private Canvas canvas;
     public Canvas Canvas => canvas;
-
-    [Inject]
-    private SaveManager _saveManager;
-
-    private void Awake()
-    {
-        _saveManager.LoadSave();
-    }
 }

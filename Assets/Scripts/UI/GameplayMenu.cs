@@ -28,7 +28,7 @@ public class GameplayMenu : BaseMenu
     private Color _inactivePlayerColor = new Color(0, 0, 0, 0.5f);
 
 	[Inject]
-	private TurnManager _turnManager;
+	private TurnController _turnController;
     
 	private void Awake()
     {
@@ -45,17 +45,17 @@ public class GameplayMenu : BaseMenu
         
         RefreshPlayerSprites();
 
-        playerOneText.text = _turnManager.PlayerOne.Name;
-        playerTwoText.text = _turnManager.PlayerTwo.Name;
+        playerOneText.text = _turnController.PlayerOne.Name;
+        playerTwoText.text = _turnController.PlayerTwo.Name;
 
-        undoButon.gameObject.SetActive(_turnManager.AnyComputerPlay);
-        hintButton.gameObject.SetActive(_turnManager.AnyComputerPlay);
+        undoButon.gameObject.SetActive(_turnController.AnyComputerPlay);
+        hintButton.gameObject.SetActive(_turnController.AnyComputerPlay);
     }
 
     private void RefreshPlayerSprites()
     {
-        playerOneActiveImage.sprite = UIManager.Instance.GetPlayerSpriteByNodeType(_turnManager.PlayerOne.NodeType);
-        playerTwoActiveImage.sprite = UIManager.Instance.GetPlayerSpriteByNodeType(_turnManager.PlayerTwo.NodeType);
+        playerOneActiveImage.sprite = UIManager.Instance.GetPlayerSpriteByNodeType(_turnController.PlayerOne.NodeType);
+        playerTwoActiveImage.sprite = UIManager.Instance.GetPlayerSpriteByNodeType(_turnController.PlayerTwo.NodeType);
     }
 
     private void OnMenuButtonClick()
@@ -71,12 +71,12 @@ public class GameplayMenu : BaseMenu
 
     private void OnUndoButtonClick()
     {
-        _turnManager.UndoMove();
+        _turnController.UndoMove();
 	}
 
     private void OnHintButtonClick()
     {
-		var node = _turnManager.GetNodeToHint();
+		var node = _turnController.GetNodeToHint();
 		EventsManager.Instance.OnHint(node.index);
 
     }

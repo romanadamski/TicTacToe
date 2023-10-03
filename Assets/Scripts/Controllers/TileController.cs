@@ -21,7 +21,7 @@ public class TileController : MonoBehaviour
     public NodeType NodeType { get; private set; }
 
 	[Inject]
-	private TurnManager _turnManager;
+	private TurnController _turnController;
 
 	private void Awake()
     {

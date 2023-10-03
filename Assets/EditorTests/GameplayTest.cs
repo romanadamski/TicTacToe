@@ -165,42 +165,42 @@ namespace Tests
         public void CheckUndoMove()
         {
 			// Arrange
-			TurnManager turnManager = new TurnManager();
+			TurnController turnController = new TurnController();
 
 			// Act
-			var playerOne = new PlayerInput(turnManager);
-			var playerTwo = new PlayerInput(turnManager);
+			var playerOne = new PlayerInput(turnController);
+			var playerTwo = new PlayerInput(turnController);
 			playerOne.SetNodeType(NodeType.X);
 			playerTwo.SetNodeType(NodeType.O);
-			turnManager.PlayerOne = playerOne;
-			turnManager.PlayerTwo = playerTwo;
-			turnManager.StartGame();
-			turnManager.NodeMark(new Vector2Int(2, 2));
-			turnManager.NodeMark(new Vector2Int(2, 1));
-			turnManager.NodeMark(new Vector2Int(0, 2));
-			turnManager.NodeMark(new Vector2Int(0, 1));
-			turnManager.UndoMove();
+			turnController.PlayerOne = playerOne;
+			turnController.PlayerTwo = playerTwo;
+			turnController.StartGame();
+			turnController.NodeMark(new Vector2Int(2, 2));
+			turnController.NodeMark(new Vector2Int(2, 1));
+			turnController.NodeMark(new Vector2Int(0, 2));
+			turnController.NodeMark(new Vector2Int(0, 1));
+			turnController.UndoMove();
 
 			// Assert
-			Assert.AreEqual(turnManager.TicTacToeController.Board[0, 1].nodeType, NodeType.None);
-			Assert.AreEqual(turnManager.CurrentPlayer, turnManager.PlayerTwo);
+			Assert.AreEqual(turnController.TicTacToeController.Board[0, 1].nodeType, NodeType.None);
+			Assert.AreEqual(turnController.CurrentPlayer, turnController.PlayerTwo);
 		}
 
 		[Test]
         public void CheckHint()
         {
 			// Arrange
-			TurnManager turnManager = new TurnManager();
+			TurnController turnController = new TurnController();
 
 			// Act
-			var playerOne = new PlayerInput(turnManager);
-			var playerTwo = new PlayerInput(turnManager);
+			var playerOne = new PlayerInput(turnController);
+			var playerTwo = new PlayerInput(turnController);
 			playerOne.SetNodeType(NodeType.X);
 			playerTwo.SetNodeType(NodeType.O);
-			turnManager.PlayerOne = playerOne;
-			turnManager.PlayerTwo = playerTwo;
-			turnManager.StartGame();
-			var hintNode = turnManager.GetNodeToHint();
+			turnController.PlayerOne = playerOne;
+			turnController.PlayerTwo = playerTwo;
+			turnController.StartGame();
+			var hintNode = turnController.GetNodeToHint();
 
 			// Assert
 			Assert.AreEqual(hintNode.nodeType, NodeType.None);

@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
@@ -14,12 +13,14 @@ public class GameView : MonoBehaviour
 	private GridLayoutGroup verticalLines;
 	[SerializeField]
 	private GridLayoutGroup horizontalLines;
+	[SerializeField]
+	private SettingsSO settingsSO;
 
 	private ObjectPoolingController _objectPoolingController;
+	private TileController _currentHighlightTile;
 
 	[Inject]
-	private TurnManager _turnManager;
-	private TileController _currentHighlightTile;
+	private TurnController _turnController;
 
 	public TileController[,] TileControllers { get; private set; }
 
@@ -42,7 +43,7 @@ public class GameView : MonoBehaviour
 		}
 
 		_currentHighlightTile = TileControllers[index.x, index.y];
-		_currentHighlightTile.Highlight(_turnManager.CurrentPlayer.NodeType);
+		_currentHighlightTile.Highlight(_turnController.CurrentPlayer.NodeType);
 	}
 
 	public void ClearBoard()
@@ -58,8 +59,8 @@ public class GameView : MonoBehaviour
 
 	private void SpawnTiles()
 	{
-		var horizontalTilesCount = _turnManager.HorizontalTilesCount;
-		var verticalTilesCount = _turnManager.VerticalTilesCount;
+		var horizontalTilesCount = settingsSO.HorizontalNodes;
+		var verticalTilesCount = settingsSO.VerticalNodes;
 
 		TileControllers = new TileController[horizontalTilesCount, verticalTilesCount];
 		tilesParent.constraintCount = (int)horizontalTilesCount;
@@ -83,21 +84,21 @@ public class GameView : MonoBehaviour
 
 	private void SpawnLines()
 	{
-		for (int i = 0; i < _turnManager.HorizontalTilesCount - 1; i++)
+		for (int i = 0; i < settingsSO.HorizontalNodes - 1; i++)
 		{
 			var line = _objectPoolingController.GetFromPool("LineVertical");
 
-			line.GetComponent<RectTransform>().sizeDelta = new Vector2(43, _turnManager.VerticalTilesCount * tilesParent.cellSize.y);
+			line.GetComponent<RectTransform>().sizeDelta = new Vector2(43, settingsSO.VerticalNodes * tilesParent.cellSize.y);
 			line.gameObject.SetActive(true);
 		}
 
-		var lineSize = new Vector2(43, _turnManager.VerticalTilesCount * tilesParent.cellSize.y);
+		var lineSize = new Vector2(43, settingsSO.VerticalNodes * tilesParent.cellSize.y);
 
 		verticalLines.cellSize = lineSize;
 		verticalLines.spacing = new Vector2(tilesParent.cellSize.y - 43, 0);
 
-		lineSize = new Vector2(_turnManager.HorizontalTilesCount * tilesParent.cellSize.x, 43);
-		for (int i = 0; i < _turnManager.VerticalTilesCount - 1; i++)
+		lineSize = new Vector2(settingsSO.HorizontalNodes * tilesParent.cellSize.x, 43);
+		for (int i = 0; i < settingsSO.VerticalNodes - 1; i++)
 		{
 			var line = _objectPoolingController.GetFromPool("LineHorizontal");
 			line.GetComponent<RectTransform>().sizeDelta = lineSize;
@@ -109,7 +110,7 @@ public class GameView : MonoBehaviour
 
 	private void OnTilesButtonClick(TileController tile)
 	{
-		_turnManager.NodeMark(tile.Index);
+		_turnController.NodeMark(tile.Index);
 	}
 
 	private void OnNodeMark(Vector2Int index, NodeType nodeType)

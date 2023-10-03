@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "GameSettings", menuName = "ScriptableObjects/Game Settings")]
-public class GameSettingsSO : ScriptableObject
+[CreateAssetMenu(fileName = "GameSettings", menuName = "ScriptableObjects/Game Limit Values")]
+public class GameLimitValuesSO : ScriptableObject
 {
     [SerializeField]
     private float minPlayerTurnTimeLimit = 1.0f;

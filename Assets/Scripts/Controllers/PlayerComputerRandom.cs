@@ -4,7 +4,7 @@ using System.Linq;
 
 public class PlayerComputerRandom : IPlayer
 {
-	public PlayerComputerRandom(TurnManager turnManager) : base(turnManager)
+	public PlayerComputerRandom(TurnController turnController) : base(turnController)
 	{
 		_waitForTurn = new WaitForSeconds(2);
 	}
@@ -26,8 +26,8 @@ public class PlayerComputerRandom : IPlayer
 	{
 		yield return _waitForTurn;
 
-		var index = _turnManager.TicTacToeController.GetRandomEmptyNode().index;
-		_turnManager.NodeMark(index);
+		var index = _turnController.TicTacToeController.GetRandomEmptyNode().index;
+		_turnController.NodeMark(index);
 	}
 
 	private void StopTurnCoroutine()

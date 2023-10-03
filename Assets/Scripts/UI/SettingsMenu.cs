@@ -22,15 +22,16 @@ public class SettingsMenu : BaseMenu
     [SerializeField]
     private TMP_InputField playerTurnTimeLimitInput;
     [SerializeField]
-    private Button saveButton;
-
-    [Inject]
-    private SaveManager _saveManager;
-
-    private void Start()
+    private GameLimitValuesSO gameLimitValuesSO;
+    [SerializeField]
+    private SettingsSO settingsSO;
+    
+    private void Awake()
     {
+        SaveManager.Instance.OnLoadGame += OnLoadGame;
+        SaveManager.Instance.OnSaveGame += OnSaveGame;
+
         menuButton.onClick.AddListener(OnMenuButtonClick);
-        saveButton.onClick.AddListener(OnSaveButtonClick);
 
         SetSizeSlidersLimits();
         verticalNodesSlider.onValueChanged.AddListener(OnVerticalNodesSliderValueChanged);
@@ -40,29 +41,22 @@ public class SettingsMenu : BaseMenu
         playerTurnTimeLimitInput.onValueChanged.AddListener(OnPlayerTimeLimitInputValueChanged);
     }
 
-    public override void Show()
+    public void OnLoadGame(SaveData saveData)
     {
-        base.Show();
-
-        LoadSave();
-    }
-
-    private void OnSaveButtonClick()
-    {
-        _saveManager.SaveData.verticalNodes = verticalNodesSlider.value;
-        _saveManager.SaveData.horizontalNodes = winningNodesSlider.value;
-        _saveManager.SaveData.winningNodes = winningNodesSlider.value;
-        _saveManager.SaveData.playerTurnTimeLimit = float.Parse(playerTurnTimeLimitInput.text);
-    }
-
-    private void LoadSave()
-    {
-        verticalNodesSlider.value = _saveManager.SaveData.verticalNodes;
-        horizontalNodesSlider.value = _saveManager.SaveData.horizontalNodes;
-        winningNodesSlider.value = _saveManager.SaveData.winningNodes;
-        playerTurnTimeLimitInput.text = _saveManager.SaveData.playerTurnTimeLimit.ToString();
+        verticalNodesSlider.value = saveData.verticalNodes;
+        horizontalNodesSlider.value = saveData.horizontalNodes;
+        winningNodesSlider.value = saveData.winningNodes;
+        playerTurnTimeLimitInput.text = saveData.playerTurnTimeLimit.ToString();
 
         RefreshValues();
+    }
+
+    public void OnSaveGame(SaveData saveData)
+    {
+        saveData.verticalNodes = verticalNodesSlider.value;
+        saveData.horizontalNodes = winningNodesSlider.value;
+        saveData.winningNodes = winningNodesSlider.value;
+        saveData.playerTurnTimeLimit = float.Parse(playerTurnTimeLimitInput.text);
     }
 
     private void RefreshValues()
@@ -76,24 +70,30 @@ public class SettingsMenu : BaseMenu
     {
         verticalNodesValue.text = value.ToString();
         SetWinningNodesSliderLimit();
+
+        settingsSO.VerticalNodes = (uint)value;
     }
 
     private void OnHorizontalNodesSliderValueChanged(float value)
     {
         horizontalNodesValue.text = value.ToString();
         SetWinningNodesSliderLimit();
+
+        settingsSO.HorizontalNodes = (uint)value;
     }
 
     private void OnWinningNodesSliderValueChanged(float value)
     {
         winningNodesValue.text = value.ToString();
+
+        settingsSO.WinningNodes = (uint)value;
     }
 
     private void OnPlayerTimeLimitInputDeselect(string text)
     {
         if (string.IsNullOrWhiteSpace(text))
         {
-            playerTurnTimeLimitInput.text = GameManager.Instance.Settings.MinPlayerTurnTimeLimit.ToString();
+            playerTurnTimeLimitInput.text = gameLimitValuesSO.MinPlayerTurnTimeLimit.ToString();
         }
     }
     
@@ -102,8 +102,10 @@ public class SettingsMenu : BaseMenu
         if (!float.TryParse(text, out var limit)) return;
 
         playerTurnTimeLimitInput.text = Mathf.Clamp(limit,
-            GameManager.Instance.Settings.MinPlayerTurnTimeLimit,
-            GameManager.Instance.Settings.MaxPlayerTurnTimeLimit).ToString();
+            gameLimitValuesSO.MinPlayerTurnTimeLimit,
+            gameLimitValuesSO.MaxPlayerTurnTimeLimit).ToString();
+
+        settingsSO.PlayerTurnTimeLimit = limit;
     }
 
     private void SetWinningNodesSliderLimit()
@@ -113,10 +115,10 @@ public class SettingsMenu : BaseMenu
 
     private void SetSizeSlidersLimits()
     {
-        verticalNodesSlider.minValue = GameManager.Instance.Settings.MinVerticalNodes;
-        horizontalNodesSlider.minValue = GameManager.Instance.Settings.MinHorizontalNodes;
-        verticalNodesSlider.maxValue = GameManager.Instance.Settings.MaxVerticalNodes;
-        horizontalNodesSlider.maxValue = GameManager.Instance.Settings.MaxHorizontalNodes;
+        verticalNodesSlider.minValue = gameLimitValuesSO.MinVerticalNodes;
+        horizontalNodesSlider.minValue = gameLimitValuesSO.MinHorizontalNodes;
+        verticalNodesSlider.maxValue = gameLimitValuesSO.MaxVerticalNodes;
+        horizontalNodesSlider.maxValue = gameLimitValuesSO.MaxHorizontalNodes;
         winningNodesSlider.minValue = Mathf.Min(verticalNodesSlider.minValue, horizontalNodesSlider.minValue);
 
         SetWinningNodesSliderLimit();
