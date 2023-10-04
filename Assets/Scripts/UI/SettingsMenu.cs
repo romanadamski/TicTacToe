@@ -57,7 +57,7 @@ public class SettingsMenu : BaseMenu
     public void OnSaveGame(SaveData saveData)
     {
         saveData.verticalNodes = verticalNodesSlider.value;
-        saveData.horizontalNodes = winningNodesSlider.value;
+        saveData.horizontalNodes = horizontalNodesSlider.value;
         saveData.winningNodes = winningNodesSlider.value;
         saveData.playerTurnTimeLimit = float.Parse(playerTurnTimeLimitInput.text);
     }

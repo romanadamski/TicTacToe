@@ -1,3 +1,4 @@
+using UnityEngine;
 using Zenject;
 
 public class GameplayManager : BaseManager<GameplayManager>
@@ -10,14 +11,15 @@ public class GameplayManager : BaseManager<GameplayManager>
     public GameOverState GameOverState { get; private set; }
     public EndGameplayState EndGameplayState { get; private set; }
 
-	#endregion
+    #endregion
 
-	[Inject]
-	private TurnController _turnController;
+    [SerializeField]
+    private GameplayEventsSO gameplayEventsSO;
 
     private void Awake()
     {
         InitStates();
+        gameplayEventsSO.OnGameOver += winner => SetGameOverState();
     }
 
     private void InitStates()
@@ -31,12 +33,12 @@ public class GameplayManager : BaseManager<GameplayManager>
 
     private void ClearGameplay()
     {
-		_turnController.GameplayFinished();
+        gameplayEventsSO.GameplayFinished();
 	}
 
     public void StartGameplay()
     {
-		_turnController.StartGame();
+        gameplayEventsSO.GameplayStarted();
     }
 
     public void RestartGameplay()

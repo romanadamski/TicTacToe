@@ -6,8 +6,8 @@ public abstract class SetPlayerBaseChoice : ActionChoice
     [SerializeField]
     private PlayerNumber playerNumber;
 
-    [Inject]
-    protected TurnController _turnController;
+    [SerializeField]
+    private TurnStateSO turnStateSO;
 
     protected abstract IPlayer Player { get; }
 
@@ -16,10 +16,10 @@ public abstract class SetPlayerBaseChoice : ActionChoice
         switch (playerNumber)
         {
             case PlayerNumber.PlayerOne:
-                _turnController.PlayerOne = Player;
+                turnStateSO.PlayerOne = Player;
                 break;
             case PlayerNumber.PlayerTwo:
-                _turnController.PlayerTwo = Player;
+                turnStateSO.PlayerTwo = Player;
                 break;
             default:
                 break;

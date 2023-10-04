@@ -5,8 +5,11 @@ using Zenject;
 
 public class MainMonoInstaller : MonoInstaller
 {
+	[SerializeField]
+	private BoardTurnController1 turnController;
+
 	public override void InstallBindings()
 	{
-		Container.Bind<TurnController>().AsSingle();
+		Container.Bind<ITurnController>().FromInstance(turnController);
 	}
 }

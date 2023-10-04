@@ -9,6 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9dad4b438c7c3943af775a75a565d2a, type: 3}
-  m_Name: EmptyEvent
+  m_Script: {fileID: 11500000, guid: 419d95829fa653e4b8f87f7da780c51f, type: 3}
+  m_Name: TurnState
   m_EditorClassIdentifier: 

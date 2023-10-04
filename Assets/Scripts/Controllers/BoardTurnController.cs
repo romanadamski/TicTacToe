@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TurnController
+public class BoardTurnController
 {
 	#region Events
 
@@ -47,7 +47,7 @@ public class TurnController
 		private set
 		{
 			_currentPlayer = value;
-			StartTurn(_currentPlayer);
+			StartTurn(value);
 			OnPlayerChanged?.Invoke(value);
 		}
 	}
@@ -55,6 +55,20 @@ public class TurnController
 
 	private Stack<Tuple<IPlayer, Vector2Int>> _movesHistory = new Stack<Tuple<IPlayer, Vector2Int>>();
 	private Coroutine _turnEndCoroutine;
+
+	public void StartGame()
+    {
+		OnGameplayStarted?.Invoke();
+
+		AssignRandomNodesToPlayers();
+		AssignNumbersToPlayers();
+		SetPlayersNames();
+		_movesHistory.Clear();
+
+		TicTacToeController = new BoardController(HorizontalTilesCount, VerticalTilesCount, WinningTilesCount);
+
+		CurrentPlayer = XPlayer;
+	}
 
 	private void StartTurn(IPlayer player)
 	{
@@ -86,20 +100,6 @@ public class TurnController
 			yield return null;
         }
 		SetLoser(player);
-	}
-
-	public void StartGame()
-    {
-		OnGameplayStarted?.Invoke();
-
-		AssignRandomNodesToPlayers();
-		AssignNumbersToPlayers();
-		SetPlayersNames();
-		_movesHistory.Clear();
-
-		TicTacToeController = new BoardController(HorizontalTilesCount, VerticalTilesCount, WinningTilesCount);
-
-		CurrentPlayer = XPlayer;
 	}
 
     private void AssignNumbersToPlayers()
@@ -213,7 +213,7 @@ public class TurnController
 		}
 	}
 
-	public void GameplayFinished()
+	public void EndGame()
 	{
 		OnGameplayFinished?.Invoke();
 

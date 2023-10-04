@@ -74,7 +74,6 @@ Transform:
   - {fileID: 1311698354950465860}
   - {fileID: 4430052145729027524}
   - {fileID: 3956907879442226508}
-  - {fileID: 4620230134394603854}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -121,50 +120,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1b7c928e0ccf5c438c18b36258087f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &8662255786566411395
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4620230134394603854}
-  - component: {fileID: 8406270731493497594}
-  m_Layer: 0
-  m_Name: TurnManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4620230134394603854
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8662255786566411395}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4768978251908384599}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8406270731493497594
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8662255786566411395}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64fa95233cedf2e458dc13928dc53dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  settingsSO: {fileID: 11400000, guid: dcfdd23f93a326a44b5e0820f0b348b1, type: 2}
+  gameplayEventsSO: {fileID: 11400000, guid: 26e0f4ac4b9170f4d8cd528f50675f65, type: 2}
 --- !u!1 &8872544480899299348
 GameObject:
   m_ObjectHideFlags: 0

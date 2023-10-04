@@ -1971,6 +1971,9 @@ MonoBehaviour:
   timer: {fileID: 7496778565414659921}
   tilesToWin: {fileID: 3733587723572083875}
   settingsSO: {fileID: 11400000, guid: dcfdd23f93a326a44b5e0820f0b348b1, type: 2}
+  turnEventsSO: {fileID: 11400000, guid: 4ff293778b45ed443a12646e3617c30d, type: 2}
+  boardEventsSO: {fileID: 11400000, guid: a4791adc20ebc2349b89311c3d035ba7, type: 2}
+  turnStateSO: {fileID: 11400000, guid: ae9411dcd0b85474b901800f943c6f30, type: 2}
 --- !u!1 &6761889773150614625
 GameObject:
   m_ObjectHideFlags: 0

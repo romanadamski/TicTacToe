@@ -786,6 +786,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerNumber: 1
+  turnStateSO: {fileID: 11400000, guid: ae9411dcd0b85474b901800f943c6f30, type: 2}
 --- !u!1 &2412865078724628591
 GameObject:
   m_ObjectHideFlags: 0
@@ -1382,6 +1383,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerNumber: 0
+  turnStateSO: {fileID: 11400000, guid: ae9411dcd0b85474b901800f943c6f30, type: 2}
 --- !u!1 &3684879240343489507
 GameObject:
   m_ObjectHideFlags: 0
@@ -1542,6 +1544,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerNumber: 0
+  turnStateSO: {fileID: 11400000, guid: ae9411dcd0b85474b901800f943c6f30, type: 2}
 --- !u!1 &4394265483908003012
 GameObject:
   m_ObjectHideFlags: 0
@@ -1805,6 +1808,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerNumber: 1
+  turnStateSO: {fileID: 11400000, guid: ae9411dcd0b85474b901800f943c6f30, type: 2}
 --- !u!1 &6115448283328488495
 GameObject:
   m_ObjectHideFlags: 0

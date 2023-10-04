@@ -53,6 +53,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   winnerText: {fileID: 249807557172649470}
   menuButton: {fileID: 8422856613232053475}
+  gameplayEventsSO: {fileID: 11400000, guid: 26e0f4ac4b9170f4d8cd528f50675f65, type: 2}
 --- !u!1 &2857722576416251050
 GameObject:
   m_ObjectHideFlags: 0

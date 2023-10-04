@@ -165,7 +165,7 @@ namespace Tests
         public void CheckUndoMove()
         {
 			// Arrange
-			TurnController turnController = new TurnController();
+			BoardTurnController turnController = new BoardTurnController();
 
 			// Act
 			var playerOne = new PlayerInput(turnController);
@@ -189,7 +189,7 @@ namespace Tests
         public void CheckHint()
         {
 			// Arrange
-			TurnController turnController = new TurnController();
+			BoardTurnController turnController = new BoardTurnController();
 
 			// Act
 			var playerOne = new PlayerInput(turnController);

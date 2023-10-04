@@ -3,26 +3,33 @@ using UnityEngine.UI;
 using Zenject;
 
 [RequireComponent(typeof(ObjectPoolingController))]
-public class GameView : MonoBehaviour
+public class BoardView : MonoBehaviour
 {
 	[SerializeField]
 	private GridLayoutGroup tilesParent;
 	[SerializeField]
-	private RectTransform rectTransform;
+	private RectTransform gridRectTransform;
 	[SerializeField]
 	private GridLayoutGroup verticalLines;
 	[SerializeField]
 	private GridLayoutGroup horizontalLines;
 	[SerializeField]
 	private SettingsSO settingsSO;
+	[SerializeField]
+	private GameplayEventsSO gameplayEventsSO;
+	[SerializeField]
+	private BoardEventsSO boardEventsSO;
+	[SerializeField]
+	private TurnEventsSO turnEventsSO;
 
 	private ObjectPoolingController _objectPoolingController;
 	private TileController _currentHighlightTile;
 
-	[Inject]
-	private TurnController _turnController;
+	private IBoardController _boardController;
+	private TileController[,] _tileControllers;
 
-	public TileController[,] TileControllers { get; private set; }
+	[Inject]
+	private ITurnController _turnController;
 
 	private void Awake()
     {
@@ -33,22 +40,36 @@ public class GameView : MonoBehaviour
 
     private void SubscribeToEvents()
     {
-        _turnController.OnSetNode += OnNodeMark;
-        _turnController.OnPlayerChanged += ToggleInput;
-        _turnController.OnGameplayStarted += SpawnBoard;
-        _turnController.OnGameplayFinished += ClearBoard;
-        _turnController.OnHint += OnHint;
+		boardEventsSO.OnSetNode += OnSetNode;
+		boardEventsSO.OnSetNode += TryEndGame;
+		turnEventsSO.OnPlayerChanged += ToggleInput;
+		gameplayEventsSO.OnGameplayStarted += StartGame;
+		gameplayEventsSO.OnGameplayFinished += ClearBoard;
+		boardEventsSO.OnHint += OnHint;
+        boardEventsSO.OnUndoMove += UndoMove;
     }
 
-    private void OnHint(Vector2Int index, NodeType nodeType)
+    private void UndoMove()
+    {
+		var undoIsPossible = _boardController.TryUndoMove(out var lastMove);
+		if (undoIsPossible)
+        {
+			SetNodeUI(NodeType.None, lastMove.Item2);
+			_turnController.UndoTurn();
+		}
+	}
+
+    private void OnHint()
 	{
-		if(_currentHighlightTile != null)
+		var randomNode = _boardController.GetRandomEmptyNode();
+
+		if (_currentHighlightTile != null)
 		{
 			_currentHighlightTile.EndHighlightCoroutine();
 		}
 
-		_currentHighlightTile = TileControllers[index.x, index.y];
-		_currentHighlightTile.Highlight(nodeType);
+		_currentHighlightTile = _tileControllers[randomNode.index.x, randomNode.index.y];
+		_currentHighlightTile.Highlight(randomNode.nodeType);
 	}
 
 	public void ClearBoard()
@@ -56,22 +77,29 @@ public class GameView : MonoBehaviour
 		_objectPoolingController.ReturnAllToPools();
 	}
 
-	public void SpawnBoard()
-	{
-		SpawnTiles();
-		SpawnLines();
-	}
+	public void StartGame()
+    {
+		_boardController = new BoardController(settingsSO.HorizontalNodes, settingsSO.VerticalNodes, settingsSO.WinningNodes);
 
-	private void SpawnTiles()
+		SpawnBoard();
+    }
+
+    private void SpawnBoard()
+    {
+        SpawnTiles();
+        SpawnLines();
+    }
+
+    private void SpawnTiles()
 	{
 		var horizontalTilesCount = settingsSO.HorizontalNodes;
 		var verticalTilesCount = settingsSO.VerticalNodes;
 
-		TileControllers = new TileController[horizontalTilesCount, verticalTilesCount];
+		_tileControllers = new TileController[horizontalTilesCount, verticalTilesCount];
 		tilesParent.constraintCount = (int)horizontalTilesCount;
 		var cellSize = horizontalTilesCount > verticalTilesCount
-			? rectTransform.rect.width / horizontalTilesCount
-			: rectTransform.rect.height / verticalTilesCount;
+			? gridRectTransform.rect.width / horizontalTilesCount
+			: gridRectTransform.rect.height / verticalTilesCount;
 		tilesParent.cellSize = new Vector2(cellSize, cellSize);
 
 		for (int i = 0; i < verticalTilesCount; i++)
@@ -82,7 +110,7 @@ public class GameView : MonoBehaviour
 				tile.transform.SetParent(tilesParent.transform);
 				tile.Init(new Vector2Int(j, i), () => OnTilesButtonClick(tile));
 				tile.gameObject.SetActive(true);
-				TileControllers[j, i] = tile;
+				_tileControllers[j, i] = tile;
 			}
 		}
 	}
@@ -113,20 +141,44 @@ public class GameView : MonoBehaviour
 		horizontalLines.spacing = new Vector2(0, tilesParent.cellSize.x -43);
 	}
 
+	//todo refactor get player
 	private void OnTilesButtonClick(TileController tile)
 	{
-		_turnController.NodeMark(tile.Index);
+		boardEventsSO.SetNode(_turnController.CurrentPlayer, tile.Index);
 	}
 
-	private void OnNodeMark(Vector2Int index, NodeType nodeType)
+	//todo refactor call in playerrandomcomputer
+	private void OnSetNode(IPlayer player, Vector2Int index)
+    {
+        SetNodeUI(player.NodeType, index);
+        _boardController.SetNode(index, player.NodeType);
+        _boardController.SaveMove(player, index);
+    }
+
+    private void SetNodeUI(NodeType nodeType, Vector2Int index)
+    {
+        var tile = _tileControllers[index.x, index.y];
+        tile.SetState(nodeType);
+    }
+
+    private void TryEndGame(IPlayer player, Vector2Int index)
 	{
-		var tile = TileControllers[index.x, index.y];
-		tile.SetState(nodeType);
+		var winner = _boardController.CheckWin(index, player.NodeType);
+		if (winner != NodeType.None)
+		{
+			gameplayEventsSO.GameOver(player);
+		}
+		else if (!_boardController.CheckEmptyNodes())
+		{
+			gameplayEventsSO.GameOver(null);
+		}
 	}
 
 	public void ToggleInput(IPlayer player)
 	{
-		foreach(var item in TileControllers)
+		if (_tileControllers == null) return;
+
+		foreach(var item in _tileControllers)
 		{
 			if (item.NodeType != NodeType.None) continue;
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -21,7 +22,7 @@ public struct Node
 	}
 }
 
-public class BoardController
+public class BoardController : IBoardController
 {
 	private uint _horizontalCount;
 	private uint _verticalCount;
@@ -39,9 +40,34 @@ public class BoardController
 				_board[j, i].index = new Vector2Int(j, i);
 			}
 		}
+
 		_horizontalCount = horizontalCount;
 		_verticalCount = verticalCount;
 		_winningCount = winningCount;
+	}
+
+	private Stack<Tuple<IPlayer, Vector2Int>> _movesHistory = new Stack<Tuple<IPlayer, Vector2Int>>();
+
+	private void StartGame()
+	{
+		_movesHistory.Clear();
+	}
+
+	public void SaveMove(IPlayer player, Vector2Int index)
+	{
+		_movesHistory.Push(new Tuple<IPlayer, Vector2Int>(player, index));
+	}
+
+	public bool TryUndoMove(out Tuple<IPlayer, Vector2Int> lastMove)
+	{
+		lastMove = null;
+		if (_movesHistory.Count == 0) return false;
+
+		lastMove = _movesHistory.Pop();
+
+		SetNode(lastMove.Item2, NodeType.None);
+
+		return true;
 	}
 
 	public Node GetRandomEmptyNode()
@@ -49,7 +75,7 @@ public class BoardController
 		var emptyNodes = _board.Cast<Node>().
 			Where(x => x.nodeType == NodeType.None);
 		var nodesCount = emptyNodes.Count();
-		var randomIndex = Random.Range(0, nodesCount);
+		var randomIndex = UnityEngine.Random.Range(0, nodesCount);
 		return emptyNodes.ElementAt(randomIndex);
 	}
 
@@ -58,19 +84,18 @@ public class BoardController
 		_board[index.x, index.y] = new Node(index, nodeType);
 	}
 
-	public bool CheckDraw() => CheckWin() == NodeType.None && !CheckEmptyNodes();
+	//public bool CheckDraw() => CheckWin() == NodeType.None && !CheckEmptyNodes();
 
-	public NodeType CheckWin()
-    {
-		var nodeType = NodeType.None;
-		foreach (var node in _board)
-        {
-			nodeType = CheckWin(node.index, node.nodeType);
-		}
+	//public NodeType CheckWin()
+ //   {
+	//	var nodeType = NodeType.None;
+	//	foreach (var node in _board)
+ //       {
+	//		nodeType = CheckWin(node.index, node.nodeType);
+	//	}
 
-		return nodeType;
-
-	}
+	//	return nodeType;
+	//}
 
 	public NodeType CheckWin(Vector2Int index, NodeType nodeType)
 	{

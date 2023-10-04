@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 public class SetPlayerComputerRandom : SetPlayerBaseChoice
 {
-    protected override IPlayer Player => new PlayerComputerRandom(_turnController);
+    protected override IPlayer Player => new PlayerComputerRandom(null);
 }

@@ -4,7 +4,7 @@ using System.Linq;
 
 public class PlayerComputerRandom : IPlayer
 {
-	public PlayerComputerRandom(TurnController turnController) : base(turnController)
+	public PlayerComputerRandom(BoardTurnController turnController) : base(turnController)
 	{
 		_waitForTurn = new WaitForSeconds(2);
 	}

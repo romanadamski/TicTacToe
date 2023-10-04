@@ -9,9 +9,8 @@ public class GameOverMenu : BaseMenu
     private TextMeshProUGUI winnerText;
     [SerializeField]
     private Button menuButton;
-
-    [Inject]
-    private TurnController _turnController;
+    [SerializeField]
+    private GameplayEventsSO gameplayEventsSO;
 
     private void Awake()
     {
@@ -26,7 +25,7 @@ public class GameOverMenu : BaseMenu
 
     private void SubscribeToEvents()
     {
-        _turnController.OnGameOver += OnGameOver;
+        gameplayEventsSO.OnGameOver += OnGameOver;
     }
 
     private void OnGameOver(IPlayer player)

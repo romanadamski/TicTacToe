@@ -27,14 +27,17 @@ public class GameplayMenu : BaseMenu
     private TextMeshProUGUI tilesToWin;
     [SerializeField]
     private SettingsSO settingsSO;
+    [SerializeField]
+    private TurnEventsSO turnEventsSO;
+    [SerializeField]
+    private BoardEventsSO boardEventsSO;
+    [SerializeField]
+    private TurnStateSO turnStateSO;
 
     private Color _activePlayerColor = Color.white;
     private Color _inactivePlayerColor = new Color(0, 0, 0, 0.5f);
 
-	[Inject]
-	private TurnController _turnController;
-    
-	private void Awake()
+    private void Awake()
     {
         menuButton.onClick.AddListener(OnMenuButtonClick);
 		restartButon.onClick.AddListener(OnRestartButtonClick);
@@ -49,19 +52,20 @@ public class GameplayMenu : BaseMenu
         
         RefreshPlayerSprites();
 
-        playerOneText.text = _turnController.PlayerOne.Name;
-        playerTwoText.text = _turnController.PlayerTwo.Name;
+        playerOneText.text = turnStateSO.PlayerOne.Name;
+        playerTwoText.text = turnStateSO.PlayerTwo.Name;
 
-        undoButon.gameObject.SetActive(_turnController.AnyComputerPlay);
-        hintButton.gameObject.SetActive(_turnController.AnyComputerPlay);
+        //todo refactor get player or event
+        //undoButon.gameObject.SetActive(_turnController.AnyComputerPlay);
+        //hintButton.gameObject.SetActive(_turnController.AnyComputerPlay);
 
         tilesToWin.text = settingsSO.WinningNodes.ToString();
     }
 
     private void RefreshPlayerSprites()
     {
-        playerOneActiveImage.sprite = UIManager.Instance.GetPlayerSpriteByNodeType(_turnController.PlayerOne.NodeType);
-        playerTwoActiveImage.sprite = UIManager.Instance.GetPlayerSpriteByNodeType(_turnController.PlayerTwo.NodeType);
+        playerOneActiveImage.sprite = UIManager.Instance.GetPlayerSpriteByNodeType(turnStateSO.PlayerOne.NodeType);
+        playerTwoActiveImage.sprite = UIManager.Instance.GetPlayerSpriteByNodeType(turnStateSO.PlayerTwo.NodeType);
     }
 
     private void OnMenuButtonClick()
@@ -77,13 +81,12 @@ public class GameplayMenu : BaseMenu
 
     private void OnUndoButtonClick()
     {
-        _turnController.UndoMove();
+        boardEventsSO.UndoMove();
 	}
 
     private void OnHintButtonClick()
     {
-        _turnController.HintNode();
-
+        boardEventsSO.Hint();
     }
     private void OnTimerChanged(float time)
     {
@@ -92,8 +95,8 @@ public class GameplayMenu : BaseMenu
 
     private void SubscribeToEvents()
     {
-        _turnController.OnPlayerChanged += PlayerChanged;
-        _turnController.OnTimerChanged += OnTimerChanged;
+        turnEventsSO.OnPlayerChanged += PlayerChanged;
+        turnEventsSO.OnTimerChanged += OnTimerChanged;
     }
 
     private void PlayerChanged(IPlayer player)
