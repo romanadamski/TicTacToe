@@ -34,6 +34,9 @@ public class GameplayMenu : BaseMenu
     [SerializeField]
     private TurnStateSO turnStateSO;
 
+    [Inject]
+    private ITurnController _turnController;
+
     private Color _activePlayerColor = Color.white;
     private Color _inactivePlayerColor = new Color(0, 0, 0, 0.5f);
 
@@ -55,9 +58,8 @@ public class GameplayMenu : BaseMenu
         playerOneText.text = turnStateSO.PlayerOne.Name;
         playerTwoText.text = turnStateSO.PlayerTwo.Name;
 
-        //todo refactor get player or event
-        //undoButon.gameObject.SetActive(_turnController.AnyComputerPlay);
-        //hintButton.gameObject.SetActive(_turnController.AnyComputerPlay);
+        undoButon.gameObject.SetActive(_turnController.AnyComputerPlay);
+        hintButton.gameObject.SetActive(_turnController.AnyComputerPlay);
 
         tilesToWin.text = settingsSO.WinningNodes.ToString();
     }

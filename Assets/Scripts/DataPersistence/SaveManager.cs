@@ -24,12 +24,13 @@ public class SaveManager : BaseManager<SaveManager>
 
     private void LoadGame()
     {
-        if(_saveData == null)
+        var saveString = PlayerPrefs.GetString(SAVE_KEY);
+        _saveData = JsonUtility.FromJson<SaveData>(saveString);
+
+        if (_saveData == null)
         {
             NewGame();
         }
-        var saveString = PlayerPrefs.GetString(SAVE_KEY);
-        _saveData = JsonUtility.FromJson<SaveData>(saveString);
 
         OnLoadGame?.Invoke(_saveData);
     }

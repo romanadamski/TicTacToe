@@ -25,6 +25,7 @@ public class BoardView : MonoBehaviour
 	private ObjectPoolingController _objectPoolingController;
 	private TileController _currentHighlightTile;
 
+	[Inject]
 	private IBoardController _boardController;
 	private TileController[,] _tileControllers;
 
@@ -40,16 +41,23 @@ public class BoardView : MonoBehaviour
 
     private void SubscribeToEvents()
     {
-		boardEventsSO.OnSetNode += OnSetNode;
+		boardEventsSO.OnSetNode += SetNode;
 		boardEventsSO.OnSetNode += TryEndGame;
 		turnEventsSO.OnPlayerChanged += ToggleInput;
 		gameplayEventsSO.OnGameplayStarted += StartGame;
 		gameplayEventsSO.OnGameplayFinished += ClearBoard;
 		boardEventsSO.OnHint += OnHint;
         boardEventsSO.OnUndoMove += UndoMove;
-    }
+	}
 
-    private void UndoMove()
+	public void StartGame()
+	{
+		_boardController.Set(settingsSO.HorizontalNodes, settingsSO.VerticalNodes, settingsSO.WinningNodes);
+
+		SpawnBoard();
+	}
+
+	private void UndoMove()
     {
 		var undoIsPossible = _boardController.TryUndoMove(out var lastMove);
 		if (undoIsPossible)
@@ -61,28 +69,20 @@ public class BoardView : MonoBehaviour
 
     private void OnHint()
 	{
-		var randomNode = _boardController.GetRandomEmptyNode();
-
 		if (_currentHighlightTile != null)
 		{
 			_currentHighlightTile.EndHighlightCoroutine();
 		}
 
-		_currentHighlightTile = _tileControllers[randomNode.index.x, randomNode.index.y];
-		_currentHighlightTile.Highlight(randomNode.nodeType);
+		var randomEmptyNode = _boardController.GetRandomEmptyNode();
+		_currentHighlightTile = _tileControllers[randomEmptyNode.index.x, randomEmptyNode.index.y];
+		_currentHighlightTile.Highlight(_turnController.CurrentPlayer.NodeType);
 	}
 
 	public void ClearBoard()
     {
 		_objectPoolingController.ReturnAllToPools();
 	}
-
-	public void StartGame()
-    {
-		_boardController = new BoardController(settingsSO.HorizontalNodes, settingsSO.VerticalNodes, settingsSO.WinningNodes);
-
-		SpawnBoard();
-    }
 
     private void SpawnBoard()
     {
@@ -141,14 +141,12 @@ public class BoardView : MonoBehaviour
 		horizontalLines.spacing = new Vector2(0, tilesParent.cellSize.x -43);
 	}
 
-	//todo refactor get player
 	private void OnTilesButtonClick(TileController tile)
 	{
 		boardEventsSO.SetNode(_turnController.CurrentPlayer, tile.Index);
 	}
 
-	//todo refactor call in playerrandomcomputer
-	private void OnSetNode(IPlayer player, Vector2Int index)
+	public void SetNode(IPlayer player, Vector2Int index)
     {
         SetNodeUI(player.NodeType, index);
         _boardController.SetNode(index, player.NodeType);

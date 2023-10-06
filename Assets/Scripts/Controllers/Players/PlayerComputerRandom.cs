@@ -1,37 +1,43 @@
 ﻿using System.Collections;
 using UnityEngine;
-using System.Linq;
+using Zenject;
 
 public class PlayerComputerRandom : IPlayer
 {
-	public PlayerComputerRandom(BoardTurnController turnController) : base(turnController)
-	{
-		_waitForTurn = new WaitForSeconds(2);
-	}
+	[SerializeField]
+	private BoardEventsSO boardEventsSO;
 
-	private WaitForSeconds _waitForTurn;
+	private float RandomTimeInterval => Random.Range(0.5f, 3.0f);
 	private Coroutine _turnCoroutine;
 
 	public override bool AllowInput => false;
 
+	[Inject]
+	private IBoardController _boardController;
+
 	public override void OnStartTurn()
 	{
 		base.OnStartTurn();
-
 		StopTurnCoroutine();
-		_turnCoroutine = GameManager.Instance.StartCoroutine(WaitAndTakeTurn());
+		Invoke(nameof(MakeMove), RandomTimeInterval);
 	}
 
 	private IEnumerator WaitAndTakeTurn()
-	{
-		yield return _waitForTurn;
+    {
+        yield return new WaitForSeconds(RandomTimeInterval);
 
-		var index = _turnController.RandomEmptyNode.index;
-		_turnController.NodeMark(index);
-	}
+        MakeMove();
+    }
 
-	private void StopTurnCoroutine()
+    private void MakeMove()
+    {
+        var index = _boardController.GetRandomEmptyNode().index;
+        boardEventsSO.SetNode(this, index);
+    }
+
+    private void StopTurnCoroutine()
 	{
+		CancelInvoke(nameof(MakeMove));
 		if(_turnCoroutine != null)
 		{
 			GameManager.Instance.StopCoroutine(_turnCoroutine);

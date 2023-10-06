@@ -13,7 +13,8 @@ namespace Tests
 		[SetUp]
 		public void Setup()
 		{
-			_ticTacToeController = new BoardController(3,3,3);
+			_ticTacToeController = new BoardController();
+			_ticTacToeController.Set(3,3,3);
 		}
 
 		[Test]
@@ -165,11 +166,11 @@ namespace Tests
         public void CheckUndoMove()
         {
 			// Arrange
-			BoardTurnController turnController = new BoardTurnController();
+			BoardTurnControllerObsolete turnController = new BoardTurnControllerObsolete();
 
 			// Act
-			var playerOne = new PlayerInput(turnController);
-			var playerTwo = new PlayerInput(turnController);
+			var playerOne = new PlayerInput();
+			var playerTwo = new PlayerInput();
 			playerOne.SetNodeType(NodeType.X);
 			playerTwo.SetNodeType(NodeType.O);
 			turnController.PlayerOne = playerOne;
@@ -189,11 +190,11 @@ namespace Tests
         public void CheckHint()
         {
 			// Arrange
-			BoardTurnController turnController = new BoardTurnController();
+			BoardTurnControllerObsolete turnController = new BoardTurnControllerObsolete();
 
 			// Act
-			var playerOne = new PlayerInput(turnController);
-			var playerTwo = new PlayerInput(turnController);
+			var playerOne = new PlayerInput();
+			var playerTwo = new PlayerInput();
 			playerOne.SetNodeType(NodeType.X);
 			playerTwo.SetNodeType(NodeType.O);
 			turnController.PlayerOne = playerOne;

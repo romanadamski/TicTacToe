@@ -7,19 +7,13 @@ public enum PlayerNumber
 	PlayerTwo
 }
 
-public abstract class IPlayer
+public abstract class IPlayer : MonoBehaviour
 {
-	protected BoardTurnController _turnController;
 	public PlayerNumber PlayerNumber { get; private set; }
 	public string Name { get; private set; }
 
 	public abstract bool AllowInput { get; }
 	public NodeType NodeType { get; private set; }
-
-	protected IPlayer(BoardTurnController turnController)
-	{
-		_turnController = turnController;
-	}
 
 	public void SetName(string name)
     {

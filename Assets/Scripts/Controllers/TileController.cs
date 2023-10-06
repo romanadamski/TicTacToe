@@ -14,7 +14,7 @@ public class TileController : MonoBehaviour
     private Sprite _defaultSprite;
 	private Coroutine _hintCoroutine;
 	private Color transparentColor = new Color(0, 0, 0, 0);
-	private Color targetHintColor = new Color(0.5f, 0.5f, 0.5f, 1.0f);
+	private Color targetHintColor = new Color(1, 1, 1, 1);
 
     public Button Button { get; private set; }
     public Vector2Int Index { get; private set; }
@@ -71,7 +71,7 @@ public class TileController : MonoBehaviour
 		while (elapsed < duration)
 		{
 			elapsed += Time.deltaTime;
-			hintImage.color = Color.Lerp(hintImage.color, targetHintColor, Time.deltaTime);
+			hintImage.color = Color.Lerp(hintImage.color, targetHintColor, Time.fixedDeltaTime);
 
 			yield return null;
 		}
