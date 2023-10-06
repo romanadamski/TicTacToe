@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using Zenject;
 
 public class PlayerComputerRandom : IPlayer
@@ -8,7 +7,6 @@ public class PlayerComputerRandom : IPlayer
 	private BoardEventsSO boardEventsSO;
 
 	private float RandomTimeInterval => Random.Range(0.5f, 3.0f);
-	private Coroutine _turnCoroutine;
 
 	public override bool AllowInput => false;
 
@@ -18,16 +16,8 @@ public class PlayerComputerRandom : IPlayer
 	public override void OnStartTurn()
 	{
 		base.OnStartTurn();
-		StopTurnCoroutine();
 		Invoke(nameof(MakeMove), RandomTimeInterval);
 	}
-
-	private IEnumerator WaitAndTakeTurn()
-    {
-        yield return new WaitForSeconds(RandomTimeInterval);
-
-        MakeMove();
-    }
 
     private void MakeMove()
     {
@@ -35,20 +25,15 @@ public class PlayerComputerRandom : IPlayer
         boardEventsSO.SetNode(this, index);
     }
 
-    private void StopTurnCoroutine()
+    private void StopInvokingMove()
 	{
 		CancelInvoke(nameof(MakeMove));
-		if(_turnCoroutine != null)
-		{
-			GameManager.Instance.StopCoroutine(_turnCoroutine);
-		}
-		_turnCoroutine = null;
 	}
 
 	public override void OnTurnEnd()
 	{
 		base.OnTurnEnd();
 
-		StopTurnCoroutine();
+		StopInvokingMove();
 	}
 }

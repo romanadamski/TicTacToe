@@ -29,3 +29,7 @@ MonoBehaviour:
     XSpritePath: 
     OSpritePath: Packages/com.unity.2d.animation/Editor/Assets/SkinningModule/Icons/Light/Bone@4x.png
     BGSpritePath: Packages/com.unity.2d.animation/Editor/Assets/SkinningModule/Icons/Selected/Copy.png
+  - BundleName: main
+    XSpritePath: Assets/Textures/Moon Active/ExTarget.png
+    OSpritePath: Assets/Textures/Moon Active/CircleTarget.png
+    BGSpritePath: Assets/Textures/Moon Active/EmptyBG.png

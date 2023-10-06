@@ -54,7 +54,7 @@ public class BoardTurnController : TurnController
 
 	private void AssignRandomNodesToPlayers()
 	{
-		var random = UnityEngine.Random.Range(0, 2);
+		var random = Random.Range(0, 2);
 		var playerOneNodeType = random == 0 ? NodeType.X : NodeType.O;
 		var playerTwoNodeType = playerOneNodeType == NodeType.O ? NodeType.X : NodeType.O;
 		PlayerOne.SetNodeType(playerOneNodeType);

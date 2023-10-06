@@ -1,17 +1,19 @@
 ManifestFileVersion: 0
-CRC: 3908264586
+CRC: 3961738730
 Hashes:
   AssetFileHash:
     serializedVersion: 2
     Hash: 70cf03b8076577c2593106815e79057a
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 9e6ad29cbd2df8fbe1a15315db0e51ab
+    Hash: 192e690a6ab30273b050a05752742228
 HashAppended: 0
 ClassTypes:
 - Class: 28
   Script: {instanceID: 0}
 - Class: 213
+  Script: {instanceID: 0}
+- Class: 687078895
   Script: {instanceID: 0}
 Assets:
 - Assets/Textures/Moon Active/ExTarget.png

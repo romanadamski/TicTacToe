@@ -136,7 +136,7 @@ public class TurnController : MonoBehaviour, ITurnController
 	private void StartTurn(IPlayer player)
 	{
 		StopTurnEndCoroutine();
-		_turnEndCoroutine = GameManager.Instance.StartCoroutine(TimerCoroutine(player));
+		_turnEndCoroutine = StartCoroutine(TimerCoroutine(player));
 		player.OnStartTurn();
 	}
 
@@ -149,7 +149,7 @@ public class TurnController : MonoBehaviour, ITurnController
 	{
 		if (_turnEndCoroutine != null)
 		{
-			GameManager.Instance.StopCoroutine(_turnEndCoroutine);
+			StopCoroutine(_turnEndCoroutine);
 		}
 		ResetTurnTime();
 	}

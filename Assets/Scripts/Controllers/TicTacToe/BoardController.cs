@@ -57,7 +57,6 @@ public class BoardController : IBoardController
 	public bool TryUndoMove(out Tuple<IPlayer, Vector2Int> lastMove)
 	{
 		lastMove = null;
-		Debug.Log(_movesHistory.Count);
 		if (_movesHistory.Count == 0) return false;
 
 		lastMove = _movesHistory.Pop();
