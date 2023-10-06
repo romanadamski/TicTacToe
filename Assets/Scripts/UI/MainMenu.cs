@@ -21,6 +21,9 @@ public class MainMenu : BaseMenu
 	[SerializeField]
 	private ChoiceButtonGroup playerTwoGameModeButtons;
 
+	[SerializeField]
+	private GameEventsSO gameEventsSO;
+
 	private void Start()
 	{
 		playerOneGameModeButtons.AddListener(SetStartButtonInteractable);
@@ -37,12 +40,12 @@ public class MainMenu : BaseMenu
 	{
 		playerOneGameModeButtons.ExecuteSelected();
 		playerTwoGameModeButtons.ExecuteSelected();
-		GameManager.Instance.SetLevelState();
+		gameEventsSO.StartLevel();
 	}
 
 	private void OnSettingsButtonClick()
 	{
-		GameManager.Instance.SetSettingsState();
+		gameEventsSO.GoToSettings();
 	}
 
 	public override void Show()

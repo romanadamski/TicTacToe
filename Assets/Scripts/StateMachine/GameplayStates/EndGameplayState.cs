@@ -1,6 +1,11 @@
 public class EndGameplayState : State
 {
-    public EndGameplayState(StateMachine stateMachine) : base(stateMachine) { }
+    public EndGameplayState(StateMachine stateMachine, GameEventsSO gameEventsSO) : base(stateMachine)
+    {
+        this.gameEventsSO = gameEventsSO;
+    }
+
+    private GameEventsSO gameEventsSO;
 
     protected override void OnEnter()
     {
@@ -9,6 +14,6 @@ public class EndGameplayState : State
 
     protected override void OnExit()
     {
-        GameManager.Instance.SetMainMenuState();
+        gameEventsSO.GoToMainMenu();
     }
 }

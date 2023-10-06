@@ -14,6 +14,8 @@ public class GameplayManager : BaseManager<GameplayManager>
 
     [SerializeField]
     private GameplayEventsSO gameplayEventsSO;
+    [SerializeField]
+    private GameEventsSO gameEventsSO;
 
     private void Awake()
     {
@@ -27,7 +29,7 @@ public class GameplayManager : BaseManager<GameplayManager>
 
         GameplayState = new GameplayState(_gameplayStateMachine);
         GameOverState = new GameOverState(_gameplayStateMachine);
-        EndGameplayState = new EndGameplayState(_gameplayStateMachine);
+        EndGameplayState = new EndGameplayState(_gameplayStateMachine, gameEventsSO);
     }
 
     private void ClearGameplay()

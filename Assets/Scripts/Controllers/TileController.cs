@@ -94,7 +94,7 @@ public class TileController : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Stop playing fade animaiton
+	/// Stop playing fade animaiton and reset UI
 	/// </summary>
 	public void EndHighlightCoroutine()
 	{
@@ -105,7 +105,6 @@ public class TileController : MonoBehaviour
 			StopCoroutine(_hintCoroutine);
 		}
 		_hintCoroutine = null;
-
 	}
 
 	public override string ToString()

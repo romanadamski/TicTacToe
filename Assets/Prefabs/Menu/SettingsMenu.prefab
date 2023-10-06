@@ -330,6 +330,7 @@ MonoBehaviour:
   playerTurnTimeLimitInput: {fileID: 5461399019337390036}
   gameLimitValuesSO: {fileID: 11400000, guid: f00a4c8cf7523ec478a7d135a0506885, type: 2}
   settingsSO: {fileID: 11400000, guid: dcfdd23f93a326a44b5e0820f0b348b1, type: 2}
+  gameEventsSO: {fileID: 11400000, guid: cd81133ecf68d574aaf0be26f2836634, type: 2}
 --- !u!1 &1130862845079994326
 GameObject:
   m_ObjectHideFlags: 0

@@ -787,7 +787,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectedButtonColor: {r: 0.16078432, g: 1, b: 0, a: 1}
-  Button: {fileID: 2074361998260052453}
+  button: {fileID: 2074361998260052453}
 --- !u!1 &2412865078724628591
 GameObject:
   m_ObjectHideFlags: 0
@@ -1459,7 +1459,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectedButtonColor: {r: 0.16078432, g: 1, b: 0, a: 1}
-  Button: {fileID: 4340393475782951868}
+  button: {fileID: 4340393475782951868}
 --- !u!1 &3684879240343489507
 GameObject:
   m_ObjectHideFlags: 0
@@ -1621,7 +1621,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectedButtonColor: {r: 0.16078432, g: 1, b: 0, a: 1}
-  Button: {fileID: 4795437354472402391}
+  button: {fileID: 4795437354472402391}
 --- !u!1 &4394265483908003012
 GameObject:
   m_ObjectHideFlags: 0
@@ -1887,7 +1887,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectedButtonColor: {r: 0.16078432, g: 1, b: 0, a: 1}
-  Button: {fileID: 5295325843426921620}
+  button: {fileID: 5295325843426921620}
 --- !u!1 &6115448283328488495
 GameObject:
   m_ObjectHideFlags: 0
@@ -2379,6 +2379,7 @@ MonoBehaviour:
   assetBundlePathSO: {fileID: 11400000, guid: f52cc29fb8dba1b47807a8f8f4318c42, type: 2}
   playerOneGameModeButtons: {fileID: 3307993810673384839}
   playerTwoGameModeButtons: {fileID: 704983915383104042}
+  gameEventsSO: {fileID: 11400000, guid: cd81133ecf68d574aaf0be26f2836634, type: 2}
 --- !u!1 &7496453739864668104
 GameObject:
   m_ObjectHideFlags: 0

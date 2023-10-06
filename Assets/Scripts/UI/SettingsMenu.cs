@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class SettingsMenu : BaseMenu
 {
+    [Header("HUD")]
     [SerializeField]
     private Button menuButton;
     [SerializeField]
@@ -20,11 +21,15 @@ public class SettingsMenu : BaseMenu
     private TextMeshProUGUI winningNodesValue;
     [SerializeField]
     private TMP_InputField playerTurnTimeLimitInput;
+
+    [Header("Scriptable objects")]
     [SerializeField]
     private GameLimitValuesSO gameLimitValuesSO;
     [SerializeField]
     private SettingsSO settingsSO;
-    
+    [SerializeField]
+    private GameEventsSO gameEventsSO;
+
     private void Awake()
     {
         SaveManager.Instance.OnLoadGame += OnLoadGame;
@@ -134,6 +139,6 @@ public class SettingsMenu : BaseMenu
 
     private void OnMenuButtonClick()
     {
-        GameManager.Instance.SetMainMenuState();
+        gameEventsSO.GoToMainMenu();
     }
 }

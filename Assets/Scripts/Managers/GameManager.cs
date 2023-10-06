@@ -1,4 +1,6 @@
-public class GameManager : BaseManager<GameManager>
+using UnityEngine;
+
+public class GameManager : MonoBehaviour
 {
     #region States
 
@@ -10,15 +12,21 @@ public class GameManager : BaseManager<GameManager>
 
     #endregion
 
+    [SerializeField]
+    private GameEventsSO gameEventsSO;
+
+    private void Awake()
+    {
+        gameEventsSO.OnGoToMainMenu += SetMainMenuState;
+        gameEventsSO.OnStartLevel += SetLevelState;
+        gameEventsSO.OnGoToSettings += SetSettingsState;
+    }
+
     private void Start()
     {
         InitStates();
-        SetMainMenuState();
-    }
 
-    public void SetMainMenuState()
-    {
-        _gameStateMachine.SetState(MainMenuState);
+        gameEventsSO.GoToMainMenu();
     }
 
     private void InitStates()
@@ -30,12 +38,17 @@ public class GameManager : BaseManager<GameManager>
         SettingsState = new SettingsState(_gameStateMachine);
     }
 
-    public void SetLevelState()
+    private void SetMainMenuState()
+    {
+        _gameStateMachine.SetState(MainMenuState);
+    }
+
+    private void SetLevelState()
 	{
 		_gameStateMachine.SetState(LevelState);
 	}
 
-    public void SetSettingsState()
+    private void SetSettingsState()
 	{
 		_gameStateMachine.SetState(SettingsState);
 	}

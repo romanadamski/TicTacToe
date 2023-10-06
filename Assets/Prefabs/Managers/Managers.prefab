@@ -121,6 +121,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameplayEventsSO: {fileID: 11400000, guid: 26e0f4ac4b9170f4d8cd528f50675f65, type: 2}
+  gameEventsSO: {fileID: 11400000, guid: cd81133ecf68d574aaf0be26f2836634, type: 2}
 --- !u!1 &8872544480899299348
 GameObject:
   m_ObjectHideFlags: 0
@@ -164,8 +165,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce642766a5d9d684592bcc4eb6a5e432, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameLimitValuesSO: {fileID: 11400000, guid: f00a4c8cf7523ec478a7d135a0506885, type: 2}
-  settingsSO: {fileID: 11400000, guid: dcfdd23f93a326a44b5e0820f0b348b1, type: 2}
+  gameEventsSO: {fileID: 11400000, guid: cd81133ecf68d574aaf0be26f2836634, type: 2}
 --- !u!1001 &5289878806158212679
 PrefabInstance:
   m_ObjectHideFlags: 0
