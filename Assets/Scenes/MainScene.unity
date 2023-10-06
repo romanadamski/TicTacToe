@@ -499,6 +499,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   menusParent: {fileID: 2099092062}
+  canvas: {fileID: 1349856889}
 --- !u!224 &1790845098 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5780677610123944143, guid: 65a2354b83cb2314b8356dbaa9dc14a3,

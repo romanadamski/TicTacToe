@@ -49,11 +49,21 @@ public class BoardController : IBoardController
 
 	private Stack<Tuple<IPlayer, Vector2Int>> _movesHistory = new Stack<Tuple<IPlayer, Vector2Int>>();
 
+	/// <summary>
+	/// Save move to stack so it can be undo later
+	/// </summary>
+	/// <param name="player">Player that made that move</param>
+	/// <param name="index">Index on board move was made on</param>
 	public void SaveMove(IPlayer player, Vector2Int index)
 	{
 		_movesHistory.Push(new Tuple<IPlayer, Vector2Int>(player, index));
 	}
 
+	/// <summary>
+	/// Try undo move. Provides boolean result of that try and out parameter with last move.
+	/// </summary>
+	/// <param name="lastMove">Out parameters with last move. Null if there was no move saved.</param>
+	/// <returns>True if any move was in moves history.</returns>
 	public bool TryUndoMove(out Tuple<IPlayer, Vector2Int> lastMove)
 	{
 		lastMove = null;
@@ -66,6 +76,10 @@ public class BoardController : IBoardController
 		return true;
 	}
 
+	/// <summary>
+	/// Returns random empty node from board
+	/// </summary>
+	/// <returns></returns>
 	public Node GetRandomEmptyNode()
 	{
 		var emptyNodes = _board.Cast<Node>().
@@ -75,11 +89,22 @@ public class BoardController : IBoardController
 		return emptyNodes.ElementAt(randomIndex);
 	}
 
+	/// <summary>
+	/// Set given node type on given index
+	/// </summary>
+	/// <param name="index">Index of cell on board</param>
+	/// <param name="nodeType">Node type to set</param>
 	public void SetNode(Vector2Int index, NodeType nodeType)
 	{
 		_board[index.x, index.y] = new Node(index, nodeType);
 	}
 
+	/// <summary>
+	/// Returns node type of winner, None if no one win
+	/// </summary>
+	/// <param name="index">Index of cell on board</param>
+	/// <param name="nodeType">Node type of player that made move</param>
+	/// <returns></returns>
 	public NodeType CheckWin(Vector2Int index, NodeType nodeType)
 	{
 		return CheckWinVertical(index.x, nodeType)
@@ -88,6 +113,10 @@ public class BoardController : IBoardController
 		| CheckWinDiagonalTopRightToLeftBottom(index, nodeType);
 	}
 
+	/// <summary>
+	/// True if any node on board was not set yet
+	/// </summary>
+	/// <returns></returns>
 	public bool CheckEmptyNodes()
 	{
 		bool emptyNodes = false;

@@ -6,6 +6,9 @@ public enum PlayerNumber
 	PlayerTwo
 }
 
+/// <summary>
+/// Base player class
+/// </summary>
 public abstract class IPlayer : MonoBehaviour
 {
 	public PlayerNumber PlayerNumber { get; private set; }
@@ -29,6 +32,13 @@ public abstract class IPlayer : MonoBehaviour
 		NodeType = nodeType;
 	}
 
-	public virtual void OnStartTurn() { }
-	public virtual void OnTurnEnd() { }
+	/// <summary>
+	/// Call this method to start this player turn
+	/// </summary>
+	public virtual void StartTurn() { }
+
+	/// <summary>
+	/// Call this method to end this player turn
+	/// </summary>
+	public virtual void EndTurn() { }
 }

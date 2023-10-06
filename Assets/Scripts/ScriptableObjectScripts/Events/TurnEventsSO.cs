@@ -1,15 +1,14 @@
 ﻿using System;
 using UnityEngine;
 
+/// <summary>
+/// Holds reference to turn related events
+/// </summary>
 [CreateAssetMenu(fileName = "TurnEvents", menuName = "ScriptableObjects/TurnEvents")]
 public class TurnEventsSO : ScriptableObject
 {
-	[SerializeField]
-	private TurnStateSO turnStateSO;
-
 	public event Action<IPlayer> OnPlayerChanged;
 	public event Action<float> OnTimerChanged;
-	public event Action<IPlayer> OnAddPlayer;
 
 	public void TimerChanged(float time)
     {
@@ -19,10 +18,5 @@ public class TurnEventsSO : ScriptableObject
 	public void PlayerChanged(IPlayer player)
     {
 		OnPlayerChanged?.Invoke(player);
-	}
-
-	public void AddPlayer(IPlayer player)
-    {
-		OnAddPlayer?.Invoke(player);
 	}
 }

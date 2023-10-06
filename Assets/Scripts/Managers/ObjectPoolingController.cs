@@ -21,7 +21,6 @@ public class ObjectPoolingController : MonoBehaviour
                 newObject.gameObject.SetActive(false);
                 SetObjectName(newObject.gameObject);
                 pool.PooledObjects.Enqueue(newObject);
-                pool.ObjectCount++;
             }
         }
     }
@@ -31,6 +30,11 @@ public class ObjectPoolingController : MonoBehaviour
         poolableObject.name = poolableObject.name.Replace("(Clone)", $"{poolableObject.GetInstanceID()}");
     }
 
+    /// <summary>
+    /// Returns pooled object of given type
+    /// </summary>
+    /// <param name="poolableType">Name of pooled object set in Pool component</param>
+    /// <returns></returns>
     public BasePoolableController GetFromPool(string poolableType)
     {
         var pool = GetPoolByPoolableNameType(poolableType);
@@ -49,7 +53,6 @@ public class ObjectPoolingController : MonoBehaviour
         {
             if (pool.CanGrow)
             {
-                pool.ObjectCount++;
                 var newObject = Instantiate(pool.PoolObjectPrefab, pool.Parent);
                 SetObjectName(newObject.gameObject);
                 pool.ObjectsOutsidePool.Add(newObject);
@@ -63,7 +66,7 @@ public class ObjectPoolingController : MonoBehaviour
     }
 
     /// <summary>
-    /// Returns all objects to their pools
+    /// Return all objects to their pools
     /// </summary>
     public void ReturnAllToPools()
     {
@@ -73,6 +76,10 @@ public class ObjectPoolingController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Return given object to its pool
+    /// </summary>
+    /// <param name="objectToReturn">Object to return</param>
     public void ReturnToPool(BasePoolableController objectToReturn)
     {
         var pool = GetPoolByPoolableNameType(objectToReturn.PoolableType);

@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using Zenject;
 
+/// <summary>
+/// Set PlayerOne or PlayerTwo with given IPlayer component in Execute method depends on <typeparamref name="PlayerNumber"/>
+/// </summary>
 public class SetPlayerChoice : ActionChoice
 {
     [SerializeField]

@@ -1,6 +1,9 @@
 ﻿using System;
 using UnityEngine;
 
+/// <summary>
+/// Holds reference to board related events
+/// </summary>
 [CreateAssetMenu(fileName = "BoardEvents", menuName = "ScriptableObjects/BoardEvents")]
 public class BoardEventsSO: ScriptableObject
 {

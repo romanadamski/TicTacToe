@@ -58,12 +58,11 @@ public class TurnController : MonoBehaviour, ITurnController
         gameplayEventsSO.OnGameplayFinished += OnGameplayFinished;
         gameplayEventsSO.OnGameOver += player => OnGameplayFinished();
         boardEventsSO.OnSetNode += OnSetNode;
-		turnEventsSO.OnAddPlayer += AddPlayer;
 	}
 
     private void OnGameplayFinished()
     {
-		Players.ForEach(player => player.OnTurnEnd());
+		Players.ForEach(player => player.EndTurn());
 		Players.Clear();
 		StopTurnEndCoroutine();
 	}
@@ -71,7 +70,7 @@ public class TurnController : MonoBehaviour, ITurnController
     public void UndoTurn()
     {
 		StopTurnEndCoroutine();
-		CurrentPlayer.OnTurnEnd();
+		CurrentPlayer.EndTurn();
 		SetPreviousPlayer();
 	}
 
@@ -115,7 +114,7 @@ public class TurnController : MonoBehaviour, ITurnController
 		CurrentPlayer = Players[_currentIndex];
 	}
 
-	public void SetPreviousPlayer()
+	private void SetPreviousPlayer()
 	{
 		if (_currentIndex > 0)
 		{
@@ -127,7 +126,7 @@ public class TurnController : MonoBehaviour, ITurnController
 		}
 		CurrentPlayer = Players[_currentIndex];
 	}
-
+	
 	public void AddPlayer(IPlayer player)
 	{
 		Players.Add(player);
@@ -137,7 +136,7 @@ public class TurnController : MonoBehaviour, ITurnController
 	{
 		StopTurnEndCoroutine();
 		_turnEndCoroutine = StartCoroutine(TimerCoroutine(player));
-		player.OnStartTurn();
+		player.StartTurn();
 	}
 
 	private void ResetTurnTime()

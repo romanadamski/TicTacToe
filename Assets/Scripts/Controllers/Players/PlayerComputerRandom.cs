@@ -13,9 +13,9 @@ public class PlayerComputerRandom : IPlayer
 	[Inject]
 	private IBoardController _boardController;
 
-	public override void OnStartTurn()
+	public override void StartTurn()
 	{
-		base.OnStartTurn();
+		base.StartTurn();
 		Invoke(nameof(MakeMove), RandomTimeInterval);
 	}
 
@@ -30,9 +30,9 @@ public class PlayerComputerRandom : IPlayer
 		CancelInvoke(nameof(MakeMove));
 	}
 
-	public override void OnTurnEnd()
+	public override void EndTurn()
 	{
-		base.OnTurnEnd();
+		base.EndTurn();
 
 		StopInvokingMove();
 	}

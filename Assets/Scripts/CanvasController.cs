@@ -7,10 +7,7 @@ public class CanvasController : BaseManager<CanvasController>
     private Transform menusParent;
     public Transform MenusParent => menusParent;
 
-    public Canvas Canvas { get; private set; }
-
-    private void Awake()
-    {
-        Canvas = GetComponent<Canvas>();
-    }
+    [SerializeField]
+    public Canvas canvas;
+    public Canvas Canvas => canvas;
 }

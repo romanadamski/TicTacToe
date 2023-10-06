@@ -37,6 +37,10 @@ public class TileController : MonoBehaviour
         NodeType = NodeType.None;
     }
 
+	/// <summary>
+	/// Set tile node type and change sprite
+	/// </summary>
+	/// <param name="nodeType"></param>
     public void SetState(NodeType nodeType)
     {
 		EndHighlightCoroutine();
@@ -57,6 +61,10 @@ public class TileController : MonoBehaviour
         Button.interactable = false;
     }
 
+	/// <summary>
+	/// Quick fade-in and fade-out animation by given node type 
+	/// </summary>
+	/// <param name="nodeType"></param>
 	public void Highlight(NodeType nodeType)
 	{
 		EndHighlightCoroutine();
@@ -85,6 +93,9 @@ public class TileController : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Stop playing fade animaiton
+	/// </summary>
 	public void EndHighlightCoroutine()
 	{
 		hintImage.color = transparentColor;

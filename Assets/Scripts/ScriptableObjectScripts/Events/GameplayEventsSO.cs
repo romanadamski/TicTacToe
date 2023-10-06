@@ -1,6 +1,9 @@
 ﻿using System;
 using UnityEngine;
 
+/// <summary>
+/// Holds reference to gameplay related events
+/// </summary>
 [CreateAssetMenu(fileName = "GameplayEvents", menuName = "ScriptableObjects/GameplayEvents")]
 public class GameplayEventsSO : ScriptableObject
 {

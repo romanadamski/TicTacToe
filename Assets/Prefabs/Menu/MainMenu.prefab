@@ -649,8 +649,8 @@ GameObject:
   - component: {fileID: 2024517747853946828}
   - component: {fileID: 5140211219558827076}
   - component: {fileID: 2074361998260052453}
-  - component: {fileID: 8757139490784860739}
   - component: {fileID: 5808020501510932859}
+  - component: {fileID: 4165188543800593716}
   m_Layer: 5
   m_Name: ComputerButton
   m_TagString: Untagged
@@ -758,21 +758,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &8757139490784860739
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1821814091517834265}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f04914173dfa0904882b9fe46e180b23, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actionChoice: {fileID: 5808020501510932859}
-  selectedButtonColor: {r: 1, g: 0.45882353, b: 0.49411765, a: 1}
-  Button: {fileID: 2074361998260052453}
 --- !u!114 &5808020501510932859
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -789,6 +774,20 @@ MonoBehaviour:
   turnStateSO: {fileID: 11400000, guid: ae9411dcd0b85474b901800f943c6f30, type: 2}
   PlayerPrefab: {fileID: 8558778198186018475, guid: 4ac1022c2027cb2489be1330f92d64d4,
     type: 3}
+--- !u!114 &4165188543800593716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1821814091517834265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22799d712ed007c4cab6a1ed63879b69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectedButtonColor: {r: 0.16078432, g: 1, b: 0, a: 1}
+  Button: {fileID: 2074361998260052453}
 --- !u!1 &2412865078724628591
 GameObject:
   m_ObjectHideFlags: 0
@@ -1322,8 +1321,8 @@ GameObject:
   - component: {fileID: 3512309503637592775}
   - component: {fileID: 1215182089215045812}
   - component: {fileID: 4340393475782951868}
-  - component: {fileID: 7722562900567611350}
   - component: {fileID: 689127109697702181}
+  - component: {fileID: 2441681201765579687}
   m_Layer: 5
   m_Name: ComputerButton
   m_TagString: Untagged
@@ -1431,21 +1430,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &7722562900567611350
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3188918908960407031}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f04914173dfa0904882b9fe46e180b23, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actionChoice: {fileID: 689127109697702181}
-  selectedButtonColor: {r: 1, g: 0.45882353, b: 0.49411765, a: 1}
-  Button: {fileID: 4340393475782951868}
 --- !u!114 &689127109697702181
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1462,6 +1446,20 @@ MonoBehaviour:
   turnStateSO: {fileID: 11400000, guid: ae9411dcd0b85474b901800f943c6f30, type: 2}
   PlayerPrefab: {fileID: 8558778198186018475, guid: 4ac1022c2027cb2489be1330f92d64d4,
     type: 3}
+--- !u!114 &2441681201765579687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3188918908960407031}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22799d712ed007c4cab6a1ed63879b69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectedButtonColor: {r: 0.16078432, g: 1, b: 0, a: 1}
+  Button: {fileID: 4340393475782951868}
 --- !u!1 &3684879240343489507
 GameObject:
   m_ObjectHideFlags: 0
@@ -1474,8 +1472,8 @@ GameObject:
   - component: {fileID: 7192100210153511680}
   - component: {fileID: 3848528047218355639}
   - component: {fileID: 4795437354472402391}
-  - component: {fileID: 7871371493097187728}
   - component: {fileID: 4818860899409140010}
+  - component: {fileID: 5960882210176014991}
   m_Layer: 5
   m_Name: PlayerButton
   m_TagString: Untagged
@@ -1594,21 +1592,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &7871371493097187728
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3684879240343489507}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f04914173dfa0904882b9fe46e180b23, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actionChoice: {fileID: 4818860899409140010}
-  selectedButtonColor: {r: 1, g: 0.45882353, b: 0.49411765, a: 1}
-  Button: {fileID: 4795437354472402391}
 --- !u!114 &4818860899409140010
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1625,6 +1608,20 @@ MonoBehaviour:
   turnStateSO: {fileID: 11400000, guid: ae9411dcd0b85474b901800f943c6f30, type: 2}
   PlayerPrefab: {fileID: 3931112242887849902, guid: 85ce7e3581b8ceb49aed656cb2385ea5,
     type: 3}
+--- !u!114 &5960882210176014991
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3684879240343489507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22799d712ed007c4cab6a1ed63879b69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectedButtonColor: {r: 0.16078432, g: 1, b: 0, a: 1}
+  Button: {fileID: 4795437354472402391}
 --- !u!1 &4394265483908003012
 GameObject:
   m_ObjectHideFlags: 0
@@ -1752,8 +1749,8 @@ GameObject:
   - component: {fileID: 6968393567056704978}
   - component: {fileID: 4897685249466914498}
   - component: {fileID: 5295325843426921620}
-  - component: {fileID: 4897213396595645017}
   - component: {fileID: 8107191104294370323}
+  - component: {fileID: 6137187859491912479}
   m_Layer: 5
   m_Name: PlayerButton
   m_TagString: Untagged
@@ -1861,21 +1858,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &4897213396595645017
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6110528261055362032}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f04914173dfa0904882b9fe46e180b23, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actionChoice: {fileID: 8107191104294370323}
-  selectedButtonColor: {r: 1, g: 0.45882353, b: 0.49411765, a: 1}
-  Button: {fileID: 5295325843426921620}
 --- !u!114 &8107191104294370323
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1892,6 +1874,20 @@ MonoBehaviour:
   turnStateSO: {fileID: 11400000, guid: ae9411dcd0b85474b901800f943c6f30, type: 2}
   PlayerPrefab: {fileID: 3931112242887849902, guid: 85ce7e3581b8ceb49aed656cb2385ea5,
     type: 3}
+--- !u!114 &6137187859491912479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6110528261055362032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22799d712ed007c4cab6a1ed63879b69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectedButtonColor: {r: 0.16078432, g: 1, b: 0, a: 1}
+  Button: {fileID: 5295325843426921620}
 --- !u!1 &6115448283328488495
 GameObject:
   m_ObjectHideFlags: 0

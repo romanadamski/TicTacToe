@@ -6,7 +6,14 @@ public class SaveManager : BaseManager<SaveManager>
     private const string SAVE_KEY = "SAVE";
     private SaveData _saveData;
 
+    /// <summary>
+    /// Subscribe to this event to save game on application quit
+    /// </summary>
     public event Action<SaveData> OnSaveGame;
+
+    /// <summary>
+    /// Subscribe to this event to load save data on start of the game
+    /// </summary>
     public event Action<SaveData> OnLoadGame;
 
     private void Start()
