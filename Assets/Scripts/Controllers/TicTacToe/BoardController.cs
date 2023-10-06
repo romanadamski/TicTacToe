@@ -80,19 +80,6 @@ public class BoardController : IBoardController
 		_board[index.x, index.y] = new Node(index, nodeType);
 	}
 
-	//public bool CheckDraw() => CheckWin() == NodeType.None && !CheckEmptyNodes();
-
-	//public NodeType CheckWin()
- //   {
-	//	var nodeType = NodeType.None;
-	//	foreach (var node in _board)
- //       {
-	//		nodeType = CheckWin(node.index, node.nodeType);
-	//	}
-
-	//	return nodeType;
-	//}
-
 	public NodeType CheckWin(Vector2Int index, NodeType nodeType)
 	{
 		return CheckWinVertical(index.x, nodeType)

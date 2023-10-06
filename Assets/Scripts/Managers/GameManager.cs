@@ -1,6 +1,3 @@
-using UnityEngine;
-using System;
-
 public class GameManager : BaseManager<GameManager>
 {
     #region States
@@ -12,14 +9,6 @@ public class GameManager : BaseManager<GameManager>
     public SettingsState SettingsState;
 
     #endregion
-
-    [SerializeField]
-    private GameLimitValuesSO gameLimitValuesSO;
-    public GameLimitValuesSO GameLimitValuesSO => gameLimitValuesSO;
-
-    [SerializeField]
-    private SettingsSO settingsSO;
-    public SettingsSO SettingsSO => settingsSO;
 
     private void Start()
     {

@@ -31,14 +31,14 @@ public class UIManager : BaseManager<UIManager>
 
 	private void CreateBackground()
 	{
-		backgroundImage = _diContainer.InstantiatePrefab(backgroundPrefab, GameLauncher.Instance.Canvas.transform).GetComponent<Image>();
+		backgroundImage = _diContainer.InstantiatePrefab(backgroundPrefab, CanvasController.Instance.Canvas.transform).GetComponent<Image>();
 	}
 
     private void CreateMenus()
     {
         foreach (var menu in menuPrefabs)
         {
-            _menus.Add(_diContainer.InstantiatePrefab(menu, GameLauncher.Instance.MenusParent).GetComponent<BaseMenu>());
+            _menus.Add(_diContainer.InstantiatePrefab(menu, CanvasController.Instance.MenusParent).GetComponent<BaseMenu>());
         }
     }
 

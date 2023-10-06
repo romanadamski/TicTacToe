@@ -19,7 +19,7 @@ public class TurnController : MonoBehaviour, ITurnController
 	private float PlayerTurnTimeLimit => settingsSO.PlayerTurnTimeLimit;
 	private Coroutine _turnEndCoroutine;
 	private float _turnElapsed;
-	public float TurnElapsed
+	private float TurnElapsed
 	{
 		get => _turnElapsed;
 		set

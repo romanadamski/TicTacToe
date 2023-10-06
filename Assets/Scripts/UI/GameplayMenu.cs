@@ -5,6 +5,7 @@ using Zenject;
 
 public class GameplayMenu : BaseMenu
 {
+    [Header("HUD")]
     [SerializeField]
     private TextMeshProUGUI playerOneText;
     [SerializeField]
@@ -25,6 +26,8 @@ public class GameplayMenu : BaseMenu
     private TextMeshProUGUI timer;
     [SerializeField]
     private TextMeshProUGUI tilesToWin;
+
+    [Header("Scriptable objects")]
     [SerializeField]
     private SettingsSO settingsSO;
     [SerializeField]

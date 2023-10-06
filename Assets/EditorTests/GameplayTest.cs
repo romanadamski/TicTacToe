@@ -166,44 +166,45 @@ namespace Tests
         public void CheckUndoMove()
         {
 			// Arrange
-			//BoardTurnControllerObsolete turnController = new BoardTurnControllerObsolete();
+			IBoardController boardController = new BoardController();
+			boardController.Set(3, 3, 3);
+			var playerOneObject = new GameObject();
+			var playerTwoObject = new GameObject();
+			var playerOne = playerOneObject.AddComponent<PlayerInput>();
+			var playerTwo = playerTwoObject.AddComponent<PlayerInput>();
+
+			playerOne.SetNodeType(NodeType.X);
+			playerTwo.SetNodeType(NodeType.O);
 
 			// Act
-			//var playerOne = new PlayerInput();
-			//var playerTwo = new PlayerInput();
-			//playerOne.SetNodeType(NodeType.X);
-			//playerTwo.SetNodeType(NodeType.O);
-			//turnController.PlayerOne = playerOne;
-			//turnController.PlayerTwo = playerTwo;
-			//turnController.StartGame();
-			//turnController.NodeMark(new Vector2Int(2, 2));
-			//turnController.NodeMark(new Vector2Int(2, 1));
-			//turnController.NodeMark(new Vector2Int(0, 2));
-			//turnController.NodeMark(new Vector2Int(0, 1));
-			//turnController.UndoMove();
+			boardController.SetNode(new Vector2Int(2, 2), playerOne.NodeType);
+			boardController.SaveMove(playerOne, new Vector2Int(2, 1));
+			boardController.SetNode(new Vector2Int(2, 1), playerTwo.NodeType);
+			boardController.SaveMove(playerTwo, new Vector2Int(2, 1));
+			boardController.SetNode(new Vector2Int(0, 2), playerOne.NodeType);
+			boardController.SaveMove(playerOne, new Vector2Int(2, 1));
+			boardController.SetNode(new Vector2Int(0, 1), playerTwo.NodeType);
+			boardController.SaveMove(playerTwo, new Vector2Int(2, 1));
+			var undo = boardController.TryUndoMove(out var node);
 
 			// Assert
-			//Assert.AreEqual(turnController.TicTacToeController.Board[0, 1].nodeType, NodeType.None);
-		}
+			Assert.IsTrue(undo);
+            Assert.AreEqual(node.Item1.NodeType, playerTwo.NodeType);
+        }
 
 		[Test]
         public void CheckHint()
         {
 			// Arrange
-			//BoardTurnControllerObsolete turnController = new BoardTurnControllerObsolete();
+			IBoardController boardController = new BoardController();
+			boardController.Set(3, 3, 3);
 
 			// Act
-			var playerOne = new PlayerInput();
-			var playerTwo = new PlayerInput();
-			playerOne.SetNodeType(NodeType.X);
-			playerTwo.SetNodeType(NodeType.O);
-			//turnController.PlayerOne = playerOne;
-			//turnController.PlayerTwo = playerTwo;
-			//turnController.StartGame();
-			//var hintNode = turnController.GetNodeToHint();
+			var randomEmptyNode = boardController.GetRandomEmptyNode();
 
-			//// Assert
-			//Assert.AreEqual(hintNode.nodeType, NodeType.None);
+			// Assert
+			Assert.IsTrue(randomEmptyNode.index.x < 3 && randomEmptyNode.index.x >= 0);
+			Assert.IsTrue(randomEmptyNode.index.y < 3 && randomEmptyNode.index.y >= 0);
 		}
     }
 }

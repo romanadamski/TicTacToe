@@ -2,9 +2,9 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using Zenject;
 
 [RequireComponent(typeof(Button))]
+[RequireComponent(typeof(Image))]
 public class TileController : MonoBehaviour
 {
 	[SerializeField]

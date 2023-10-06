@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 public enum PlayerNumber
 {
@@ -11,9 +10,9 @@ public abstract class IPlayer : MonoBehaviour
 {
 	public PlayerNumber PlayerNumber { get; private set; }
 	public string Name { get; private set; }
+	public NodeType NodeType { get; private set; }
 
 	public abstract bool AllowInput { get; }
-	public NodeType NodeType { get; private set; }
 
 	public void SetName(string name)
     {

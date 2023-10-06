@@ -24,10 +24,10 @@ public class BoardView : MonoBehaviour
 
 	private ObjectPoolingController _objectPoolingController;
 	private TileController _currentHighlightTile;
+	private TileController[,] _tileControllers;
 
 	[Inject]
 	private IBoardController _boardController;
-	private TileController[,] _tileControllers;
 
 	[Inject]
 	private ITurnController _turnController;
@@ -50,7 +50,7 @@ public class BoardView : MonoBehaviour
         boardEventsSO.OnUndoMove += UndoMove;
 	}
 
-	public void StartGame()
+	private void StartGame()
 	{
 		_boardController.Set(settingsSO.HorizontalNodes, settingsSO.VerticalNodes, settingsSO.WinningNodes);
 
@@ -79,7 +79,7 @@ public class BoardView : MonoBehaviour
 		_currentHighlightTile.Highlight(_turnController.CurrentPlayer.NodeType);
 	}
 
-	public void ClearBoard()
+	private void ClearBoard()
     {
 		_objectPoolingController.ReturnAllToPools();
 	}
@@ -146,7 +146,7 @@ public class BoardView : MonoBehaviour
 		boardEventsSO.SetNode(_turnController.CurrentPlayer, tile.Index);
 	}
 
-	public void SetNode(IPlayer player, Vector2Int index)
+	private void SetNode(IPlayer player, Vector2Int index)
     {
         SetNodeUI(player.NodeType, index);
         _boardController.SetNode(index, player.NodeType);
@@ -172,7 +172,7 @@ public class BoardView : MonoBehaviour
 		}
 	}
 
-	public void ToggleInput(IPlayer player)
+	private void ToggleInput(IPlayer player)
 	{
 		if (_tileControllers == null) return;
 

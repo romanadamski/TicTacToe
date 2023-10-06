@@ -35,7 +35,6 @@ public class Pool
         {
             objectToReturn.gameObject.SetActive(false);
             PooledObjects.Enqueue(objectToReturn);
-            objectToReturn.OnReturnToPool();
         }
     }
 }
