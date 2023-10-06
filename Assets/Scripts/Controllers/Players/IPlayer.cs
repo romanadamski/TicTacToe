@@ -41,4 +41,9 @@ public abstract class IPlayer : MonoBehaviour
 	/// Call this method to end this player turn
 	/// </summary>
 	public virtual void EndTurn() { }
+
+    public override string ToString()
+    {
+		return $"{PlayerNumber}: \"{Name}\", {NodeType}";
+    }
 }
